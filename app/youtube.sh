@@ -4,7 +4,7 @@
 #
 # The script downloads all new video from pre-configured acoounts in
 # channels.txt. It updates IDs of downloaded files at done.txt. The script
-# could be ran by a cron job. Uses youtube-dl, rsync, rename.rb.
+# could be ran by a cron job. Uses youtube-dl, rsync, renamr.
 
 # The script is ran by cron, the environment is stricked.
 export LC_ALL=en_US.UTF-8
@@ -31,7 +31,7 @@ if [ -e "$LCK" ] && kill -0 "$(cat "$LCK")"; then
 fi
 
 if ! gem spec "$REN" > /dev/null 2>&1; then
-  log "Please install $REN: git install $REN."
+  log "Please install $REN: gem install $REN."
   exit 0
 fi
 
