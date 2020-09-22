@@ -18,19 +18,22 @@ log() {
 
 # Looks for torrent ID by torrent file name.
 tid() {
-  tid=$("$CMD" "$SER" -l | grep "$FIL" | awk '{print $1}')
-  if [ -z "$tid" ]; then
-    log "Unable to find $FIL at $SER."
-    exit 1
-  fi
-  printf '%s' "$tid"
+  "$CMD" "$SER" -l | grep "$FIL" | awk '{print $1}'
 }
 
 # Checks if the command exists.
-if ! command -v "$CMD" > /dev/null 2>&1; then
-  log "Unable to continue: $CMD is not installed."
-  exit 1
-fi
+validate() {
+  if ! command -v "$1" > /dev/null 2>&1; then
+    log "Unable to continue: application $1 is not installed."
+    exit 1
+  fi
+}
+
+# Start point.
+validate "$CMD"
+validate 'nc'
+validate 'tr'
+validate 'awk'
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
@@ -68,11 +71,17 @@ fi
 trap "rm -f $LCK" INT TERM EXIT
 echo $$ > "$LCK"
 log "$IAM says hi."
-TID=$(tid)
-"$CMD" "$SER" -t "$TID" --remove-and-delete 2>&1 | tee -a "$LOG"
-log "$FIL $TID is removed from $SER."
+tid=$(tid)
+if [ -n "$tid" ]; then
+  "$CMD" "$SER" -t "$tid" --remove-and-delete 2>&1 | tee -a "$LOG"
+  log "$FIL $tid is removed from $SER."
+fi
 "$CMD" "$SER" -a "$TOR" 2>&1 | tee -a "$LOG"
-TID=$(tid)
-log "$FIL $TID is added to $SER."
+tid=$(tid)
+if [ -z "$tid" ]; then
+  log "Unable to find $FIL at $SER."
+  exit 1
+fi
+log "$FIL $tid is added to $SER."
 log "$IAM says bye."
 exit 0
