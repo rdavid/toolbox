@@ -4,9 +4,9 @@
 # bak.sh <arc|box>
 
 IAM=$(basename -- "$0")
-NME="${IAM%.*}"
-LOG="/tmp/$NME-log"
-LCK="/tmp/$NME-lck"
+IAM="${IAM%.*}"
+LOG="/tmp/$IAM-log"
+LCK="/tmp/$IAM-lck"
 SRC="/home/david/nas-$1/"
 DST="/media/usb-bak/bak-$1"
 
@@ -26,20 +26,20 @@ fi
 
 # Prevents multiple instances.
 if [ -e "$LCK" ] && kill -0 "$(cat "$LCK")"; then
-  log "$NME is already running."
-  exit 0
+  log "$IAM is already running."
+  exit 1
 fi
 
 # Makes sure the lockfile is removed when we exit and then claim it.
 # shellcheck disable=SC2064
 trap "rm -f $LCK" INT TERM EXIT
 echo $$ > "$LCK"
-log "$NME says hi, $SRC->$DST."
+log "$IAM says hi, $SRC->$DST."
 rdiff-backup --print-statistics \
              --terminal-verbosity 4 \
              --preserve-numerical-ids \
              --force \
              "$SRC" "$DST" \
              2>&1 | tee -a "$LOG"
-log "$NME says bye, $SRC->$DST."
+log "$IAM says bye, $SRC->$DST."
 exit 0

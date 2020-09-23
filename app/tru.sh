@@ -23,17 +23,14 @@ tid() {
 
 # Checks if the command exists.
 validate() {
-  if ! command -v "$1" > /dev/null 2>&1; then
-    log "Unable to continue: application $1 is not installed."
-    exit 1
-  fi
+  command -v "$1" >/dev/null 2>&1 || log "Install $1."; return
 }
 
 # Start point.
-validate "$CMD"
 validate 'nc'
 validate 'tr'
 validate 'awk'
+validate "$CMD"
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
@@ -45,7 +42,7 @@ fi
 # parameter host:port.
 prm="$(printf '%s' "$1" | tr ':' ' ')"
 # shellcheck disable=SC2086
-if ! nc -z $prm > /dev/null 2>&1; then
+if ! nc -z $prm >/dev/null 2>&1; then
   log "Unable to continue: $1 is not valid parameter for [host:port]."
   exit 1
 fi

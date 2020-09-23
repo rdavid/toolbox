@@ -11,9 +11,9 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 IAM=$(basename -- "$0")
-NME="${IAM%.*}"
-LOG="/tmp/$NME.log"
-LCK="/tmp/$NME.lck"
+IAM="${IAM%.*}"
+LOG="/tmp/$IAM.log"
+LCK="/tmp/$IAM.lck"
 SRC='/mnt/nas-ibx/ytb/app/channels.txt'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'
 DST='/mnt/nas-ibx/ytb'
@@ -39,7 +39,7 @@ fi
 # shellcheck disable=SC2064
 trap "rm -f $LCK" INT TERM EXIT
 echo $$ > "$LCK"
-log "$NME says hi."
+log "$IAM says hi."
 mkdir -p "$TMP" || ( log "Unable to create $TMP."; exit 1 )
 youtube-dl \
   --playlist-reverse \
@@ -58,5 +58,5 @@ if ls -1A "$TMP" | grep -q .; then
   rsync -zvhr --progress "$TMP"/* "$DST" 2>&1 | tee -a "$LOG"
 fi
 rm -rf "$TMP"
-log "$NME says bye."
+log "$IAM says bye."
 exit 0
