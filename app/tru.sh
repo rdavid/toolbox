@@ -21,9 +21,14 @@ tid() {
   "$CMD" "$SER" -l | grep "$FIL" | awk '{print $1}'
 }
 
+die() {
+  log "$@"
+  exit 1
+}
+
 # Checks if the command exists.
 validate() {
-  command -v "$1" >/dev/null 2>&1 || log "Install $1."; return
+  command -v "$1" >/dev/null 2>&1 || die "Install $1."
 }
 
 # Start point.
@@ -34,24 +39,19 @@ validate "$CMD"
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
-  log "Usage: $CMD [host:port] [filename]"
-  exit 1
+  die "Usage: $CMD [host:port] [filename]"
 fi
 
 # Prepares host and port to be nc command parameters. Validates the first
 # parameter host:port.
 prm="$(printf '%s' "$1" | tr ':' ' ')"
 # shellcheck disable=SC2086
-if ! nc -z $prm >/dev/null 2>&1; then
-  log "Unable to continue: $1 is not valid parameter for [host:port]."
-  exit 1
-fi
+nc -z $prm >/dev/null 2>&1 || die "$1 is not valid parameter for [host:port]."
 SER="$1"
 
 # Validates second parameter full path name.
 if [ ! -r "$2" ]; then
-  log "Unable to continue: $2 is not valid parameter for a torrent file."
-  exit 1
+  die "$2 is not valid parameter for a torrent file."
 fi
 TOR="$2"
 FIL=$(basename -- "$TOR")
@@ -59,8 +59,7 @@ FIL="${FIL%.*}"
 
 # Prevents multiple instances.
 if [ -e "$LCK" ] && kill -0 "$(cat "$LCK")"; then
-  log "$IAM is already running."
-  exit 1
+  die "$IAM is already running."
 fi
 
 # Makes sure the lockfile is removed when we exit and then claim it.
@@ -76,8 +75,7 @@ fi
 "$CMD" "$SER" -a "$TOR" 2>&1 | tee -a "$LOG"
 tid=$(tid)
 if [ -z "$tid" ]; then
-  log "Unable to find $FIL at $SER."
-  exit 1
+  die "Unable to find $FIL at $SER."
 fi
 log "$FIL $tid is added to $SER."
 log "$IAM says bye."
