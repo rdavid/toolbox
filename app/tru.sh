@@ -11,24 +11,35 @@ LOG="/tmp/$IAM-log"
 LCK="/tmp/$IAM-lck"
 CMD='transmission-remote'
 
-# Logger.
+# Prints timestamp before arguments.
+tim() {
+  date +"%Y%m%d-%H:%M:%S $*"
+}
+
+# Information logger.
 log() {
-  date +"%Y%m%d-%H:%M:%S $*" | tee -a "$LOG"
+  tim "I $*" | tee -a "$LOG"
 }
 
-# Looks for torrent ID by torrent file name.
-tid() {
-  "$CMD" "$SER" -l | grep "$FIL" | awk '{print $1}'
+# Error logger.
+loge() {
+  tim "E $*" | tee -a "$LOG" 1>&2
 }
 
+# Prints error and exits.
 die() {
-  log "$@"
+  loge "$@"
   exit 1
 }
 
 # Checks if the command exists.
 validate() {
   command -v "$1" >/dev/null 2>&1 || die "Install $1."
+}
+
+# Looks for torrent ID by torrent file name.
+tid() {
+  "$CMD" "$SER" -l | grep "$FIL" | awk '{print $1}'
 }
 
 # Start point.
