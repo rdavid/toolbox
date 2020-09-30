@@ -12,3 +12,4 @@ be_root
 [ -f $PRM ] || die "$PRM not found."
 cp $TMP /etc/fstab && mount -a
 cp $PRM /etc/fstab
+exit 0

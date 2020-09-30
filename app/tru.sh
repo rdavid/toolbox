@@ -21,7 +21,7 @@ validate "$CMD"
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
-  die "Usage: $CMD [host:port] [filename]"
+  die "Usage: $IAM [host:port] [filename]"
 fi
 
 # Prepares host and port to be nc command parameters. Validates the first
@@ -32,9 +32,7 @@ nc -z $prm >/dev/null 2>&1 || die "$1 is not valid parameter for [host:port]."
 SER="$1"
 
 # Validates second parameter full path name.
-if [ ! -r "$2" ]; then
-  die "$2 is not valid parameter for a torrent file."
-fi
+[ -r "$2" ] || die "$2 is not valid parameter for a torrent file."
 TOR="$2"
 FIL=$(basename -- "$TOR")
 FIL="${FIL%.*}"

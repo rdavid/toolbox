@@ -8,10 +8,10 @@
 
 be_root
 if [ 0 -eq $# ]; then
-  die 'perm.sh <directory name>'
+  die "$IAM <directory name>"
 fi
 DIR=$1
-[ -d "$DIR" ] || die "Directory $DIR does not exist."
+[ -w "$DIR" ] || die "Unable to write to $DIR."
 printf 'Run %s, are you sure? [y/N] ' "$DIR"
 CFG=$(stty -g)
 stty raw -echo; ans=$(head -c 1); stty "$CFG"
@@ -22,3 +22,4 @@ fi
 chown -R foobar "$DIR"
 find "$DIR" -type d -exec chmod 755 {} \;
 find "$DIR" -type f -exec chmod 644 {} \;
+exit 0
