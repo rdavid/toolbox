@@ -6,10 +6,10 @@
 # could be ran by a cron job. Uses youtube-dl, rsync, renamr.
 
 . base
-SRC='/mnt/nas-ibx/ytb/app/channels.txt'
-ARC='/mnt/nas-ibx/ytb/app/done.txt'
-DST='/mnt/nas-ibx/ytb'
 TMP='/tmp/out'
+DST='/mnt/nas-ibx/ytb'
+ARC='/mnt/nas-ibx/ytb/app/done.txt'
+SRC='/mnt/nas-ibx/ytb/app/channels.txt'
 
 # The script is ran by cron, the environment is stricked.
 export LC_ALL=en_US.UTF-8
@@ -18,6 +18,9 @@ export LANG=en_US.UTF-8
 validate 'rsync'
 validate 'renamr'
 validate 'youtube-dl'
+[ -r $SRC ] || die "Unable to read $SRC."
+[ -w $DST ] || die "Unable to write $DST."
+[ -w $ARC ] || die "Unable to write $ARC."
 mkdir -p $TMP || die "Unable to create $TMP."
 youtube-dl \
   --playlist-reverse \
