@@ -5,7 +5,8 @@
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
 
-. base
+# shellcheck source=./base
+. "$(dirname "$0")/base"
 CMD='transmission-remote'
 
 # Looks for torrent ID by torrent file name.

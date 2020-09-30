@@ -3,7 +3,8 @@
 # Copyright 2016-current David Rabkin
 # bak.sh <arc|box>
 
-. base
+# shellcheck source=./base
+. "$(dirname "$0")/base"
 SRC="/home/david/nas-$1/"
 DST="/media/usb-bak/bak-$1"
 
