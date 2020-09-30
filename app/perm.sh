@@ -6,13 +6,12 @@
 # shellcheck source=./base
 . "$(dirname "$0")/base"
 
+be_root
 if [ 0 -eq $# ]; then
   die 'perm.sh <directory name>'
 fi
 DIR=$1
-if [ ! -d "$DIR" ]; then
-  die "Directory $DIR does not exist."
-fi
+[ -d "$DIR" ] || die "Directory $DIR does not exist."
 printf 'Run %s, are you sure? [y/N] ' "$DIR"
 CFG=$(stty -g)
 stty raw -echo; ans=$(head -c 1); stty "$CFG"

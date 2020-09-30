@@ -31,12 +31,8 @@ comp() {
   log "$out"
 }
 
-# Run as root only.
-if [ "$(id -u)" -ne '0' ] ; then
-  echo "$IAM must be executed with root privileges."
-  exit 0
-fi
-
+be_root
+validate 'iwlist'
 list
 while true; do
   wait

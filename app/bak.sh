@@ -8,14 +8,10 @@
 SRC="/home/david/nas-$1/"
 DST="/media/usb-bak/bak-$1"
 
-if [ ! -d "$SRC" ]; then
-  die "There is no source directory $SRC."
-fi
-if [ ! -d "$DST" ]; then
-  die "There is no destination directory $DST."
-fi
-
+be_root
 validate 'rdiff-backup'
+[ -d "$SRC" ] || die "There is no source directory $SRC."
+[ -d "$DST" ] || die "There is no destination directory $DST."
 rdiff-backup --print-statistics \
              --terminal-verbosity 4 \
              --preserve-numerical-ids \
