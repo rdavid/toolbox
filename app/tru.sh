@@ -11,13 +11,13 @@ CMD='transmission-remote'
 
 # Looks for torrent ID by torrent file name.
 tid() {
-  "$CMD" "$SER" -l | grep "$FIL" | awk '{print $1}'
+  $CMD "$SER" -l | grep "$FIL" | awk '{print $1}'
 }
 
 validate 'nc'
 validate 'tr'
 validate 'awk'
-validate "$CMD"
+validate $CMD
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
@@ -40,12 +40,12 @@ FIL="${FIL%.*}"
 # Looks for torrent ID by torrent name extracted from torrent file name.
 tid=$(tid)
 if [ -n "$tid" ]; then
-  "$CMD" "$SER" -t "$tid" --remove-and-delete 2>&1 | tee -a "$LOG"
+  $CMD "$SER" -t "$tid" --remove-and-delete 2>&1 | tee -a "$LOG"
   log "$FIL $tid is removed from $SER."
 fi
 
 # Adds torrent file name to torrent server.
-"$CMD" "$SER" -a "$TOR" 2>&1 | tee -a "$LOG"
+$CMD "$SER" -a "$TOR" 2>&1 | tee -a "$LOG"
 
 # Verifies that a torrent was added.
 tid=$(tid)
