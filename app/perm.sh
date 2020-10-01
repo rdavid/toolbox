@@ -7,8 +7,8 @@
 . "$(dirname "$0")/base"
 
 be_root
-if [ 0 -eq $# ]; then
-  die "$IAM <directory name>"
+if [ "$#" -ne 1 ] || ! [ -d "$1" ]; then
+  die "Usage: $IAM DIRECTORY"
 fi
 DIR=$1
 [ -w "$DIR" ] || die "Unable to write to $DIR."
