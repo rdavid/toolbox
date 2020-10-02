@@ -4,7 +4,7 @@
 # Makes incremental backups from the first parameter to the second.
 
 # shellcheck source=./base
-. "$(dirname "$0")/base"
+. "$(dirname "$(realpath "$0")")/base"
 
 validate 'rdiff-backup'
 

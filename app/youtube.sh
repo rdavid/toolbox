@@ -6,7 +6,7 @@
 # could be ran by a cron job. Uses youtube-dl, rsync, renamr.
 
 # shellcheck source=./base
-. "$(dirname "$0")/base"
+. "$(dirname "$(realpath "$0")")/base"
 TMP='/tmp/out'
 DST='/mnt/nas-ibx/ytb'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'

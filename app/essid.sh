@@ -4,7 +4,7 @@
 # It watches Wi-Fi ESSID change and report.
 
 # shellcheck source=./base
-. "$(dirname "$0")/base"
+. "$(dirname "$(realpath "$0")")/base"
 OLD="/tmp/$IAM-old"
 CUR="/tmp/$IAM-cur"
 

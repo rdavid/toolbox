@@ -3,7 +3,7 @@
 # Copyright 2016-present David Rabkin
 
 # shellcheck source=./base
-. "$(dirname "$0")/base"
+. "$(dirname "$(realpath "$0")")/base"
 TMP='/etc/fstab-tmp'
 PRM='/etc/fstab-prm'
 

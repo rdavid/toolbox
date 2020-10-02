@@ -4,7 +4,7 @@
 # Sets owner to foobar user, set right permitions for files and directories.
 
 # shellcheck source=./base
-. "$(dirname "$0")/base"
+. "$(dirname "$(realpath "$0")")/base"
 
 be_root
 if [ "$#" -ne 1 ] || ! [ -d "$1" ]; then

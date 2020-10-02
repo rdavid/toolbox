@@ -6,7 +6,7 @@
 # ratio.
 
 # shellcheck source=./base
-. "$(dirname "$0")/base"
+. "$(dirname "$(realpath "$0")")/base"
 CMD='transmission-remote'
 
 # Looks for torrent ID by torrent file name.
