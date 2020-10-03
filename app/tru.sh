@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2020-current David Rabkin
 # tru stands for Transmission Remote Updater. The script removes a torrent with

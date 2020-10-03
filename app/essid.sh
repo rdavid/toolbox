@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2020-current David Rabkin
 # It watches Wi-Fi ESSID change and report.

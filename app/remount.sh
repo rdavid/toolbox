@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2016-present David Rabkin
 
