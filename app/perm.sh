@@ -7,16 +7,15 @@
 . "$(dirname "$(realpath "$0")")/base"
 
 be_root
-if [ "$#" -ne 1 ] || ! [ -d "$1" ]; then
+if [ "$#" -ne 1 ] || ! [ -d "$1" ] || ! [ -w "$1" ]; then
   die "Usage: $IAM DIRECTORY"
 fi
 DIR=$1
-[ -w "$DIR" ] || die "Unable to write to $DIR."
 printf 'Run %s, are you sure? [y/N] ' "$DIR"
-CFG=$(stty -g)
-stty raw -echo; ans=$(head -c 1); stty "$CFG"
+keep=$(stty -g)
+stty raw -echo; ans=$(head -c 1); stty "$keep"
 printf '\n'
-if ! echo "$ans" | grep -iq "^y"; then
+if ! printf '%s' "$ans" | grep -iq '^y'; then
   exit 0
 fi
 chown -R foobar "$DIR"
