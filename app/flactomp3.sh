@@ -2,24 +2,16 @@
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2019-present David Rabkin
 
-if [ 0 -eq $# ]; then
-  printf 'flactomp3.sh <file name>\n'
-  exit 0
+# shellcheck source=./base
+. "$(dirname "$(realpath "$0")")/base"
+if [ 0 -eq $# ] || ! [ -r "$1" ]; then
+  die "Usage: $IAM FILENAME.flac"
 fi
-FLAC="$1"
-if [ ! -f "$FLAC" ]; then
-  printf 'File %s does not exist.\n' "$FLAC"
-  exit 0
-fi
-MP3=$(echo "${FLAC}" | sed 's/\.flac/.mp3/')
-printf 'Convert %s->%s, are you sure? [y/N] ' "$FLAC" "$MP3"
-CFG=$(stty -g)
-stty raw -echo; ans=$(head -c 1); stty "$CFG"
-if ! echo "$ans" | grep -iq "^y"; then
-  printf '\n'
-  exit 0
-fi
-metaflac --export-tags-to=/dev/stdout "${FLAC_FILE}" |
+SRC="$1"
+DST="$(printf '%s' "$SRC" | sed 's/\.flac/.mp3/')"
+printf 'Convert %s->%s.\n' "$SRC" "$DST"
+yes_to_continue
+metaflac --export-tags-to=/dev/stdout "$SRC" |
   sed -e 's/=/="/' -e 's/$/"/' \
     -e 's/Album=/ALBUM=/' \
     -e 's/Genre=/GENRE=/' \
@@ -29,7 +21,7 @@ cat /tmp/tags-$$
 # shellcheck source=/dev/null
 . /tmp/tags-$$
 rm /tmp/tags-$$
-flac -dc "${FLAC_FILE}" |
+flac -dc "$SRC" |
     lame -h -b 320 \
       --tt "${TITLE}" \
       --tn "${TRACKNUMBER}" \
@@ -37,4 +29,4 @@ flac -dc "${FLAC_FILE}" |
       --ta "${ARTIST}" \
       --tl "${ALBUM}" \
       --tg "${GENRE}" \
-      --add-id3v2 /dev/stdin "${MP3_FILE}"
+      --add-id3v2 /dev/stdin "$DST"
