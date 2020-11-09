@@ -5,9 +5,10 @@
 # shellcheck source=./base
 . "$(dirname "$(realpath "$0")")/base"
 if [ 0 -eq $# ] || ! [ -r "$1" ]; then
-  die "Usage: $IAM FILENAME.flac"
+  die "Usage: $BASE_IAM FILENAME.flac"
 fi
 SRC="$1"
+TAG="/$BASE_LCK/tags"
 DST="$(printf '%s' "$SRC" | sed 's/\.flac/.mp3/')"
 printf 'Convert %s->%s.\n' "$SRC" "$DST"
 yes_to_continue
@@ -15,12 +16,12 @@ metaflac --export-tags-to=/dev/stdout "$SRC" |
   sed -e 's/=/="/' -e 's/$/"/' \
     -e 's/Album=/ALBUM=/' \
     -e 's/Genre=/GENRE=/' \
-    -e 's/Artist=/ARTIST=/' > /tmp/tags-$$
-cat /tmp/tags-$$
+    -e 's/Artist=/ARTIST=/' > "$TAG"
+cat "$TAG"
 
 # shellcheck source=/dev/null
-. /tmp/tags-$$
-rm /tmp/tags-$$
+. "$TAG"
+rm "$TAG"
 flac -dc "$SRC" |
     lame -h -b 320 \
       --tt "${TITLE}" \

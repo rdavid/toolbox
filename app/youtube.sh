@@ -7,7 +7,7 @@
 
 # shellcheck source=./base
 . "$(dirname "$(realpath "$0")")/base"
-TMP='/tmp/out'
+TMP="/$BASE_LCK/out"
 DST='/mnt/nas-ibx/ytb'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'
 SRC='/mnt/nas-ibx/ytb/app/channels.txt'
@@ -22,7 +22,7 @@ validate 'youtube-dl'
 [ -r $SRC ] || die "Unable to read $SRC."
 [ -w $DST ] || die "Unable to write $DST."
 [ -w $ARC ] || die "Unable to write $ARC."
-mkdir -p $TMP || die "Unable to create $TMP."
+mkdir -p "$TMP" || die "Unable to create $TMP."
 youtube-dl \
   --playlist-reverse \
   --download-archive $ARC \
@@ -32,12 +32,13 @@ youtube-dl \
   --merge-output-format mp4 \
   --add-metadata \
   --batch-file=$SRC \
-  2>&1 | tee -a "$LOG"
+  2>&1 | tee -a "$BASE_LOG"
+
 # Do nothing if the output directory is empty.
 # shellcheck disable=SC2010
-if ls -1A $TMP | grep -q .; then
-  renamr -d $TMP -a 2>&1 | tee -a "$LOG"
-  rsync -zvhr --progress $TMP/* $DST 2>&1 | tee -a "$LOG"
+if ls -1A "$TMP" | grep -q .; then
+  renamr -d "$TMP" -a 2>&1 | tee -a "$BASE_LOG"
+  rsync -zvhr --progress "$TMP"/* $DST 2>&1 | tee -a "$BASE_LOG"
 fi
-rm -rf $TMP
+rm -rf "$TMP"
 exit 0

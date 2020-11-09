@@ -10,7 +10,7 @@ validate 'rdiff-backup'
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
-  die "Usage: $IAM [source] [destination]"
+  die "Usage: $BASE_IAM [source] [destination]"
 fi
 [ -r "$1" ] || die "Unable to read from source $1."
 [ -w "$2" ] || die "Unable to write to destination $2."
@@ -19,5 +19,5 @@ rdiff-backup --print-statistics \
              --preserve-numerical-ids \
              --force \
              "$1" "$2" \
-             2>&1 | tee -a "$LOG"
+             2>&1 | tee -a "$BASE_LOG"
 exit 0

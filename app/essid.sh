@@ -5,8 +5,8 @@
 
 # shellcheck source=./base
 . "$(dirname "$(realpath "$0")")/base"
-OLD="/tmp/$IAM-old"
-CUR="/tmp/$IAM-cur"
+OLD="/$BASE_TMP/$BASE_IAM-old"
+CUR="/$BASE_TMP/$BASE_IAM-cur"
 
 list() {
   iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 > "$CUR"

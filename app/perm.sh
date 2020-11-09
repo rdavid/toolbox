@@ -7,7 +7,7 @@
 . "$(dirname "$(realpath "$0")")/base"
 be_root
 if [ "$#" -ne 1 ] || ! [ -d "$1" ] || ! [ -w "$1" ]; then
-  die "Usage: $IAM DIRECTORY"
+  die "Usage: $BASE_IAM DIRECTORY"
 fi
 yes_to_continue
 chown -R foobar "$1"

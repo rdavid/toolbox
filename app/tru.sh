@@ -21,7 +21,7 @@ validate $CMD
 
 # Checks amount of parameters.
 if [ "$#" -ne 2 ]; then
-  die "Usage: $IAM [host:port] [filename]"
+  die "Usage: $BASE_IAM [host:port] [filename]"
 fi
 
 # Prepares host and port to be nc command parameters. Validates the first
@@ -40,12 +40,12 @@ FIL="${FIL%.*}"
 # Looks for torrent ID by torrent name extracted from torrent file name.
 tid=$(tid)
 if [ -n "$tid" ]; then
-  $CMD "$SER" -t "$tid" --remove-and-delete 2>&1 | tee -a "$LOG"
+  $CMD "$SER" -t "$tid" --remove-and-delete 2>&1 | tee -a "$BASE_LOG"
   log "$FIL $tid is removed from $SER."
 fi
 
 # Adds torrent file name to torrent server.
-$CMD "$SER" -a "$TOR" 2>&1 | tee -a "$LOG"
+$CMD "$SER" -a "$TOR" 2>&1 | tee -a "$BASE_LOG"
 
 # Verifies that a torrent was added.
 tid=$(tid)
