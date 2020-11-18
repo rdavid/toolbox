@@ -18,11 +18,7 @@ validate 'nc'
 validate 'tr'
 validate 'awk'
 validate $CMD
-
-# Checks amount of parameters.
-if [ "$#" -ne 2 ]; then
-  die "Usage: $BASE_IAM [host:port] [filename]"
-fi
+[ "$#" -eq 2 ] || die "Usage: $BASE_IAM [host:port] [filename]"
 
 # Prepares host and port to be nc command parameters. Validates the first
 # parameter host:port.

@@ -6,7 +6,6 @@
 . "$(dirname "$(realpath "$0")")/base"
 TMP='/etc/fstab-tmp'
 PRM='/etc/fstab-prm'
-
 be_root
 [ -f $TMP ] || die "$TMP not found."
 [ -f $PRM ] || die "$PRM not found."

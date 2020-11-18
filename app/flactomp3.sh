@@ -4,9 +4,8 @@
 
 # shellcheck source=./base
 . "$(dirname "$(realpath "$0")")/base"
-if [ 0 -eq $# ] || ! [ -r "$1" ]; then
-  die "Usage: $BASE_IAM FILENAME.flac"
-fi
+[ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.flac"
+[ -r "$1" ] || die "Unable to read from source $1."
 SRC="$1"
 TAG="/$BASE_LCK/tags"
 DST="$(printf '%s' "$SRC" | sed 's/\.flac/.mp3/')"
@@ -23,11 +22,12 @@ cat "$TAG"
 . "$TAG"
 rm "$TAG"
 flac -dc "$SRC" |
-    lame -h -b 320 \
-      --tt "${TITLE}" \
-      --tn "${TRACKNUMBER}" \
-      --ty "${DATE}" \
-      --ta "${ARTIST}" \
-      --tl "${ALBUM}" \
-      --tg "${GENRE}" \
-      --add-id3v2 /dev/stdin "$DST"
+  lame -h -b 320 \
+    --tt "${TITLE}" \
+    --tn "${TRACKNUMBER}" \
+    --ty "${DATE}" \
+    --ta "${ARTIST}" \
+    --tl "${ALBUM}" \
+    --tg "${GENRE}" \
+    --add-id3v2 /dev/stdin "$DST"
+exit 0
