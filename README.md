@@ -18,4 +18,4 @@ There are following utilities:
 - [`ytda`](app/ytda.sh) is a wrapper on [`youtube-dl`](https://github.com/ytdl-org/youtube-dl): downloads, converts, renames and keeps safe. It is usefull with cron.
 
 ## License
-The scripts are copyright [David Rabkin](http://davi.drabk.in) and available under a [2-Claus BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE).
+The scripts are copyright [David Rabkin](http://davi.drabk.in) and available under a [2-Claus BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE.txt).
