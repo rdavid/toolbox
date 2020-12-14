@@ -5,18 +5,33 @@
 
 # shellcheck source=./base
 . "$(dirname "$(realpath "$0")")/base"
+MINV=1
+MAXV=10
+MIDL=$(((MAXV-MINV+1)/2))
+CNTR=$MIDL
+NAME=''
+ADDR=''
+SCAN='arp-scan --localnet --interface=wlan0'
 
-find() {
-  line=$(arp-scan --localnet | grep "$1") || :
+scan() {
+  line=$($SCAN | grep "$MACA" | head -1) || :
   if [ -n "$line" ]; then
-    #shellcheck disable=SC2039
-    name="${line:33}";
-    #shellcheck disable=SC2039
-    addr="${line::15}"
-    addr=$(echo "$addr" | xargs)
-    log "Master $name $addr is home!"
+    [ -z "$NAME" ] && NAME=$(printf '%s' "$line" | cut -f1)
+    [ -z "$ADDR" ] && ADDR=$(printf '%s' "$line" | cut -f3 | xargs -0)
+    # Each success has much more value than a failure.
+    CNTR=$MAXV
   else
-    log "Master $1 is not home."
+    if [ $CNTR -ne $MINV ]; then
+      CNTR=$((CNTR-1))
+    fi
+  fi
+}
+
+report() {
+  if [ $CNTR -gt $MIDL ]; then
+    log "Master $NAME $ADDR is home: $CNTR!"
+  else
+    log "Master $MACA is not home: $CNTR."
   fi
 }
 
@@ -32,10 +47,13 @@ is_mac() {
 
 be_root
 validate 'arp-scan'
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM MAC-ADDRESS"
+[ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
+[ "$1" = 'list' ] && ($SCAN; exit 0)
 is_mac "$1"
+MACA="$1"
 while :; do
-  find "$1"
+  scan
+  report
   wait
 done
 exit 0
