@@ -2,7 +2,7 @@
 A bunch of POSIX shell utilities.
 
 [![Hits-of-Code](https://hitsofcode.com/github/rdavid/toolbox?branch=master)](https://hitsofcode.com/view/github/rdavid/toolbox?branch=master)
-[![License](https://img.shields.io/github/license/rdavid/toolbox)](https://github.com/rdavid/toolbox/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/license-0BSD-green)](https://github.com/rdavid/toolbox/blob/master/LICENSE)
 
 * [About](#about)
 * [License](#license)
@@ -18,4 +18,4 @@ There are following utilities:
 - [`ytda`](app/ytda.sh) is a wrapper on [`youtube-dl`](https://github.com/ytdl-org/youtube-dl): downloads, converts, renames and keeps safe. It is usefull with cron.
 
 ## License
-The scripts are copyright [David Rabkin](http://davi.drabk.in) and available under a [2-Claus BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE.txt).
+The scripts are copyright [David Rabkin](http://davi.drabk.in) and available under a [Zero-Clause BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE).
