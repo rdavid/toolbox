@@ -3,7 +3,7 @@
 #
 # tss.sh - Terminal Screen Saver.
 #
-# Copyright 2017 David Rabkin
+# Copyright 2017 by David Rabkin
 
 # All cowsay types in array.
 declare -a TYPE=( $(cowsay -l | tail -n +2) )

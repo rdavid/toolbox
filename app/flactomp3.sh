@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
-# Copyright 2019-present David Rabkin
+# Copyright 2019 by David Rabkin
 
 # shellcheck source=./base
 . "$(dirname "$(realpath "$0")")/base"

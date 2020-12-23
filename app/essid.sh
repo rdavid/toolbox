@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
-# Copyright 2020-current David Rabkin
+# Copyright 2020 by David Rabkin
 # It watches Wi-Fi ESSID change and report.
 
 # shellcheck source=./base

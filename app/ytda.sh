@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
-# Copyright 2019-current David Rabkin
+# Copyright 2019 by David Rabkin
 # The script downloads all new video from pre-configured acoounts in
 # channels.txt. It updates IDs of downloaded files at done.txt. The script
 # could be ran by a cron job. Uses youtube-dl, rsync, renamr.

@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
-# Copyright 2016-current David Rabkin
+# Copyright 2016 by David Rabkin
 # Makes incremental backups from the first parameter to the second.
 
 # shellcheck source=./base
