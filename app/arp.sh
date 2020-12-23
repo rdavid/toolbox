@@ -3,8 +3,8 @@
 # Copyright 2020 by David Rabkin
 # Detects if a device with a certain MAC address is in the local network.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 MINV=1
 MAXV=10
 MIDL=$(((MAXV-MINV+1)/2))

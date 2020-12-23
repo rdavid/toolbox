@@ -2,8 +2,8 @@
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2016 by David Rabkin
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 TMP='/etc/fstab-tmp'
 PRM='/etc/fstab-prm'
 be_root

@@ -10,8 +10,8 @@
 #
 # Reports download and upload internet speeds in a loop.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 
 # Verifies if a parameter has colon.
 has_colon() {

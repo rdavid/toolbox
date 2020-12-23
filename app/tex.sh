@@ -2,8 +2,8 @@
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2020 by David Rabkin
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.tex"
 [ -r "$1" ] || die "Unable to read from source $1."
 validate 'tex'

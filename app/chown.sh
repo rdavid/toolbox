@@ -4,8 +4,8 @@
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 be_root
 [ "$#" -eq 2 ] || die "Two arguments are expected, $BASE_IAM USER DIR."
 id -u "$1" >/dev/null 2>&1 || die "User $1 doesn't exist."

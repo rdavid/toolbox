@@ -3,8 +3,8 @@
 # Copyright 2020 by David Rabkin
 # Validates image files.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 validate 'convert'
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM DIRECTORY"
 [ -r "$1" ] || die "Unable to read $1."

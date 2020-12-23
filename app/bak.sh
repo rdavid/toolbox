@@ -3,8 +3,8 @@
 # Copyright 2016 by David Rabkin
 # Makes incremental backups from the first parameter to the second.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 validate 'rdiff-backup'
 [ "$#" -eq 2 ] || die "Usage: $BASE_IAM [source] [destination]"
 [ -r "$1" ] || die "Unable to read from source $1."

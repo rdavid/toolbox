@@ -3,8 +3,8 @@
 # Copyright 2020 by David Rabkin
 # It watches Wi-Fi ESSID change and report.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 OLD="/$BASE_TMP/$BASE_IAM-old"
 CUR="/$BASE_TMP/$BASE_IAM-cur"
 

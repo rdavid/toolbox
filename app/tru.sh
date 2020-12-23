@@ -5,8 +5,8 @@
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 AUT=''
 CMD='transmission-remote'
 

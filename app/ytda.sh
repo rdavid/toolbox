@@ -5,8 +5,8 @@
 # channels.txt. It updates IDs of downloaded files at done.txt. The script
 # could be ran by a cron job. Uses youtube-dl, rsync, renamr.
 
-# shellcheck source=./base
-. "$(dirname "$(realpath "$0")")/base"
+# shellcheck source=../../shellbase/inc/base
+. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 OUT="/$BASE_LCK/out"
 DST='/mnt/nas-ibx/ytb'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'
