@@ -1,5 +1,5 @@
 # Toolbox
-A bunch of POSIX shell utilities.
+Unix shell scripts for everyday use.
 
 [![Hits-of-Code](https://hitsofcode.com/github/rdavid/toolbox?branch=master)](https://hitsofcode.com/view/github/rdavid/toolbox?branch=master)
 [![License](https://img.shields.io/badge/license-0BSD-green)](https://github.com/rdavid/toolbox/blob/master/LICENSE)
@@ -9,9 +9,9 @@ A bunch of POSIX shell utilities.
 * [License](#license)
 
 ## About
-Hi, I'm [David Rabkin](http://davi.drabk.in).
+Hi, I'm [David Rabkin](http://cv.rabkin.co.il).
 
-Almost every utility uses [`shellbase`](https://github.com/rdavid/shellbase).
+Almost every script uses [`shellbase`](https://github.com/rdavid/shellbase).
 
 There are following utilities:
 - [`bak`](app/bak.sh) is a wrapper on
@@ -32,7 +32,7 @@ renames and keeps safe. It is usefull with cron.
     git clone --recurse-submodules https://github.com/rdavid/toolbox.git
 
 ## License
-The scripts are copyright [David Rabkin](http://davi.drabk.in) and available
+The scripts are copyright [David Rabkin](http://cv.rabkin.co.il) and available
 under a
 [Zero-Clause BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE)
 .
