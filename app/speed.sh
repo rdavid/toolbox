@@ -82,6 +82,8 @@ test_speed() {
         log 'Server restart will not solve the issue.'
       fi
     fi
+    # The function is ran in a loop, rest in case of an error.
+    sleep 1
   fi
 }
 
