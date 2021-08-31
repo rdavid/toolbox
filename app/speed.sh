@@ -68,7 +68,7 @@ is_repairable() {
 
 test_speed() {
   local out
-  if out=$(speedtest-cli --server 11615 --simple 2>&1); then
+  if out=$(speedtest-cli --simple 2>&1); then
     log "$(printf '%s' "$out" | \
       grep -E 'Download|Upload' | \
       gawk '{print $2}' | \
