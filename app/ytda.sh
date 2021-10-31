@@ -3,7 +3,7 @@
 # Copyright 2019 by David Rabkin
 # The script downloads all new video from pre-configured acoounts in
 # channels.txt. It updates IDs of downloaded files at done.txt. The script
-# could be ran by a cron job. Uses youtube-dl, rsync, renamr.
+# could be ran by a cron job. Uses yt-dlp, rsync, renamr.
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
@@ -19,7 +19,7 @@ export LANG=en_US.UTF-8
 
 validate 'rsync'
 validate 'renamr'
-validate 'youtube-dl'
+validate 'yt-dlp'
 [ -r $SRC ] || die "Unable to read $SRC."
 [ -w $DST ] || die "Unable to write $DST."
 [ -w $ARC ] || die "Unable to write $ARC."
@@ -33,7 +33,7 @@ fi
 
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-youtube-dl \
+yt-dlp \
   $CKS_PARAM \
   --playlist-reverse \
   --download-archive $ARC \
