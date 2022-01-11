@@ -29,8 +29,7 @@ if __name__ == '__main__':
     otp = pyotp.HOTP(sec)
     res = r"%s%s" % (pin, int(otp.at(cnt)))
     pyperclip.copy(res)
-    if click.confirm('Do you want to increase the counter?', default=True):
-        cnt += 1
-        shr[TOP]['counter'] = cnt
-        shr.write()
-        print("The counter is set to %s." % str(cnt))
+    cnt += 1
+    shr[TOP]['counter'] = cnt
+    shr.write()
+    print("The counter is set to %s." % str(cnt))
