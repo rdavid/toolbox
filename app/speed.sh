@@ -5,8 +5,8 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
-# Disables shellcheck warning about using non POSIX features.
-# shellcheck disable=SC2039
+# Disables shellcheck warning about using local variables.
+# shellcheck disable=SC3043
 #
 # Reports download and upload internet speeds in a loop.
 
