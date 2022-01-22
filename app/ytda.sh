@@ -19,6 +19,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 validate 'HandBrakeCLI'
+validate 'mp4track'
 validate 'rsync'
 validate 'renamr'
 validate 'transcode'
