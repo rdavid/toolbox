@@ -7,8 +7,8 @@
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-OUT="/$BASE_LCK/out"
-M4V="$OUT/m4v"
+OUT="$BASE_LCK/out"
+M4V="$BASE_LCK/m4v"
 DST='/mnt/nas-ibx/ytb'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'
 SRC='/mnt/nas-ibx/ytb/app/channels.txt'
@@ -17,6 +17,7 @@ CKS='/mnt/nas-ibx/ytb/app/cookies.txt'
 # The script is ran by cron, the environment is stricked.
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export PATH="$PATH:/usr/local/bin"
 
 validate 'HandBrakeCLI'
 validate 'mp4track'
@@ -75,13 +76,10 @@ if ls -1A "$OUT" | grep -q .; then
     arc="$BASE_TMP/$BASE_IAM-arc"
     mkdir -p "$arc"
     mv "$OUT"/* "$arc"
+    mv "$M4V"/* "$arc"
     loge "There are $nsrc files in $OUT, but $ndst in $DST, archived at $arc."
   else
-    rm -f "$M4V"/*
-    rmdir "$M4V"
-    rm -f "$OUT"/*
     log "There are $nsrc files copied to $DST."
   fi
 fi
-rmdir "$OUT"
 exit 0
