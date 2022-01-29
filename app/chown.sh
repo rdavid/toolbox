@@ -8,13 +8,13 @@
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 be_root
 [ "$#" -eq 2 ] || die "Two arguments are expected, $BASE_IAM USER DIR."
-id -u "$1" >/dev/null 2>&1 || die "User $1 doesn't exist."
-[ -d "$2" ] || die "Directory $2 doesn't exist."
-[ -w "$2" ] || die "Directory $2 is not writable."
-log "You're changing owner of directory $2 to user $1."
-yes_to_continue
-chown -R "$1" "$2"
-find "$2" -type d -exec chmod 755 {} \;
-find "$2" -type f -exec chmod 644 {} \;
-log "Owner of $2 is changed to $1."
+USR="$1"
+DIR="$2"
+id -u "$USR" >/dev/null 2>&1 || die "User $USR doesn't exist."
+[ -d "$DIR" ] || die "Directory $DIR doesn't exist."
+[ -w "$DIR" ] || die "Directory $DIR is not writable."
+chown -R "$USR" "$DIR"
+find "$DIR" -type d -exec chmod 755 {} \;
+find "$DIR" -type f -exec chmod 644 {} \;
+printf 'Owner of %s is changed to %s.\n' "$DIR" "$USR"
 exit 0
