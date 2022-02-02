@@ -1,14 +1,21 @@
 #!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
-# Copyright 2019 - 2021 by David Rabkin
+# Copyright 2019 - 2022 by David Rabkin
 # The script downloads all new video from pre-configured acoounts in
 # channels.txt. It updates IDs of downloaded files at done.txt. The script
 # could be ran by a cron job. Uses renamr, rsync, transcode, yt-dlp.
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-OUT="$BASE_LCK/out"
-M4V="$BASE_LCK/m4v"
+
+is_directory_empty() {
+ # shellcheck disable=SC2010
+ ! ls -1qA "$1" | grep -q .
+}
+
+RES="$BASE_LCK/res"
+AUD="$BASE_LCK/aud"
+VID="$BASE_LCK/vid"
 DST='/mnt/nas-ibx/ytb'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'
 SRC='/mnt/nas-ibx/ytb/app/channels.txt'
@@ -28,8 +35,9 @@ validate 'yt-dlp'
 [ -r $SRC ] || die "Unable to read $SRC."
 [ -w $DST ] || die "Unable to write $DST."
 [ -w $ARC ] || die "Unable to write $ARC."
-mkdir -p "$OUT" || die "Unable to create $OUT."
-mkdir -p "$M4V" || die "Unable to create $M4V."
+mkdir -p "$RES" || die "Unable to create $M4V."
+mkdir -p "$AUD" || die "Unable to create $M4V."
+mkdir -p "$VID" || die "Unable to create $OUT."
 if [ -r $CKS ]; then
   log "Uses cookie $CKS."
   CKS_PARAM="--cookies $CKS"
@@ -44,42 +52,59 @@ yt-dlp \
   --playlist-reverse \
   --download-archive $ARC \
   -i -o \
-  "$OUT/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+  "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
   -f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
   --merge-output-format mp4 \
   --add-metadata \
   --batch-file=$SRC \
   2>&1 | tee -a "$BASE_LOG"
+if is_directory_empty "$VID"; then
+  exit 0
+fi
+renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
 
-# Do nothing if the output directory is empty.
-# shellcheck disable=SC2010
-if ls -1A "$OUT" | grep -q .; then
-  renamr -d "$OUT" -a 2>&1 | tee -a "$BASE_LOG"
-  transcode -d "$OUT" -o "$M4V" -a 2>&1 | tee -a "$BASE_LOG"
-  rsync -zvhr --progress "$M4V"/* $DST 2>&1 | tee -a "$BASE_LOG"
-
-  # Makes sure every file was copied succesfully to destination. Pass each file
-  # locally and verifies there is a file with a same name at destination.
-  nsrc=0
-  ndst=0
-  pipe="$BASE_LCK/pipe"
-  mkfifo "$pipe"
-  find "$M4V" -type f -exec basename {} \; > "$pipe" &
-  while read -r name; do
-    nsrc=$((nsrc + 1))
-    [ -f "$DST/$name" ] && ndst=$((ndst + 1))
-  done < "$pipe"
-  rm "$pipe"
-
-  # Keeps files locally in case of a failure.
-  if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
-    arc="$BASE_TMP/$BASE_IAM-arc"
-    mkdir -p "$arc"
-    mv "$OUT"/* "$arc"
-    mv "$M4V"/* "$arc"
-    loge "There are $nsrc files in $OUT, but $ndst in $DST, archived at $arc."
-  else
-    log "There are $nsrc files copied to $DST."
+# Sorts files to audio and video folders by authors.
+while read -r author; do
+  if ls "$VID/$author"*; then
+    mv "$VID/$author"* "$AUD"
   fi
+done <<EOF
+mihail-veller
+tamara-eidelman
+vlast-vs-vlaszhenko
+yulia-latynina
+zhzl-s-dmitriem-bykovym
+EOF
+if ! is_directory_empty "$VID"; then
+  transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
+fi
+if ! is_directory_empty "$AUD"; then
+  transcode -d "$AUD" -o "$RES" -a -m 2>&1 | tee -a "$BASE_LOG"
+fi
+rsync -zvhr --progress "$RES"/* $DST 2>&1 | tee -a "$BASE_LOG"
+
+# Makes sure every file was copied succesfully to destination. Pass each file
+# locally and verifies there is a file with a same name at destination.
+nsrc=0
+ndst=0
+pipe="$BASE_LCK/pipe"
+mkfifo "$pipe"
+find "$RES" -type f -exec basename {} \; > "$pipe" &
+while read -r name; do
+  nsrc=$((nsrc + 1))
+  [ -f "$DST/$name" ] && ndst=$((ndst + 1))
+done < "$pipe"
+rm "$pipe"
+
+# Keeps files locally in case of a failure.
+if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
+  arc="$BASE_TMP/$BASE_IAM-arc"
+  mkdir -p "$arc"
+  mv "$VID"/* "$arc"
+  mv "$AUD"/* "$arc"
+  mv "$RES"/* "$arc"
+  loge "There are $nsrc files in $RES, but $ndst in $DST, archived at $arc."
+else
+  log "There are $nsrc files copied to $DST."
 fi
 exit 0
