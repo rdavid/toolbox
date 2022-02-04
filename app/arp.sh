@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 # vi:ts=2 sw=2 tw=79 et lbr wrap
-# Copyright 2020 by David Rabkin
+# Copyright 2020-2022 David Rabkin
 # Detects if a device with a certain MAC address is in the local network.
 
 # shellcheck source=../../shellbase/inc/base
