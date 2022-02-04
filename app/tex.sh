@@ -4,14 +4,14 @@
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.tex"
-[ -r "$1" ] || die "Unable to read from source $1."
-validate 'tex'
-validate 'dvipdfm'
+[ "$#" -eq 1 ] || bye "Usage: $BASE_IAM FILENAME.tex"
+[ -r "$1" ] || bye "Unable to read from source $1."
+validate_cmd 'tex'
+validate_cmd 'dvipdfm'
 NME=$(basename -- "$1")
 
 # Makes sure that source filename has tex extention.
-[ 'tex' = "${NME##*.}" ] || die "Source file $1 should have .tex extention."
+[ 'tex' = "${NME##*.}" ] || bye "Source file $1 should have .tex extention."
 
 # Extracts file name only.
 NME="${NME%.*}"
@@ -26,7 +26,7 @@ cp "$1" "$BASE_LCK"
 cd "$BASE_LCK"
 if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
   cp "./$LOG" "$OLDPWD"
-  die "See $LOG for errors."
+  bye "See $LOG for errors."
 fi
 dvipdfm "./$DVI" >/dev/null 2>&1
 cp "./$PDF" "$OLDPWD"

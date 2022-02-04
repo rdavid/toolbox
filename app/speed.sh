@@ -88,14 +88,14 @@ test_speed() {
 }
 
 # Start point.
-validate 'gawk'
-validate 'speedtest-cli'
+validate_cmd 'gawk'
+validate_cmd 'speedtest-cli'
 if [ "$#" -eq 2 ]; then
-  validate 'nc'
-  validate 'curl'
-  has_colon "$1" || die "$1 is not valid parameter for HOST:PORT."
-  has_colon "$2" || die "$2 is not valid parameter for USER:PASS."
-  is_alive "$1" || die "$1 is unavailable."
+  validate_cmd 'nc'
+  validate_cmd 'curl'
+  has_colon "$1" || bye "$1 is not valid parameter for HOST:PORT."
+  has_colon "$2" || bye "$2 is not valid parameter for USER:PASS."
+  is_alive "$1" || bye "$1 is unavailable."
   SERV="$1"
   AUTH="$2"
 fi

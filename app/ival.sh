@@ -5,9 +5,9 @@
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-validate 'convert'
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM DIRECTORY"
-[ -r "$1" ] || die "Unable to read $1."
+validate_cmd 'convert'
+[ "$#" -eq 1 ] || bye "Usage: $BASE_IAM DIRECTORY"
+[ -r "$1" ] || bye "Unable to read $1."
 find "$1" -type f \
   \( -name \*.jpg -o -name \*.nef -o -name \*.raf -o -name \*.heic \) |
   while read -r img; do

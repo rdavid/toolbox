@@ -5,10 +5,10 @@
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-validate 'rdiff-backup'
-[ "$#" -eq 2 ] || die "Usage: $BASE_IAM [source] [destination]"
-[ -r "$1" ] || die "Unable to read from source $1."
-[ -w "$2" ] || die "Unable to write to destination $2."
+validate_cmd 'rdiff-backup'
+[ "$#" -eq 2 ] || bye "Usage: $BASE_IAM [source] [destination]"
+[ -r "$1" ] || bye "Unable to read from source $1."
+[ -w "$2" ] || bye "Unable to write to destination $2."
 rdiff-backup \
   --print-statistics \
   --terminal-verbosity 4 \

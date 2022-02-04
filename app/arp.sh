@@ -42,12 +42,12 @@ wait() {
 is_mac() {
   echo "$1" | \
     grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' 1>/dev/null || \
-    die "MAC address $1 is invalid."
+    bye "MAC address $1 is invalid."
 }
 
 be_root
-validate 'arp-scan'
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
+validate_cmd 'arp-scan'
+[ "$#" -eq 1 ] || bye "Usage: $BASE_IAM [MAC-ADDRESS:list]"
 [ "$1" = 'list' ] && ($SCAN; exit 0)
 is_mac "$1"
 MACA="$1"

@@ -32,7 +32,7 @@ comp() {
 }
 
 be_root
-validate 'iwlist'
+validate_cmd 'iwlist'
 list
 while true; do
   wait

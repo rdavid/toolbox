@@ -4,8 +4,8 @@
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.flac"
-[ -r "$1" ] || die "Unable to read from source $1."
+[ "$#" -eq 1 ] || bye "Usage: $BASE_IAM FILENAME.flac"
+[ -r "$1" ] || bye "Unable to read from source $1."
 SRC="$1"
 TAG="/$BASE_LCK/tags"
 DST="$(printf '%s' "$SRC" | sed 's/\.flac/.mp3/')"

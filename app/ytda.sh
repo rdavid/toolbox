@@ -26,18 +26,18 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export PATH="$PATH:/usr/local/bin"
 
-validate 'HandBrakeCLI'
-validate 'mp4track'
-validate 'rsync'
-validate 'renamr'
-validate 'transcode'
-validate 'yt-dlp'
-[ -r $SRC ] || die "Unable to read $SRC."
-[ -w $DST ] || die "Unable to write $DST."
-[ -w $ARC ] || die "Unable to write $ARC."
-mkdir -p "$RES" || die "Unable to create $M4V."
-mkdir -p "$AUD" || die "Unable to create $M4V."
-mkdir -p "$VID" || die "Unable to create $OUT."
+validate_cmd 'HandBrakeCLI'
+validate_cmd 'mp4track'
+validate_cmd 'rsync'
+validate_cmd 'renamr'
+validate_cmd 'transcode'
+validate_cmd 'yt-dlp'
+[ -r $SRC ] || bye "Unable to read $SRC."
+[ -w $DST ] || bye "Unable to write $DST."
+[ -w $ARC ] || bye "Unable to write $ARC."
+mkdir -p "$RES" || bye "Unable to create $M4V."
+mkdir -p "$AUD" || bye "Unable to create $M4V."
+mkdir -p "$VID" || bye "Unable to create $OUT."
 if [ -r $CKS ]; then
   log "Uses cookie $CKS."
   CKS_PARAM="--cookies $CKS"
