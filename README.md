@@ -24,8 +24,8 @@ directory.
 torrent with content and than adds it again. It is usefull with cron to increase
 a ratio.
 - [`ytda`](app/ytda.sh) is a wrapper on
-[`youtube-dl`](https://github.com/ytdl-org/youtube-dl): downloads, converts,
-renames and keeps safe. It is usefull with cron.
+[`yt-dlp`](https://github.com/yt-dlp/yt-dlp): downloads, converts, renames and
+keeps safe. It is usefull with cron.
 
 ## Install
 
@@ -34,5 +34,4 @@ renames and keeps safe. It is usefull with cron.
 ## License
 The scripts are copyright [David Rabkin](http://cv.rabkin.co.il) and available
 under a
-[Zero-Clause BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE)
-.
+[Zero-Clause BSD license](https://github.com/rdavid/toolbox/blob/master/LICENSE).
