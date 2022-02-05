@@ -17,10 +17,7 @@ tid() {
   $CMD "$SER" $AUT -l | grep "$FIL" | awk '{print $1}'
 }
 
-validate_cmd 'nc'
-validate_cmd 'tr'
-validate_cmd 'awk'
-validate_cmd $CMD
+validate_cmd nc tr awk $CMD
 [ "$#" -eq 3 ] || bye "Usage: $BASE_IAM HOST:PORT [USR]:[PWD] TORRENT-FILE"
 
 # Prepares host and port to be nc command parameters. Validates the first

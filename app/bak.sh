@@ -5,7 +5,7 @@
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
-validate_cmd 'rdiff-backup'
+validate_cmd rdiff-backup
 [ "$#" -eq 2 ] || bye "Usage: $BASE_IAM [source] [destination]"
 [ -r "$1" ] || bye "Unable to read from source $1."
 [ -w "$2" ] || bye "Unable to write to destination $2."

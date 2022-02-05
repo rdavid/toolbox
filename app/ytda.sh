@@ -26,12 +26,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export PATH="$PATH:/usr/local/bin"
 
-validate_cmd 'HandBrakeCLI'
-validate_cmd 'mp4track'
-validate_cmd 'rsync'
-validate_cmd 'renamr'
-validate_cmd 'transcode'
-validate_cmd 'yt-dlp'
+validate_cmd HandBrakeCLI mp4track rsync renamr transcode yt-dlp
 [ -r $SRC ] || bye "Unable to read $SRC."
 [ -w $DST ] || bye "Unable to write $DST."
 [ -w $ARC ] || bye "Unable to write $ARC."

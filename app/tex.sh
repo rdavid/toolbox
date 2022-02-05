@@ -6,8 +6,7 @@
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 [ "$#" -eq 1 ] || bye "Usage: $BASE_IAM FILENAME.tex"
 [ -r "$1" ] || bye "Unable to read from source $1."
-validate_cmd 'tex'
-validate_cmd 'dvipdfm'
+validate_cmd tex dvipdfm
 NME=$(basename -- "$1")
 
 # Makes sure that source filename has tex extention.

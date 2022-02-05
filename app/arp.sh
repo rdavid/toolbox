@@ -46,7 +46,7 @@ is_mac() {
 }
 
 be_root
-validate_cmd 'arp-scan'
+validate_cmd arp-scan
 [ "$#" -eq 1 ] || bye "Usage: $BASE_IAM [MAC-ADDRESS:list]"
 [ "$1" = 'list' ] && ($SCAN; exit 0)
 is_mac "$1"
