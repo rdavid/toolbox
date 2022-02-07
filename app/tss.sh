@@ -11,8 +11,7 @@ declare -a TYPE=( $(cowsay -l | tail -n +2) )
 # Seeds random generator.
 RANDOM=$$$(date +%s)
 
-while true
-do
+while :; do
 	rand=$(($RANDOM % ${#TYPE[@]}))
 	type=${TYPE[rand]}
 	fortune | cowsay -f "$type" | lolcat

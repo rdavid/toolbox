@@ -34,7 +34,7 @@ comp() {
 be_root
 validate_cmd iwlist
 list
-while true; do
+while :; do
 	wait
 	copy
 	list
