@@ -24,8 +24,8 @@ LOG="$NME.log"
 cp "$1" "$BASE_LCK"
 cd "$BASE_LCK"
 if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
-  cp "./$LOG" "$OLDPWD"
-  bye "See $LOG for errors."
+	cp "./$LOG" "$OLDPWD"
+	bye "See $LOG for errors."
 fi
 dvipdfm "./$DVI" >/dev/null 2>&1
 cp "./$PDF" "$OLDPWD"

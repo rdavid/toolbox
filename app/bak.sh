@@ -10,10 +10,10 @@ validate_cmd rdiff-backup
 [ -r "$1" ] || bye "Unable to read from source $1."
 [ -w "$2" ] || bye "Unable to write to destination $2."
 rdiff-backup \
-  --print-statistics \
-  --terminal-verbosity 4 \
-  --preserve-numerical-ids \
-  --force \
-  "$1" "$2" \
-  2>&1 | tee -a "$BASE_LOG"
+	--print-statistics \
+	--terminal-verbosity 4 \
+	--preserve-numerical-ids \
+	--force \
+	"$1" "$2" \
+	2>&1 | tee -a "$BASE_LOG"
 exit 0

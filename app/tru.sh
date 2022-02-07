@@ -12,9 +12,9 @@ CMD='transmission-remote'
 
 # Looks for torrent ID by torrent file name.
 tid() {
-  # SC2086: Double quote to prevent globbing and word splitting.
-  # shellcheck disable=SC2086
-  $CMD "$SER" $AUT -l | grep "$FIL" | awk '{print $1}'
+	# SC2086: Double quote to prevent globbing and word splitting.
+	# shellcheck disable=SC2086
+	$CMD "$SER" $AUT -l | grep "$FIL" | awk '{print $1}'
 }
 
 validate_cmd nc tr awk $CMD
@@ -29,7 +29,7 @@ SER="$1"
 
 # Single ':' means there is no authentication data.
 if [ "$2" != ':' ]; then
-  AUT="--auth $2"
+	AUT="--auth $2"
 fi
 
 # Validates third parameter full torrent file name.
@@ -41,10 +41,10 @@ FIL="${FIL%.*}"
 # Looks for torrent ID by torrent name extracted from torrent file name.
 tid=$(tid)
 if [ -n "$tid" ]; then
-  # SC2086: Double quote to prevent globbing and word splitting.
-  # shellcheck disable=SC2086
-  $CMD "$SER" $AUT -t "$tid" --remove-and-delete 2>&1 | tee -a "$BASE_LOG"
-  log "$FIL $tid is removed from $SER."
+	# SC2086: Double quote to prevent globbing and word splitting.
+	# shellcheck disable=SC2086
+	$CMD "$SER" $AUT -t "$tid" --remove-and-delete 2>&1 | tee -a "$BASE_LOG"
+	log "$FIL $tid is removed from $SER."
 fi
 
 # Adds torrent file name to torrent server.
@@ -55,7 +55,7 @@ $CMD "$SER" $AUT -a "$TOR" 2>&1 | tee -a "$BASE_LOG"
 # Verifies that a torrent was added.
 tid=$(tid)
 if [ -z "$tid" ]; then
-  bye "Unable to find $FIL at $SER."
+	bye "Unable to find $FIL at $SER."
 fi
 log "$FIL $tid is added to $SER."
 exit 0

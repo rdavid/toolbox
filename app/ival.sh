@@ -9,8 +9,8 @@ validate_cmd convert
 [ "$#" -eq 1 ] || bye "Usage: $BASE_IAM DIRECTORY"
 [ -r "$1" ] || bye "Unable to read $1."
 find "$1" -type f \
-  \( -name \*.jpg -o -name \*.nef -o -name \*.raf -o -name \*.heic \) |
-  while read -r img; do
-    convert "$img" null >/dev/null 2>&1 || loge "File is corrupted: $img."
-  done
+	\( -name \*.jpg -o -name \*.nef -o -name \*.raf -o -name \*.heic \) |
+	while read -r img; do
+		convert "$img" null >/dev/null 2>&1 || loge "File is corrupted: $img."
+	done
 exit 0

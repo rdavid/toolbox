@@ -9,8 +9,8 @@
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 
 is_directory_empty() {
- # shellcheck disable=SC2010
- ! ls -1qA "$1" | grep -q .
+	# shellcheck disable=SC2010
+	! ls -1qA "$1" | grep -q .
 }
 
 RES="$BASE_LCK/res"
@@ -34,35 +34,35 @@ mkdir -p "$RES" || bye "Unable to create $M4V."
 mkdir -p "$AUD" || bye "Unable to create $M4V."
 mkdir -p "$VID" || bye "Unable to create $OUT."
 if [ -r $CKS ]; then
-  log "Uses cookie $CKS."
-  CKS_PARAM="--cookies $CKS"
+	log "Uses cookie $CKS."
+	CKS_PARAM="--cookies $CKS"
 else
-  CKS_PARAM=''
+	CKS_PARAM=''
 fi
 
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
 yt-dlp \
-  $CKS_PARAM \
-  --playlist-reverse \
-  --download-archive $ARC \
-  -i -o \
-  "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
-  -f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
-  --merge-output-format mp4 \
-  --add-metadata \
-  --batch-file=$SRC \
-  2>&1 | tee -a "$BASE_LOG"
+	$CKS_PARAM \
+	--playlist-reverse \
+	--download-archive $ARC \
+	-i -o \
+	"$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+	-f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
+	--merge-output-format mp4 \
+	--add-metadata \
+	--batch-file=$SRC \
+	2>&1 | tee -a "$BASE_LOG"
 if is_directory_empty "$VID"; then
-  exit 0
+	exit 0
 fi
 renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
 
 # Sorts files to audio and video folders by authors.
 while read -r author; do
-  if ls "$VID/$author"*; then
-    mv "$VID/$author"* "$AUD"
-  fi
+	if ls "$VID/$author"*; then
+		mv "$VID/$author"* "$AUD"
+	fi
 done <<EOF
 mihail-veller
 tamara-eidelman
@@ -71,10 +71,10 @@ yulia-latynina
 zhzl-s-dmitriem-bykovym
 EOF
 if ! is_directory_empty "$VID"; then
-  transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
+	transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
 fi
 if ! is_directory_empty "$AUD"; then
-  transcode -d "$AUD" -o "$RES" -a -m 2>&1 | tee -a "$BASE_LOG"
+	transcode -d "$AUD" -o "$RES" -a -m 2>&1 | tee -a "$BASE_LOG"
 fi
 rsync -zvhr --progress "$RES"/* $DST 2>&1 | tee -a "$BASE_LOG"
 
@@ -86,20 +86,20 @@ pipe="$BASE_LCK/pipe"
 mkfifo "$pipe"
 find "$RES" -type f -exec basename {} \; > "$pipe" &
 while read -r name; do
-  nsrc=$((nsrc + 1))
-  [ -f "$DST/$name" ] && ndst=$((ndst + 1))
+	nsrc=$((nsrc + 1))
+	[ -f "$DST/$name" ] && ndst=$((ndst + 1))
 done < "$pipe"
 rm "$pipe"
 
 # Keeps files locally in case of a failure.
 if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
-  arc="$BASE_TMP/$BASE_IAM-arc"
-  mkdir -p "$arc"
-  mv "$VID"/* "$arc"
-  mv "$AUD"/* "$arc"
-  mv "$RES"/* "$arc"
-  loge "There are $nsrc files in $RES, but $ndst in $DST, archived at $arc."
+	arc="$BASE_TMP/$BASE_IAM-arc"
+	mkdir -p "$arc"
+	mv "$VID"/* "$arc"
+	mv "$AUD"/* "$arc"
+	mv "$RES"/* "$arc"
+	loge "There are $nsrc files in $RES, but $ndst in $DST, archived at $arc."
 else
-  log "There are $nsrc files copied to $DST."
+	log "There are $nsrc files copied to $DST."
 fi
 exit 0

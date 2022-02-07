@@ -13,8 +13,8 @@ RANDOM=$$$(date +%s)
 
 while true
 do
-  rand=$(($RANDOM % ${#TYPE[@]}))
-  type=${TYPE[rand]}
-  fortune | cowsay -f "$type" | lolcat
-  sleep 10
+	rand=$(($RANDOM % ${#TYPE[@]}))
+	type=${TYPE[rand]}
+	fortune | cowsay -f "$type" | lolcat
+	sleep 10
 done

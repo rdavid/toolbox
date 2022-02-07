@@ -15,90 +15,90 @@
 
 # Verifies if a parameter has colon.
 has_colon() {
-  case "$1" in
-    *:*)
-      true
-      ;;
-    *)
-      false
-      ;;
-  esac
+	case "$1" in
+		*:*)
+			true
+			;;
+		*)
+			false
+			;;
+	esac
 }
 
 # Verifies if host is up. The parameter is HOST:PORT
 is_alive() {
-  # shellcheck disable=SC2046
-  nc -z $(printf '%s' "$1" | tr ':' ' ') >/dev/null 2>&1
+	# shellcheck disable=SC2046
+	nc -z $(printf '%s' "$1" | tr ':' ' ') >/dev/null 2>&1
 }
 
 restart_server() {
-  if ! is_alive "$SERV"; then
-    loge "Server $SERV is dead."
-    return
-  fi
-  local out
-  if out=$(curl -u "$AUTH" "http://$SERV/reseau-pa4-logs.cgi" 2>&1); then
-    log "Curl output: $(printf '%s' "$out" | xargs)."
-    sleep 10
-    while ! is_alive "$SERV"; do
-      log "Wait for $SERV to be online."
-      sleep 1
-    done
-    sleep 20
-    log "$SERV is restarted."
-  else
-    loge "Curl failed: $(printf '%s' "$out" | xargs)"
-  fi
+	if ! is_alive "$SERV"; then
+		loge "Server $SERV is dead."
+		return
+	fi
+	local out
+	if out=$(curl -u "$AUTH" "http://$SERV/reseau-pa4-logs.cgi" 2>&1); then
+		log "Curl output: $(printf '%s' "$out" | xargs)."
+		sleep 10
+		while ! is_alive "$SERV"; do
+			log "Wait for $SERV to be online."
+			sleep 1
+		done
+		sleep 20
+		log "$SERV is restarted."
+	else
+		loge "Curl failed: $(printf '%s' "$out" | xargs)"
+	fi
 }
 
 # Parses error message to decide restart will help or not.
 is_repairable() {
-  case "$1" in
-    *No\ matched\ servers*)
-      false
-      ;;
-    *Cannot\ retrieve*)
-      true
-      ;;
-    *)
-      true
-      ;;
-  esac
+	case "$1" in
+		*No\ matched\ servers*)
+			false
+			;;
+		*Cannot\ retrieve*)
+			true
+			;;
+		*)
+			true
+			;;
+	esac
 }
 
 test_speed() {
-  local out
-  if out=$(speedtest-cli --simple 2>&1); then
-    log "$(printf '%s' "$out" | \
-      grep -E 'Download|Upload' | \
-      gawk '{print $2}' | \
-      xargs)"
-  else
-    loge "$(printf '%s' "$out" | xargs)"
-    if [ -n "${SERV+x}" ]; then
-      if is_repairable "$out"; then
-        restart_server
-      else
-        log 'Server restart will not solve the issue.'
-      fi
-    fi
-    # The function is ran in a loop, rest in case of an error.
-    sleep 1
-  fi
+	local out
+	if out=$(speedtest-cli --simple 2>&1); then
+		log "$(printf '%s' "$out" | \
+			grep -E 'Download|Upload' | \
+			gawk '{print $2}' | \
+			xargs)"
+	else
+		loge "$(printf '%s' "$out" | xargs)"
+		if [ -n "${SERV+x}" ]; then
+			if is_repairable "$out"; then
+				restart_server
+			else
+				log 'Server restart will not solve the issue.'
+			fi
+		fi
+		# The function is ran in a loop, rest in case of an error.
+		sleep 1
+	fi
 }
 
 # Start point.
 validate_cmd gawk speedtest-cli
 if [ "$#" -eq 2 ]; then
-  validate_cmd nc curl
-  has_colon "$1" || bye "$1 is not valid parameter for HOST:PORT."
-  has_colon "$2" || bye "$2 is not valid parameter for USER:PASS."
-  is_alive "$1" || bye "$1 is unavailable."
-  SERV="$1"
-  AUTH="$2"
+	validate_cmd nc curl
+	has_colon "$1" || bye "$1 is not valid parameter for HOST:PORT."
+	has_colon "$2" || bye "$2 is not valid parameter for USER:PASS."
+	is_alive "$1" || bye "$1 is unavailable."
+	SERV="$1"
+	AUTH="$2"
 fi
-log ' Down   Up'
+log ' Down	 Up'
 while :; do
-  test_speed
+	test_speed
 done
 exit 0

@@ -12,22 +12,23 @@ DST="$(printf '%s' "$SRC" | sed 's/\.flac/.mp3/')"
 printf 'Convert %s->%s.\n' "$SRC" "$DST"
 yes_to_continue
 metaflac --export-tags-to=/dev/stdout "$SRC" |
-  sed -e 's/=/="/' -e 's/$/"/' \
-    -e 's/Album=/ALBUM=/' \
-    -e 's/Genre=/GENRE=/' \
-    -e 's/Artist=/ARTIST=/' > "$TAG"
+	sed -e 's/=/="/' \
+	    -e 's/$/"/' \
+	    -e 's/Album=/ALBUM=/' \
+	    -e 's/Genre=/GENRE=/' \
+	    -e 's/Artist=/ARTIST=/' > "$TAG"
 cat "$TAG"
 
 # shellcheck source=/dev/null
 . "$TAG"
 rm "$TAG"
 flac -dc "$SRC" |
-  lame -h -b 320 \
-    --tt "${TITLE}" \
-    --tn "${TRACKNUMBER}" \
-    --ty "${DATE}" \
-    --ta "${ARTIST}" \
-    --tl "${ALBUM}" \
-    --tg "${GENRE}" \
-    --add-id3v2 /dev/stdin "$DST"
+	lame -h -b 320 \
+	     --tt "${TITLE}" \
+	     --tn "${TRACKNUMBER}" \
+	     --ty "${DATE}" \
+	     --ta "${ARTIST}" \
+	     --tl "${ALBUM}" \
+	     --tg "${GENRE}" \
+	     --add-id3v2 /dev/stdin "$DST"
 exit 0
