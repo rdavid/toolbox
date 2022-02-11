@@ -8,11 +8,6 @@
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 
-is_directory_empty() {
-	# shellcheck disable=SC2010
-	! ls -1qA "$1" | grep -q .
-}
-
 RES="$BASE_LCK/res"
 AUD="$BASE_LCK/aud"
 VID="$BASE_LCK/vid"
@@ -70,12 +65,10 @@ vlast-vs-vlaszhenko
 yulia-latynina
 zhzl-s-dmitriem-bykovym
 EOF
-if ! is_directory_empty "$VID"; then
+is_directory_empty "$VID" || \
 	transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
-fi
-if ! is_directory_empty "$AUD"; then
+is_directory_empty "$AUD" || \
 	transcode -d "$AUD" -o "$RES" -a -m 2>&1 | tee -a "$BASE_LOG"
-fi
 rsync -zvhr --progress "$RES"/* $DST 2>&1 | tee -a "$BASE_LOG"
 
 # Makes sure every file was copied succesfully to destination. Pass each file
