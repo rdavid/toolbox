@@ -2,8 +2,9 @@
 # vi:ts=2 sw=2 tw=79 et lbr wrap
 # Copyright 2019-2022 David Rabkin
 # The script downloads all new video from pre-configured acoounts in
-# channels.txt. It updates IDs of downloaded files at done.txt. The script
-# could be ran by a cron job. Uses renamr, rsync, transcode, yt-dlp.
+# ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
+# The script could be ran by a cron job. Uses: HandBrakeCLI, mp4track, rsync,
+# renamr, transcode, yt-dlp.
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
@@ -13,16 +14,17 @@ AUD="$BASE_LCK/aud"
 VID="$BASE_LCK/vid"
 DST='/mnt/nas-ibx/ytb'
 ARC='/mnt/nas-ibx/ytb/app/done.txt'
-SRC='/mnt/nas-ibx/ytb/app/channels.txt'
 CKS='/mnt/nas-ibx/ytb/app/cookies.txt'
+SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
 
 # The script is ran by cron, the environment is stricked.
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export PATH="$PATH:/usr/local/bin"
 
+# Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr transcode yt-dlp
-[ -r $SRC ] || bye "Unable to read $SRC."
+[ -r "$SRC" ] || bye "Unable to read $SRC."
 [ -w $DST ] || bye "Unable to write $DST."
 [ -w $ARC ] || bye "Unable to write $ARC."
 mkdir -p "$RES" || bye "Unable to create $M4V."
@@ -48,9 +50,12 @@ yt-dlp \
 	--add-metadata \
 	--batch-file=$SRC \
 	2>&1 | tee -a "$BASE_LOG"
-if is_directory_empty "$VID"; then
-	exit 0
-fi
+
+# Stops if there are no downloaded files.
+is_directory_empty "$VID" && exit 0
+
+# Renames all downloaded files to the same manner: ASCII, lower case, no
+# spaces.
 renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
 
 # Sorts files to audio and video folders by authors.
