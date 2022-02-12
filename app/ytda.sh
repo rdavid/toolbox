@@ -55,9 +55,7 @@ renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
 
 # Sorts files to audio and video folders by authors.
 while read -r author; do
-	if ls "$VID/$author"*; then
-		mv "$VID/$author"* "$AUD"
-	fi
+	file_exists "$VID/$author"* && mv "$VID/$author"* "$AUD"
 done <<EOF
 mihail-veller
 tamara-eidelman
