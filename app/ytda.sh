@@ -52,7 +52,7 @@ yt-dlp \
 	2>&1 | tee -a "$BASE_LOG"
 
 # Stops if there are no downloaded files.
-is_directory_empty "$VID" && exit 0
+is_empty "$VID" && { log 'There is no new downloaded video.'; exit 0; }
 
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.
@@ -68,9 +68,9 @@ vlast-vs-vlaszhenko
 yulia-latynina
 zhzl-s-dmitriem-bykovym
 EOF
-is_directory_empty "$VID" || \
+is_empty "$VID" || \
 	transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
-is_directory_empty "$AUD" || \
+is_empty "$AUD" || \
 	transcode -d "$AUD" -o "$RES" -a -m 2>&1 | tee -a "$BASE_LOG"
 rsync -zvhr --progress "$RES"/* $DST 2>&1 | tee -a "$BASE_LOG"
 
