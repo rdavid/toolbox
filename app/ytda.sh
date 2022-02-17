@@ -91,10 +91,10 @@ rm "$pipe"
 if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
 	arc="$BASE_TMP/$BASE_IAM-arc"
 	mkdir -p "$arc"
-	mv "$VID"/* "$arc"
-	mv "$AUD"/* "$arc"
-	mv "$RES"/* "$arc"
-	loge "There are $nsrc files in $RES, but $ndst in $DST, archived at $arc."
+	is_empty "$VID" || mv "$VID"/* "$arc"
+	is_empty "$AUD" || mv "$AUD"/* "$arc"
+	is_empty "$RES" || mv "$RES"/* "$arc"
+	logw "There are $nsrc files in $RES, but $ndst in $DST, archived at $arc."
 else
 	log "There are $nsrc files copied to $DST."
 fi
