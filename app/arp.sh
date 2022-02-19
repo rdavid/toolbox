@@ -1,5 +1,5 @@
 #!/bin/sh -eu
-# vi:ts=2 sw=2 tw=79 et lbr wrap
+# vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 # Detects if a device with a certain MAC address is in the local network.
 

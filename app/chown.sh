@@ -1,5 +1,5 @@
 #!/bin/sh -eu
-# vi:ts=2 sw=2 tw=79 et lbr wrap
+# vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
+# vi:et lbr noet sw=2 ts=2 tw=79 wrap
 #
 # tss.sh - Terminal Screen Saver.
 #
