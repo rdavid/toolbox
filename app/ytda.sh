@@ -12,9 +12,9 @@
 RES="$BASE_LCK/res"
 AUD="$BASE_LCK/aud"
 VID="$BASE_LCK/vid"
-DST='/mnt/nas-ibx/ytb'
-ARC='/mnt/nas-ibx/ytb/app/done.txt'
-CKS='/mnt/nas-ibx/ytb/app/cookies.txt'
+DST=/mnt/nas-ibx/ytb
+ARC=/mnt/nas-ibx/ytb/app/done.txt
+CKS=/mnt/nas-ibx/ytb/app/cookies.txt
 SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
 
 # The script is ran by cron, the environment is stricked.
@@ -25,11 +25,8 @@ export PATH="$PATH:/usr/local/bin"
 # Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr transcode yt-dlp
 [ -r "$SRC" ] || bye "Unable to read $SRC."
-[ -w $DST ] || bye "Unable to write $DST."
-[ -w $ARC ] || bye "Unable to write $ARC."
-mkdir -p "$RES" || bye "Unable to create $M4V."
-mkdir -p "$AUD" || bye "Unable to create $M4V."
-mkdir -p "$VID" || bye "Unable to create $OUT."
+for f in $DST $ARC; do [ -w $f ] || bye "Unable to write $f."; done
+for d in $RES $AUD $VID; do mkdir -p "$d" || bye "Unable to create $d."; done
 if [ -r $CKS ]; then
 	log "Uses cookie $CKS."
 	CKS_PARAM="--cookies $CKS"
