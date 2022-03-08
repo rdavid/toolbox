@@ -59,6 +59,7 @@ renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
 while read -r author; do
 	file_exists "$VID/$author"* && mv "$VID/$author"* "$AUD"
 done <<EOF
+gubin-on-air
 mihail-veller
 tamara-eidelman
 vlast-vs-vlaszhenko
