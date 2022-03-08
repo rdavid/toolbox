@@ -16,6 +16,7 @@ DST=/mnt/nas-ibx/ytb
 ARC=/mnt/nas-ibx/ytb/app/done.txt
 CKS=/mnt/nas-ibx/ytb/app/cookies.txt
 SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
+AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
 
 # The script is ran by cron, the environment is stricked.
 export LC_ALL=en_US.UTF-8
@@ -24,7 +25,7 @@ export PATH="$PATH:/usr/local/bin"
 
 # Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr transcode yt-dlp
-[ -r "$SRC" ] || bye "Unable to read $SRC."
+for a in "$AUT" "$SRC"; do [ -r "$a" ] || bye "Unable to read $a."; done
 for f in $DST $ARC; do [ -w $f ] || bye "Unable to write $f."; done
 for d in $RES $AUD $VID; do mkdir -p "$d" || bye "Unable to create $d."; done
 if [ -r $CKS ]; then
@@ -56,16 +57,9 @@ is_empty "$VID" && { log 'There is no new downloaded video.'; exit 0; }
 renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
 
 # Sorts files to audio and video folders by authors.
-while read -r author; do
-	file_exists "$VID/$author"* && mv "$VID/$author"* "$AUD"
-done <<EOF
-gubin-on-air
-mihail-veller
-tamara-eidelman
-vlast-vs-vlaszhenko
-yulia-latynina
-zhzl-s-dmitriem-bykovym
-EOF
+while read -r a; do
+	file_exists "$VID/$a"* && mv "$VID/$a"* "$AUD"
+done < "$AUT"
 is_empty "$VID" || \
 	transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
 is_empty "$AUD" || \
