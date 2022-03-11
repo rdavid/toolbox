@@ -66,6 +66,7 @@ is_repairable() {
 	esac
 }
 
+# Prints current download and upload speeds.
 test_speed() {
 	local out
 	if out=$(speedtest-cli --simple 2>&1); then
@@ -87,6 +88,11 @@ test_speed() {
 	fi
 }
 
+# Prints top title.
+title() {
+	base_tim ' Down  Up'
+}
+
 # Starting point.
 validate_cmd gawk speedtest-cli
 if [ "$#" -eq 2 ]; then
@@ -97,8 +103,12 @@ if [ "$#" -eq 2 ]; then
 	SERV="$1"
 	AUTH="$2"
 fi
-base_tim 'Down  Up'
+
+# The index starts with 0, it guarantees the title printing from the begging.
+i=0
 while :; do
+	[ $((i%30)) -eq 0 ] && title
 	test_speed
+	i=$((i+1))
 done
 exit 0
