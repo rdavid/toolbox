@@ -69,7 +69,7 @@ is_repairable() {
 test_speed() {
 	local out
 	if out=$(speedtest-cli --simple 2>&1); then
-		log "$(printf '%s' "$out" | \
+		base_tim "$(printf '%s' "$out" | \
 			grep -E 'Download|Upload' | \
 			gawk '{print $2}' | \
 			xargs)"
@@ -87,7 +87,7 @@ test_speed() {
 	fi
 }
 
-# Start point.
+# Starting point.
 validate_cmd gawk speedtest-cli
 if [ "$#" -eq 2 ]; then
 	validate_cmd nc curl
@@ -97,7 +97,7 @@ if [ "$#" -eq 2 ]; then
 	SERV="$1"
 	AUTH="$2"
 fi
-log ' Down	 Up'
+base_tim 'Down  Up'
 while :; do
 	test_speed
 done
