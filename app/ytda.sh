@@ -24,7 +24,7 @@ export LANG=en_US.UTF-8
 export PATH="$PATH:/usr/local/bin"
 
 # Makes sure that needed software packages are installed at the host.
-validate_cmd HandBrakeCLI mp4track rsync renamr transcode yt-dlp
+validate_cmd HandBrakeCLI mp4track rsync renamr tput transcode yt-dlp
 for a in "$AUT" "$SRC"; do [ -r "$a" ] || bye "Unable to read $a."; done
 for f in $DST $ARC; do [ -w $f ] || bye "Unable to write $f."; done
 for d in $RES $AUD $VID; do mkdir -p "$d" || bye "Unable to create $d."; done
@@ -47,24 +47,47 @@ yt-dlp \
 	--merge-output-format mp4 \
 	--add-metadata \
 	--batch-file=$SRC \
-	2>&1 | tee -a "$BASE_LOG"
+	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Stops if there are no downloaded files.
 is_empty "$VID" && { log 'There is no new downloaded video.'; exit 0; }
 
+# Calculates output table width for renamr and transcode utilities.
+WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
+[ "$WID" -le 1 ] && bye "Terminal's width $(tput cold) is too small."
+
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.
-renamr -d "$VID" -a 2>&1 | tee -a "$BASE_LOG"
+renamr \
+	-d "$VID" \
+	-w "$WID" \
+	-a \
+	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Sorts files to audio and video folders by authors.
 while read -r a; do
 	file_exists "$VID/$a"* && mv "$VID/$a"* "$AUD"
 done < "$AUT"
 is_empty "$VID" || \
-	transcode -d "$VID" -o "$RES" -a 2>&1 | tee -a "$BASE_LOG"
+	transcode \
+		-d "$VID" \
+		-o "$RES" \
+		-w "$WID" \
+		-a \
+		2>&1 | while IFS= read -r l; do log "$l"; done
 is_empty "$AUD" || \
-	transcode -d "$AUD" -o "$RES" -a -m 2>&1 | tee -a "$BASE_LOG"
-rsync -zvhr --progress "$RES"/* $DST 2>&1 | tee -a "$BASE_LOG"
+	transcode \
+		-d "$AUD" \
+		-o "$RES" \
+		-w "$WID" \
+		-a \
+		-m \
+		2>&1 | while IFS= read -r l; do log "$l"; done
+rsync \
+	-zvhr \
+	--progress \
+	"$RES"/* $DST \
+	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Makes sure every file was copied succesfully to destination. Pass each file
 # locally and verifies there is a file with a same name at destination.

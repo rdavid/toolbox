@@ -15,5 +15,5 @@ rdiff-backup \
 	--preserve-numerical-ids \
 	--force \
 	"$1" "$2" \
-	2>&1 | tee -a "$BASE_LOG"
+	2>&1 | while IFS= read -r l; do log "$l"; done
 exit 0

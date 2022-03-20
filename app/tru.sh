@@ -43,14 +43,15 @@ tid=$(tid)
 if [ -n "$tid" ]; then
 	# SC2086: Double quote to prevent globbing and word splitting.
 	# shellcheck disable=SC2086
-	$CMD "$SER" $AUT -t "$tid" --remove-and-delete 2>&1 | tee -a "$BASE_LOG"
+	$CMD "$SER" $AUT -t "$tid" --remove-and-delete 2>&1 | \
+		while IFS= read -r l; do log "$l"; done
 	log "$FIL $tid is removed from $SER."
 fi
 
 # Adds torrent file name to torrent server.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-$CMD "$SER" $AUT -a "$TOR" 2>&1 | tee -a "$BASE_LOG"
+$CMD "$SER" $AUT -a "$TOR" 2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Verifies that a torrent was added.
 tid=$(tid)
