@@ -39,14 +39,13 @@ fi
 # shellcheck disable=SC2086
 yt-dlp \
 	$CKS_PARAM \
+	--batch-file=$SRC \
 	--playlist-reverse \
 	--download-archive $ARC \
-	-i -o \
-	"$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
-	-f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
+	--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+	--format bestvideo+bestaudio \
 	--merge-output-format mp4 \
 	--add-metadata \
-	--batch-file=$SRC \
 	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Stops if there are no downloaded files.
