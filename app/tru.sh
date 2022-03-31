@@ -4,6 +4,7 @@
 # tru stands for Transmission Remote Updater. The script removes a torrent with
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
+BASE_APP_VERSION=0.9.20220401
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"

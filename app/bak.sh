@@ -2,6 +2,7 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2016-2022 David Rabkin
 # Makes incremental backups from the first parameter to the second.
+BASE_APP_VERSION=0.9.20220401
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"

@@ -5,6 +5,7 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: HandBrakeCLI, mp4track, rsync,
 # renamr, transcode, yt-dlp.
+BASE_APP_VERSION=0.9.20220401
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"

@@ -3,6 +3,7 @@
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
+BASE_APP_VERSION=0.9.20220401
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"

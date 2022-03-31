@@ -9,6 +9,7 @@
 # shellcheck disable=SC3043
 #
 # Reports download and upload internet speeds in a loop.
+BASE_APP_VERSION=0.9.20220401
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
