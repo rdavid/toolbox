@@ -26,10 +26,10 @@ export PATH="$PATH:/usr/local/bin"
 
 # Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr tput transcode yt-dlp
-for a in "$AUT" "$SRC"; do [ -r "$a" ] || bye "Unable to read $a."; done
-for f in $DST $ARC; do [ -w $f ] || bye "Unable to write $f."; done
+is_writable $DST $ARC
+is_readable "$AUT" "$SRC"
 for d in $RES $AUD $VID; do mkdir -p "$d" || bye "Unable to create $d."; done
-if [ -r $CKS ]; then
+if is_readable $CKS; then
 	log "Uses cookie $CKS."
 	CKS_PARAM="--cookies $CKS"
 else
