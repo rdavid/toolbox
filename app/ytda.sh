@@ -5,7 +5,7 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: HandBrakeCLI, mp4track, rsync,
 # renamr, transcode, yt-dlp.
-BASE_APP_VERSION=0.9.20220401
+BASE_APP_VERSION=0.9.20220406
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
@@ -40,13 +40,13 @@ fi
 # shellcheck disable=SC2086
 yt-dlp \
 	$CKS_PARAM \
+	--add-metadata \
 	--batch-file=$SRC \
-	--playlist-reverse \
 	--download-archive $ARC \
-	--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
 	--format bestvideo+bestaudio \
 	--merge-output-format mp4 \
-	--add-metadata \
+	--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+	--playlist-reverse \
 	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Stops if there are no downloaded files.
@@ -59,9 +59,9 @@ WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.
 renamr \
-	-d "$VID" \
-	-w "$WID" \
-	-a \
+	--act \
+	--dir "$VID" \
+	--wid "$WID" \
 	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Sorts files to audio and video folders by authors.
@@ -70,22 +70,24 @@ while read -r a; do
 done < "$AUT"
 is_empty "$VID" || \
 	transcode \
-		-d "$VID" \
-		-o "$RES" \
-		-w "$WID" \
-		-a \
+		--act \
+		--dir "$VID" \
+		--out "$RES" \
+		--wid "$WID" \
 		2>&1 | while IFS= read -r l; do log "$l"; done
 is_empty "$AUD" || \
 	transcode \
-		-d "$AUD" \
-		-o "$RES" \
-		-w "$WID" \
-		-a \
-		-m \
+		--act \
+		--dir "$AUD" \
+		--mp3 \
+		--out "$RES" \
+		--wid "$WID" \
 		2>&1 | while IFS= read -r l; do log "$l"; done
 rsync \
-	-zvhr \
+	--compress \
+	--human-readable \
 	--progress \
+	--verbose \
 	"$RES"/* $DST \
 	2>&1 | while IFS= read -r l; do log "$l"; done
 

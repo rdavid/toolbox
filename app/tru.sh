@@ -4,7 +4,7 @@
 # tru stands for Transmission Remote Updater. The script removes a torrent with
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
-BASE_APP_VERSION=0.9.20220401
+BASE_APP_VERSION=0.9.20220406
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
@@ -15,7 +15,7 @@ CMD='transmission-remote'
 tid() {
 	# SC2086: Double quote to prevent globbing and word splitting.
 	# shellcheck disable=SC2086
-	$CMD "$SER" $AUT -l | grep "$FIL" | awk '{print $1}'
+	$CMD "$SER" $AUT --list | grep "$FIL" | awk '{print $1}'
 }
 
 validate_cmd nc tr awk $CMD
@@ -44,7 +44,7 @@ tid=$(tid)
 if [ -n "$tid" ]; then
 	# SC2086: Double quote to prevent globbing and word splitting.
 	# shellcheck disable=SC2086
-	$CMD "$SER" $AUT -t "$tid" --remove-and-delete 2>&1 | \
+	$CMD "$SER" $AUT --torrent "$tid" --remove-and-delete 2>&1 | \
 		while IFS= read -r l; do log "$l"; done
 	log "$FIL $tid is removed from $SER."
 fi
@@ -52,7 +52,7 @@ fi
 # Adds torrent file name to torrent server.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-$CMD "$SER" $AUT -a "$TOR" 2>&1 | while IFS= read -r l; do log "$l"; done
+$CMD "$SER" $AUT --add "$TOR" 2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Verifies that a torrent was added.
 tid=$(tid)
