@@ -81,7 +81,7 @@ test_speed() {
 			if is_repairable "$out"; then
 				restart_server
 			else
-				log 'Server restart will not solve the issue.'
+				log Server restart will not solve the issue.
 			fi
 		fi
 		# The function is ran in a loop, rest in case of an error.

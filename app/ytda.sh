@@ -50,7 +50,7 @@ yt-dlp \
 	2>&1 | while IFS= read -r l; do log "$l"; done
 
 # Stops if there are no downloaded files.
-is_empty "$VID" && { log 'There is no new downloaded video.'; exit 0; }
+is_empty "$VID" && { log There is no new downloaded video.; exit 0; }
 
 # Calculates output table width for renamr and transcode utilities.
 WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
