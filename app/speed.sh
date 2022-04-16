@@ -91,7 +91,7 @@ test_speed() {
 
 # Prints top title.
 title() {
-	base_tim ' Down  Up'
+	base_tim " Down  Up for $(base_duration "$BASE_BEGIN")"
 }
 
 # Starting point.
