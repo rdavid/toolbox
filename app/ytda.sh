@@ -3,9 +3,9 @@
 # Copyright 2019-2022 David Rabkin
 # The script downloads all new video from pre-configured acoounts in
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
-# The script could be ran by a cron job. Uses: HandBrakeCLI, mp4track, rsync,
-# renamr, transcode, yt-dlp.
-BASE_APP_VERSION=0.9.20220406
+# The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
+# renamr, rsync, transcode, yt-dlp.
+BASE_APP_VERSION=0.9.20220429
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
@@ -26,6 +26,7 @@ export PATH="$PATH:/usr/local/bin"
 
 # Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr tput transcode yt-dlp
+url_exists http://youtube.com || bye Check internet connection.
 is_writable $DST $ARC
 is_readable "$AUT" "$SRC"
 for d in $RES $AUD $VID; do mkdir -p "$d" || bye "Unable to create $d."; done
