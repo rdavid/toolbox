@@ -9,7 +9,7 @@
 # shellcheck disable=SC3043
 #
 # Reports download and upload internet speeds in a loop.
-BASE_APP_VERSION=0.9.20220401
+BASE_APP_VERSION=0.9.20220429
 
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
@@ -70,28 +70,37 @@ is_repairable() {
 # Prints current download and upload speeds.
 test_speed() {
 	local out
-	if out=$(speedtest-cli --simple 2>&1); then
-		base_tim "$(printf '%s' "$out" | \
-			grep -E 'Download|Upload' | \
+	url_exists google.com || { loge Check internet connection.; return 1; }
+	if out=$(speedtest-cli 2>&1); then
+		local host
+		local speed
+		out=$(printf %s "$out" | grep -E 'Download: |Upload: |Hosted by ')
+		speed=$(printf %s "$out" | \
+			tail --lines=2 | \
 			gawk '{print $2}' | \
-			xargs)"
-	else
-		loge "$(printf '%s' "$out" | xargs)"
-		if [ -n "${SERV+x}" ]; then
-			if is_repairable "$out"; then
-				restart_server
-			else
-				log Server restart will not solve the issue.
-			fi
-		fi
-		# The function is ran in a loop, rest in case of an error.
-		sleep 1
+			xargs)
+		host=$(printf %s "$out" | \
+			head --lines=1 | \
+			cut -c11-)
+		base_tim "$speed $host"
+		return 0
 	fi
+	loge "$(printf '%s' "$out" | xargs)"
+	if [ -n "${SERV+x}" ]; then
+		if is_repairable "$out"; then
+			restart_server
+		else
+			log Server restart will not solve the issue.
+		fi
+	fi
+
+	# The function is ran in a loop, rest in case of an error.
+	sleep 1
 }
 
 # Prints top title.
 title() {
-	base_tim " Down  Up for $(base_duration "$BASE_BEGIN")"
+	base_tim " Down |  Up |  Host by | since $(base_duration "$BASE_BEGIN")"
 }
 
 # Starting point.
