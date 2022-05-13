@@ -13,10 +13,10 @@ DST="$2"
 is_readable "$SRC"
 is_writable "$DST"
 rdiff-backup \
+	--force \
+	--preserve-numerical-ids \
 	--print-statistics \
 	--terminal-verbosity 4 \
-	--preserve-numerical-ids \
-	--force \
 	"$SRC" "$DST" \
 	2>&1 | while IFS= read -r l; do log "$l"; done
 exit 0
