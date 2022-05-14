@@ -19,13 +19,13 @@ tid() {
 }
 
 validate_cmd nc tr awk $CMD
-[ "$#" -eq 3 ] || bye "Usage: $BASE_IAM HOST:PORT [USR]:[PWD] TORRENT-FILE"
+[ "$#" -eq 3 ] || die "Usage: $BASE_IAM HOST:PORT [USR]:[PWD] TORRENT-FILE"
 
 # Prepares host and port to be nc command parameters. Validates the first
 # parameter host:port.
 prm="$(printf '%s' "$1" | tr ':' ' ')"
 # shellcheck disable=SC2086
-nc -z $prm >/dev/null 2>&1 || bye "$1 is not valid parameter for HOST:PORT."
+nc -z $prm >/dev/null 2>&1 || die "$1 is not valid parameter for HOST:PORT."
 SER="$1"
 
 # Single ':' means there is no authentication data.
@@ -34,7 +34,7 @@ if [ "$2" != ':' ]; then
 fi
 
 # Validates third parameter full torrent file name.
-[ -r "$3" ] || bye "$3 is not valid parameter for a TORRENT-FILE."
+[ -r "$3" ] || die "$3 is not valid parameter for a TORRENT-FILE."
 TOR="$3"
 FIL=$(basename -- "$TOR")
 FIL="${FIL%.*}"
@@ -57,7 +57,7 @@ $CMD "$SER" $AUT --add "$TOR" 2>&1 | while IFS= read -r l; do log "$l"; done
 # Verifies that a torrent was added.
 tid=$(tid)
 if [ -z "$tid" ]; then
-	bye "Unable to find $FIL at $SER."
+	die "Unable to find $FIL at $SER."
 fi
 log "$FIL $tid is added to $SER."
 exit 0

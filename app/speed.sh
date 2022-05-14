@@ -107,9 +107,9 @@ title() {
 validate_cmd gawk speedtest-cli
 if [ "$#" -eq 2 ]; then
 	validate_cmd nc curl
-	has_colon "$1" || bye "$1 is not valid parameter for HOST:PORT."
-	has_colon "$2" || bye "$2 is not valid parameter for USER:PASS."
-	is_alive "$1" || bye "$1 is unavailable."
+	has_colon "$1" || die "$1 is not valid parameter for HOST:PORT."
+	has_colon "$2" || die "$2 is not valid parameter for USER:PASS."
+	is_alive "$1" || die "$1 is unavailable."
 	SERV="$1"
 	AUTH="$2"
 fi

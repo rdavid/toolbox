@@ -26,10 +26,10 @@ export PATH="$PATH:/usr/local/bin"
 
 # Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr tput transcode yt-dlp
-url_exists http://youtube.com || bye Check internet connection.
+url_exists http://youtube.com || die Check internet connection.
 is_writable $DST $ARC
 is_readable "$AUT" "$SRC"
-for d in $RES $AUD $VID; do mkdir -p "$d" || bye "Unable to create $d."; done
+for d in $RES $AUD $VID; do mkdir -p "$d" || die "Unable to create $d."; done
 if is_readable $CKS; then
 	log "Uses cookie $CKS."
 	CKS_PARAM="--cookies $CKS"
@@ -55,7 +55,7 @@ is_empty "$VID" && { log There is no new downloaded video.; exit 0; }
 
 # Calculates output table width for renamr and transcode utilities.
 WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
-[ "$WID" -le 1 ] && bye "Terminal's width $(tput cold) is too small."
+[ "$WID" -le 1 ] && die "Terminal's width $(tput cold) is too small."
 
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.

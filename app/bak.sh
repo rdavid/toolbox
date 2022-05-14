@@ -7,7 +7,7 @@ BASE_APP_VERSION=0.9.20220401
 # shellcheck source=../../shellbase/inc/base
 . "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
 validate_cmd rdiff-backup
-[ "$#" -eq 2 ] || bye "Usage: $BASE_IAM [source] [destination]"
+[ "$#" -eq 2 ] || die "Usage: $BASE_IAM [source] [destination]"
 SRC="$1"
 DST="$2"
 is_readable "$SRC"
