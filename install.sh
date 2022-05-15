@@ -1,21 +1,35 @@
 #!/bin/sh -eu
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022 David Rabkin
-ROOT="$(pwd)"
-REPO="$ROOT"/shellbase
-if [ ! -r "$REPO" ]; then
-	[ -w "$ROOT" ] || \
-		{ printf '%s is not writable.\n' "$ROOT" >&2; exit 11; }
-	mkdir "$REPO" || \
-		{ printf 'Unable to create %s.\n' "$REPO" >&2; exit 12; }
-	command -v git >/dev/null 2>&1 || \
-		{ printf 'Install git.\n' >&2; exit 13; }
-	URL=https://github.com/rdavid/shellbase.git
-	git clone $URL "$REPO" || \
-		{ printf 'Unable to clone %s to %s.\n' $URL "$REPO" >&2; exit 14; }
+VERS=v0.9.20220516
+URL=https://github.com/rdavid/shellbase/releases/download/$VERS/base
+command -v wget >/dev/null 2>&1 || \
+	{ printf 'Install wget.\n' >&2; exit 12; }
+
+# wget downloads shellbase content to stdout, eval sources it to the script
+# running environment.
+eval "$( \
+	wget $URL \
+		--output-document - \
+		--quiet \
+	)"
+DEST=/usr/local/bin
+TRGT=$DEST/shellbase
+if file_exists $TRGT; then
+	printf \
+		'%s is already installed. Install %s?\n' \
+		"$(sh $TRGT --version)" \
+		"$BASE_VERSION"
+	yes_to_continue
 fi
-BASE="$REPO"/inc/base
-[ -r "$BASE" ] || \
-	{ printf 'Unable to read %s.\n' "$BASE" >&2; exit 15; }
-printf 'shellbase is installed.\n'
+is_writable $DEST || \
+	die $DEST is not writable.
+wget $URL \
+	--output-document $TRGT \
+	--quiet || \
+	die "Unable to install $URL to $DEST."
+printf \
+	'%s is installed to %s.\n' \
+	"$(sh $TRGT --version)" \
+	$DEST
 exit 0

@@ -2,8 +2,8 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.tex"
 [ -r "$1" ] || die "Unable to read from source $1."
 validate_cmd tex dvipdfm

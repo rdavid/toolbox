@@ -25,10 +25,11 @@ a ratio.
 keeps safe. It is usefull with cron.
 
 ## Install
+Make sure `/usr/local/bin` is in your `PATH`.
 
     git clone https://github.com/rdavid/toolbox.git && \
       cd toolbox && \
-      install.sh
+      ./install.sh
 
 ## License
 The scripts are copyright [David Rabkin](http://cv.rabkin.co.il) and available

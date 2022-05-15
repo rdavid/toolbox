@@ -3,8 +3,8 @@
 # Copyright 2020-2022 David Rabkin
 # Validates image files.
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 validate_cmd convert
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM DIRECTORY"
 [ -r "$1" ] || die "Unable to read $1."

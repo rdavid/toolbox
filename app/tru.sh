@@ -6,8 +6,8 @@
 # ratio.
 BASE_APP_VERSION=0.9.20220413
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 AUT=''
 CMD=transmission-remote
 

@@ -5,8 +5,8 @@
 # and directories started from the seconds argument.
 BASE_APP_VERSION=0.9.20220401
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 be_root
 [ "$#" -eq 2 ] || die "Two arguments are expected, $BASE_IAM USER DIR."
 USR="$1"

@@ -11,8 +11,8 @@
 # Reports download and upload internet speeds in a loop.
 BASE_APP_VERSION=0.9.20220429
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 
 # Verifies if a parameter has colon.
 has_colon() {

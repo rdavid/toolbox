@@ -7,8 +7,8 @@
 # renamr, rsync, transcode, yt-dlp.
 BASE_APP_VERSION=0.9.20220429
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 
 RES="$BASE_LCK/res"
 AUD="$BASE_LCK/aud"

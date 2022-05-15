@@ -4,8 +4,8 @@
 # Makes incremental backups from the first parameter to the second.
 BASE_APP_VERSION=0.9.20220401
 
-# shellcheck source=../../shellbase/inc/base
-. "$(dirname "$(realpath "$0")")/../shellbase/inc/base"
+# shellcheck source=/usr/local/bin/shellbase
+. shellbase
 validate_cmd rdiff-backup
 [ "$#" -eq 2 ] || die "Usage: $BASE_IAM [source] [destination]"
 SRC="$1"
