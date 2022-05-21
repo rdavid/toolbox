@@ -70,7 +70,8 @@ is_repairable() {
 # Prints current download and upload speeds.
 test_speed() {
 	local out
-	url_exists google.com || { loge Check internet connection.; return 1; }
+	url_exists google.com || \
+		{ loge Check internet connection.; sleep 1; return 0; }
 	if out=$(speedtest-cli 2>&1); then
 		local host
 		local speed
