@@ -5,7 +5,7 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-BASE_APP_VERSION=0.9.20220429
+BASE_APP_VERSION=0.9.20220605
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
@@ -39,16 +39,19 @@ fi
 
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-yt-dlp \
-	$CKS_PARAM \
-	--add-metadata \
-	--batch-file=$SRC \
-	--download-archive $ARC \
-	--format bestvideo+bestaudio \
-	--merge-output-format mp4 \
-	--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
-	--playlist-reverse \
-	2>&1 | while IFS= read -r l; do log "$l"; done
+{ \
+	yt-dlp \
+		$CKS_PARAM \
+		--add-metadata \
+		--batch-file=$SRC \
+		--download-archive $ARC \
+		--format bestvideo+bestaudio \
+		--merge-output-format mp4 \
+		--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+		--playlist-reverse \
+	2>&1 1>&3 3>&- | to_loge; \
+} \
+	3>&1 1>&2 | to_log
 
 # Stops if there are no downloaded files.
 is_empty "$VID" && { log There is no new downloaded video.; exit 0; }
@@ -59,38 +62,50 @@ WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
 
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.
-renamr \
-	--act \
-	--dir "$VID" \
-	--wid "$WID" \
-	2>&1 | while IFS= read -r l; do log "$l"; done
+{ \
+	renamr \
+		--act \
+		--dir "$VID" \
+		--wid "$WID" \
+	2>&1 1>&3 3>&- | to_loge; \
+} \
+	3>&1 1>&2 | to_log
 
 # Sorts files to audio and video folders by authors.
 while read -r a; do
 	file_exists "$VID/$a"* && mv "$VID/$a"* "$AUD"
 done < "$AUT"
 is_empty "$VID" || \
-	transcode \
-		--act \
-		--dir "$VID" \
-		--out "$RES" \
-		--wid "$WID" \
-		2>&1 | while IFS= read -r l; do log "$l"; done
+	{ \
+		transcode \
+			--act \
+			--dir "$VID" \
+			--out "$RES" \
+			--wid "$WID" \
+		2>&1 1>&3 3>&- | to_loge; \
+	} \
+		3>&1 1>&2 | to_log
 is_empty "$AUD" || \
-	transcode \
-		--act \
-		--dir "$AUD" \
-		--mp3 \
-		--out "$RES" \
-		--wid "$WID" \
-		2>&1 | while IFS= read -r l; do log "$l"; done
-rsync \
-	--compress \
-	--human-readable \
-	--progress \
-	--verbose \
-	"$RES"/* $DST \
-	2>&1 | while IFS= read -r l; do log "$l"; done
+	{ \
+		transcode \
+			--act \
+			--dir "$AUD" \
+			--mp3 \
+			--out "$RES" \
+			--wid "$WID" \
+		2>&1 1>&3 3>&- | to_loge; \
+	} \
+		3>&1 1>&2 | to_log
+{ \
+	rsync \
+		--compress \
+		--human-readable \
+		--progress \
+		--verbose \
+		"$RES"/* $DST \
+	2>&1 1>&3 3>&- | to_loge; \
+} \
+	3>&1 1>&2 | to_log
 
 # Makes sure every file was copied succesfully to destination. Pass each file
 # locally and verifies there is a file with a same name at destination.

@@ -1,7 +1,7 @@
 #!/bin/sh -eu
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022 David Rabkin
-VERS=v0.9.20220516
+VERS=v0.9.20220605
 URL=https://github.com/rdavid/shellbase/releases/download/$VERS/base
 command -v wget >/dev/null 2>&1 || \
 	{ printf 'Install wget.\n' >&2; exit 12; }
