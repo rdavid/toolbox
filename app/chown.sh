@@ -3,19 +3,19 @@
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
-BASE_APP_VERSION=0.9.20220401
+BASE_APP_VERSION=0.9.20220611
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
 be_root
-[ "$#" -eq 2 ] || die "Two arguments are expected, $BASE_IAM USER DIR."
+[ "$#" -eq 2 ] || die Usage: chown.sh usr dir.
 USR="$1"
 DIR="$2"
-id -u "$USR" >/dev/null 2>&1 || die "User $USR doesn't exist."
-[ -d "$DIR" ] || die "Directory $DIR doesn't exist."
-[ -w "$DIR" ] || die "Directory $DIR is not writable."
+user_exists "$USR" || die "$USR": No such user.
+file_exists "$DIR" || die "$DIR": No such file or directory.
+is_writable "$DIR" || die "$DIR" is not writable.
 chown -R "$USR" "$DIR"
 find "$DIR" -type d -exec chmod 755 {} \;
 find "$DIR" -type f -exec chmod 644 {} \;
-printf 'Owner of %s is changed to %s.\n' "$DIR" "$USR"
+log "Owner of $DIR is changed to $USR."
 exit 0
