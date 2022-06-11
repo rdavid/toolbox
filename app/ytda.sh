@@ -5,7 +5,7 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-BASE_APP_VERSION=0.9.20220605
+BASE_APP_VERSION=0.9.20220611
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
@@ -27,8 +27,8 @@ export PATH="$PATH:/usr/local/bin"
 # Makes sure that needed software packages are installed at the host.
 validate_cmd HandBrakeCLI mp4track rsync renamr tput transcode yt-dlp
 url_exists http://youtube.com || die Check internet connection.
-is_writable $DST $ARC
-is_readable "$AUT" "$SRC"
+is_writable $DST $ARC || die Some directories are not writable.
+is_readable "$AUT" "$SRC" || die Some directories are not readable.
 for d in $RES $AUD $VID; do mkdir -p "$d" || die "Unable to create $d."; done
 if is_readable $CKS; then
 	log "Uses cookie $CKS."

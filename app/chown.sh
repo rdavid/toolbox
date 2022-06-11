@@ -8,7 +8,7 @@ BASE_APP_VERSION=0.9.20220611
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
 be_root
-[ "$#" -eq 2 ] || die Usage: chown.sh usr dir.
+[ "$#" -eq 2 ] || die Usage: chown.sh user directory.
 USR="$1"
 DIR="$2"
 user_exists "$USR" || die "$USR": No such user.

@@ -4,7 +4,7 @@
 # tru stands for Transmission Remote Updater. The script removes a torrent with
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
-BASE_APP_VERSION=0.9.20220605
+BASE_APP_VERSION=0.9.20220611
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
@@ -19,7 +19,7 @@ tid() {
 }
 
 validate_cmd nc tr awk $CMD
-[ "$#" -eq 3 ] || die "Usage: $BASE_IAM HOST:PORT [USR]:[PWD] TORRENT-FILE"
+[ "$#" -eq 3 ] || die Usage: tru.sh host:port user:pass torrent-file.
 
 # Prepares host and port to be nc command parameters. Validates the first
 # parameter host:port.

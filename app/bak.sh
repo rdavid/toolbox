@@ -2,16 +2,16 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2016-2022 David Rabkin
 # Makes incremental backups from the first parameter to the second.
-BASE_APP_VERSION=0.9.20220605
+BASE_APP_VERSION=0.9.20220611
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
 validate_cmd rdiff-backup
-[ "$#" -eq 2 ] || die "Usage: $BASE_IAM [source] [destination]"
+[ "$#" -eq 2 ] || die Usage: bak.sh source destination.
 SRC="$1"
 DST="$2"
-is_readable "$SRC"
-is_writable "$DST"
+is_readable "$SRC" || die "$SRC" is not readable.
+is_writable "$DST" || die "$DST" is not writable.
 { \
 	rdiff-backup \
 		--force \
