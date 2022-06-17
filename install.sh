@@ -1,8 +1,9 @@
 #!/bin/sh -eu
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022 David Rabkin
-VERS=v0.9.20220605
-URL=https://github.com/rdavid/shellbase/releases/download/$VERS/base
+set -- --quiet "$@"
+TAG=v0.9.20220613
+URL=https://github.com/rdavid/shellbase/releases/download/$TAG/base
 command -v wget >/dev/null 2>&1 || \
 	{ printf 'Install wget.\n' >&2; exit 12; }
 
@@ -13,23 +14,22 @@ eval "$( \
 		--output-document - \
 		--quiet \
 	)"
-DEST=/usr/local/bin
-TRGT=$DEST/shellbase
-if file_exists $TRGT; then
-	printf \
-		'%s is already installed. Install %s?\n' \
-		"$(sh $TRGT --version)" \
-		"$BASE_VERSION"
-	yes_to_continue
+DST=/usr/local/bin
+TGT=$DST/shellbase
+if file_exists $TGT; then
+	yes_to_continue \
+		"$(sh $TGT --quiet --version)" \
+		is already installed. Install \
+		"$BASE_VERSION"?
 fi
-is_writable $DEST || \
-	die $DEST is not writable.
+is_writable $DST || \
+	die $DST is not writable.
 wget $URL \
-	--output-document $TRGT \
-	--quiet || \
-	die "Unable to install $URL to $DEST."
+	--output-document $TGT \
+	--quiet \
+	|| die "Unable to install $URL to $DST."
 printf \
 	'%s is installed to %s.\n' \
-	"$(sh $TRGT --version)" \
-	$DEST
+	"$(sh $TGT --quiet --version)" \
+	$DST
 exit 0
