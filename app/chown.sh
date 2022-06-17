@@ -3,12 +3,14 @@
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
-BASE_APP_VERSION=0.9.20220611
+set -- --quiet "$@"
+BASE_APP_USAGE='Usage: chown.sh user directory.'
+BASE_APP_VERSION=0.9.20220617
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
 be_root
-[ "$#" -eq 2 ] || die Usage: chown.sh user directory.
+[ "$#" -eq 2 ] || die "$BASE_APP_USAGE"
 USR="$1"
 DIR="$2"
 user_exists "$USR" || die "$USR": No such user.
@@ -17,5 +19,5 @@ is_writable "$DIR" || die "$DIR" is not writable.
 chown -R "$USR" "$DIR"
 find "$DIR" -type d -exec chmod 755 {} \;
 find "$DIR" -type f -exec chmod 644 {} \;
-log "Owner of $DIR is changed to $USR."
+log The owner of "$DIR" is changed to "$USR".
 exit 0
