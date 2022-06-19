@@ -7,9 +7,10 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # Disables shellcheck warning about using local variables.
 # shellcheck disable=SC3043
+set -- --quiet "$@"
 #
 # Reports download and upload internet speeds in a loop.
-BASE_APP_VERSION=0.9.20220429
+BASE_APP_VERSION=0.9.20220619
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
