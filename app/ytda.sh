@@ -73,7 +73,9 @@ WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
 
 # Sorts files to audio and video folders by authors.
 while read -r a; do
-	file_exists "$VID/$a"* && mv "$VID/$a"* "$AUD"
+	if file_exists "$VID/$a"*; then
+		mv "$VID/$a"* "$AUD"
+	fi
 done < "$AUT"
 is_empty "$VID" || \
 	{ \
