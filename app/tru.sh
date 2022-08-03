@@ -4,7 +4,7 @@
 # tru stands for Transmission Remote Updater. The script removes a torrent with
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
-BASE_APP_VERSION=0.9.20220611
+BASE_APP_VERSION=0.9.20220803
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
@@ -44,9 +44,9 @@ tid=$(tid)
 if [ -n "$tid" ]; then
 	# SC2086: Double quote to prevent globbing and word splitting.
 	# shellcheck disable=SC2086
-	{ \
+	{
 		$CMD "$SER" $AUT --remove-and-delete --torrent "$tid" \
-		2>&1 1>&3 3>&- | to_loge; \
+			2>&1 1>&3 3>&- | to_loge
 	} \
 		3>&1 1>&2 | to_log
 	log "$FIL $tid is removed from $SER."
@@ -55,9 +55,9 @@ fi
 # Adds torrent file name to torrent server.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-{ \
+{
 	$CMD "$SER" $AUT --add "$TOR" \
-	2>&1 1>&3 3>&- | to_loge; \
+		2>&1 1>&3 3>&- | to_loge
 } \
 	3>&1 1>&2 | to_log
 

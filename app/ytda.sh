@@ -5,7 +5,7 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-BASE_APP_VERSION=0.9.20220611
+BASE_APP_VERSION=0.9.20220803
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
@@ -39,7 +39,7 @@ fi
 
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-{ \
+{
 	yt-dlp \
 		$CKS_PARAM \
 		--add-metadata \
@@ -49,7 +49,7 @@ fi
 		--merge-output-format mp4 \
 		--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
 		--playlist-reverse \
-	2>&1 1>&3 3>&- | to_loge; \
+		2>&1 1>&3 3>&- | to_loge
 } \
 	3>&1 1>&2 | to_log
 
@@ -62,12 +62,12 @@ WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
 
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.
-{ \
+{
 	renamr \
 		--act \
 		--dir "$VID" \
 		--wid "$WID" \
-	2>&1 1>&3 3>&- | to_loge; \
+		2>&1 1>&3 3>&- | to_loge
 } \
 	3>&1 1>&2 | to_log
 
@@ -77,35 +77,35 @@ while read -r a; do
 		mv "$VID/$a"* "$AUD"
 	fi
 done < "$AUT"
-is_empty "$VID" || \
-	{ \
+is_empty "$VID" ||
+	{
 		transcode \
 			--act \
 			--dir "$VID" \
 			--out "$RES" \
 			--wid "$WID" \
-		2>&1 1>&3 3>&- | to_loge; \
+			2>&1 1>&3 3>&- | to_loge
 	} \
 		3>&1 1>&2 | to_log
-is_empty "$AUD" || \
-	{ \
+is_empty "$AUD" ||
+	{
 		transcode \
 			--act \
 			--dir "$AUD" \
 			--mp3 \
 			--out "$RES" \
 			--wid "$WID" \
-		2>&1 1>&3 3>&- | to_loge; \
+			2>&1 1>&3 3>&- | to_loge
 	} \
 		3>&1 1>&2 | to_log
-{ \
+{
 	rsync \
 		--compress \
 		--human-readable \
 		--progress \
 		--verbose \
 		"$RES"/* $DST \
-	2>&1 1>&3 3>&- | to_loge; \
+		2>&1 1>&3 3>&- | to_loge
 } \
 	3>&1 1>&2 | to_log
 

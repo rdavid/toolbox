@@ -27,7 +27,7 @@ keeps safe. It is usefull with cron.
 ## Install
 Make sure `/usr/local/bin` is in your `PATH`.
 
-    git clone https://github.com/rdavid/toolbox.git && \
+    git clone https://github.com/rdavid/toolbox.git &&
     	./toolbox/install.sh
 
 ## License

@@ -40,9 +40,9 @@ wait() {
 }
 
 is_mac() {
-	echo "$1" | \
-		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' 1>/dev/null || \
-		die "MAC address $1 is invalid."
+	echo "$1" |
+		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' 1>/dev/null ||
+			die "MAC address $1 is invalid."
 }
 
 be_root

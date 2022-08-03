@@ -10,7 +10,7 @@
 set -- --quiet "$@"
 #
 # Reports download and upload internet speeds in a loop.
-BASE_APP_VERSION=0.9.20220619
+BASE_APP_VERSION=0.9.20220803
 
 # shellcheck source=/usr/local/bin/shellbase
 . shellbase
@@ -71,19 +71,23 @@ is_repairable() {
 # Prints current download and upload speeds.
 test_speed() {
 	local out
-	url_exists google.com || \
+	url_exists google.com ||
 		{ loge Check internet connection.; sleep 1; return 0; }
 	if out=$(speedtest-cli 2>&1); then
 		local host
 		local speed
 		out=$(printf %s "$out" | grep -E 'Download: |Upload: |Hosted by ')
-		speed=$(printf %s "$out" | \
-			tail --lines=2 | \
-			gawk '{print $2}' | \
-			xargs)
-		host=$(printf %s "$out" | \
-			head --lines=1 | \
-			cut -c11-)
+		speed=$(
+			printf %s "$out" |
+				tail --lines=2 |
+					gawk '{print $2}' |
+						xargs
+			)
+		host=$(
+			printf %s "$out" |
+				head --lines=1 |
+					cut -c11-
+			)
 		base_tim "$speed $host"
 		return 0
 	fi
