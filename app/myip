@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022 David Rabkin
 #
@@ -9,10 +9,12 @@
 # shellcheck disable=SC3043
 #
 # Reports external IP in a loop.
+set -o errexit
+set -o nounset
 BASE_APP_VERSION=0.9.20220830
 
-# shellcheck source=/usr/local/bin/shellbase
-. shellbase
+# shellcheck source=/usr/local/bin/base.sh
+. base.sh
 
 # Prints external IP.
 myip() {

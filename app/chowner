@@ -1,14 +1,16 @@
-#!/bin/sh -eu
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
+set -o errexit
+set -o nounset
 set -- --quiet "$@"
-BASE_APP_USAGE='Usage: chown.sh user directory.'
-BASE_APP_VERSION=0.9.20220617
+BASE_APP_USAGE='Usage: chowner user directory.'
+BASE_APP_VERSION=0.9.20220830
 
-# shellcheck source=/usr/local/bin/shellbase
-. shellbase
+# shellcheck source=/usr/local/bin/base.sh
+. base.sh
 be_root
 [ "$#" -eq 2 ] || die "$BASE_APP_USAGE"
 USR="$1"

@@ -1,9 +1,11 @@
-#!/bin/sh -eu
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2016-2022 David Rabkin
+set -o errexit
+set -o nounset
 
-# shellcheck source=/usr/local/bin/shellbase
-. shellbase
+# shellcheck source=/usr/local/bin/base.sh
+. base.sh
 TMP='/etc/fstab-tmp'
 PRM='/etc/fstab-prm'
 be_root

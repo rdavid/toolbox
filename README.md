@@ -11,24 +11,24 @@ Hi, I'm [David Rabkin](http://cv.rabkin.co.il).
 Almost every script uses [`shellbase`](https://github.com/rdavid/shellbase).
 
 There are following utilities:
-- [`bak`](app/bak.sh) is a wrapper on
+- [`bak`](app/bak) is a wrapper on
 [`rdiff-backup`](https://github.com/rdiff-backup/rdiff-backup) to produce, well,
 backups.
-- [`chown`](app/chown.sh) change an owner and set right permissions on a
+- [`chowner`](app/chowner) change an owner and set right permissions on a
 directory.
-- [`flactomp3`](app/flactomp3.sh) converts audio to mp3 with tags.
-- [`tru`](app/tru.sh) stands for transmission remote updater. It removes a
+- [`flactomp3`](app/flactomp3) converts audio to mp3 with tags.
+- [`tru`](app/tru) stands for transmission remote updater. It removes a
 torrent with content and than adds it again. It is usefull with cron to increase
 a ratio.
-- [`ytda`](app/ytda.sh) is a wrapper on
+- [`ydata`](app/ydata) is a wrapper on
 [`yt-dlp`](https://github.com/yt-dlp/yt-dlp): downloads, converts, renames and
 keeps safe. It is usefull with cron.
 
 ## Install
-Make sure `/usr/local/bin` is in your `PATH`.
+Make sure `/usr/local/bin/` is in your `PATH`.
 
     git clone https://github.com/rdavid/toolbox.git &&
-    	./toolbox/install.sh
+    	./toolbox/install
 
 ## License
 The scripts are copyright [David Rabkin](http://cv.rabkin.co.il) and available

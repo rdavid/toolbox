@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 #
@@ -7,13 +7,15 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # Disables shellcheck warning about using local variables.
 # shellcheck disable=SC3043
+set -o errexit
+set -o nounset
 set -- --quiet "$@"
 #
 # Reports download and upload internet speeds in a loop.
-BASE_APP_VERSION=0.9.20220811
+BASE_APP_VERSION=0.9.20220830
 
-# shellcheck source=/usr/local/bin/shellbase
-. shellbase
+# shellcheck source=/usr/local/bin/base.sh
+. base.sh
 
 # Verifies if a parameter has colon.
 has_colon() {

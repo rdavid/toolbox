@@ -1,10 +1,12 @@
-#!/bin/sh -eu
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 # Validates image files.
+set -o errexit
+set -o nounset
 
-# shellcheck source=/usr/local/bin/shellbase
-. shellbase
+# shellcheck source=/usr/local/bin/base.sh
+. base.sh
 validate_cmd convert
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM DIRECTORY"
 [ -r "$1" ] || die "Unable to read $1."

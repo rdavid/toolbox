@@ -1,15 +1,16 @@
-#!/bin/sh -eu
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2022 David Rabkin
 # The script downloads all new video from pre-configured acoounts in
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-BASE_APP_VERSION=0.9.20220803
+set -o errexit
+set -o nounset
+BASE_APP_VERSION=0.9.20220830
 
-# shellcheck source=/usr/local/bin/shellbase
-. shellbase
-
+# shellcheck source=/usr/local/bin/base.sh
+. base.sh
 RES="$BASE_LCK/res"
 AUD="$BASE_LCK/aud"
 VID="$BASE_LCK/vid"
