@@ -11,7 +11,7 @@ SRC="$1"
 is_readable "$SRC" || die "$SRC" is not readable.
 DST="$(printf %s "$SRC" | sed 's/\.flac/.mp3/')"
 yes_to_continue Convert "$SRC" to "$DST"?
-TAG="/$BASE_LCK/tags"
+TAG="$BASE_WIP"/tags
 metaflac --export-tags-to=/dev/stdout "$SRC" |
 	sed \
 		-e 's/=/="/' \

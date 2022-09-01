@@ -7,8 +7,8 @@ set -o nounset
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
-OLD="/$BASE_TMP/$BASE_IAM-old"
-CUR="/$BASE_TMP/$BASE_IAM-cur"
+OLD=/"$BASE_WIP"/old
+CUR=/"$BASE_WIP"/cur
 
 list() {
 	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 > "$CUR"
@@ -24,7 +24,7 @@ wait() {
 
 comp() {
 	out='ESSID list is'
-	changed=$(diff -y --suppress-common-lines "$CUR" "$OLD" | wc -l)
+	changed="$(diff -y --suppress-common-lines "$CUR" "$OLD" | wc -l)"
 	if [ "$changed" -ne '0' ]; then
 		out="$out changed on $changed. Alert!"
 	else

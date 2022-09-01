@@ -23,8 +23,8 @@ LOG="$NME.log"
 
 # Do not worry about file cleaning on exit. Garbage collector will remove the
 # temporarily directory.
-cp "$1" "$BASE_LCK"
-cd "$BASE_LCK"
+cp "$1" "$BASE_WIP"
+cd "$BASE_WIP"
 if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
 	cp "./$LOG" "$OLDPWD"
 	die "See $LOG for errors."
