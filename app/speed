@@ -12,7 +12,7 @@ set -o nounset
 set -- --quiet "$@"
 #
 # Reports download and upload internet speeds in a loop.
-BASE_APP_VERSION=0.9.20220830
+BASE_APP_VERSION=0.9.20220901
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
@@ -32,7 +32,7 @@ has_colon() {
 # Verifies if host is up. The parameter is HOST:PORT
 is_alive() {
 	# shellcheck disable=SC2046
-	nc -z $(printf '%s' "$1" | tr ':' ' ') >/dev/null 2>&1
+	nc -z $(printf %s "$1" | tr : \ ) >/dev/null 2>&1
 }
 
 restart_server() {
@@ -51,7 +51,7 @@ restart_server() {
 		sleep 20
 		log "$SERV is restarted."
 	else
-		loge "Curl failed: $(printf '%s' "$out" | xargs)"
+		loge "Curl failed: $(printf %s "$out" | xargs)"
 	fi
 }
 
@@ -95,7 +95,7 @@ test_speed() {
 		printf %s\\n "$(timestamp) $speed $host"
 		return 0
 	fi
-	loge "$(printf '%s' "$out" | xargs)"
+	loge "$(printf %s "$out" | xargs)"
 	if [ -n "${SERV+x}" ]; then
 		if is_repairable "$out"; then
 			restart_server
@@ -115,22 +115,26 @@ title() {
 		"$(base_duration "$BASE_BEG")"
 }
 
-# Starting point.
-validate_cmd gawk speedtest-cli
-if [ "$#" -eq 2 ]; then
-	validate_cmd nc curl
-	has_colon "$1" || die "$1 is not valid parameter for HOST:PORT."
-	has_colon "$2" || die "$2 is not valid parameter for USER:PASS."
-	is_alive "$1" || die "$1 is unavailable."
-	SERV="$1"
-	AUTH="$2"
-fi
+# Validates parameters and runs.
+main() {
+	validate_cmd gawk speedtest-cli
+	if [ "$#" -eq 2 ]; then
+		validate_cmd nc curl
+		has_colon "$1" || die "$1 is not valid parameter for HOST:PORT."
+		has_colon "$2" || die "$2 is not valid parameter for USER:PASS."
+		is_alive "$1" || die "$1 is unavailable."
+		SERV="$1"
+		AUTH="$2"
+	fi
 
-# The index starts with 0, it guarantees the title printing from the begging.
-i=0
-while :; do
-	[ $((i%30)) -eq 0 ] && title
-	test_speed
-	i=$((i+1))
-done
+	# The index starts with 0, it guarantees the title printing from the begging.
+	local i=0
+	while :; do
+		[ $((i%30)) -eq 0 ] && title
+		test_speed
+		i=$((i+1))
+	done
+}
+
+main "$@"
 exit 0
