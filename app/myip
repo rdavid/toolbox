@@ -31,7 +31,7 @@ myip() {
 
 # Prints top title.
 title() {
-	log "       IP       | State | since $(base_duration "$BASE_BEGIN")"
+	log "       IP       | State | since $(base_duration "$BASE_BEG")"
 }
 
 wait() {

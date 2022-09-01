@@ -112,7 +112,7 @@ test_speed() {
 title() {
 	printf '%s Down |  Up |  Host by | since %s\n' \
 		"$(timestamp)" \
-		"$(base_duration "$BASE_BEGIN")"
+		"$(base_duration "$BASE_BEG")"
 }
 
 # Starting point.
