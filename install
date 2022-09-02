@@ -4,8 +4,17 @@
 set -o errexit
 set -o nounset
 set -- --quiet "$@"
+DST=/usr/local/bin
 TAG=v0.9.20220830
+TGT=$DST/base.sh
 URL=https://github.com/rdavid/shellbase/releases/download/$TAG/base.sh
+readonly \
+	DST \
+	TAG \
+	TGT \
+	URL
+
+# Starting point.
 command -v wget >/dev/null 2>&1 || { printf 'Install wget.\n' >&2; exit 12; }
 
 # wget downloads shellbase content to stdout, eval sources it to the script
@@ -15,8 +24,6 @@ eval "$(
 		--output-document - \
 		--quiet
 	)"
-DST=/usr/local/bin
-TGT=$DST/base.sh
 if file_exists $TGT; then
 	yes_to_continue \
 		"$(sh $TGT --quiet --version)" \

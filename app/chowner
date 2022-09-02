@@ -6,15 +6,17 @@
 set -o errexit
 set -o nounset
 set -- --quiet "$@"
-BASE_APP_USAGE='Usage: chowner user directory.'
-BASE_APP_VERSION=0.9.20220830
+readonly \
+	BASE_APP_USAGE='Usage: chowner user directory.' \
+	BASE_APP_VERSION=0.9.20220902
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
 be_root
 [ "$#" -eq 2 ] || die "$BASE_APP_USAGE"
-USR="$1"
-DIR="$2"
+readonly \
+	DIR="$2" \
+	USR="$1"
 user_exists "$USR" || die "$USR": No such user.
 file_exists "$DIR" || die "$DIR": No such file or directory.
 is_writable "$DIR" || die "$DIR" is not writable.

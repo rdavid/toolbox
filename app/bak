@@ -4,14 +4,15 @@
 # Makes incremental backups from the first parameter to the second.
 set -o errexit
 set -o nounset
-BASE_APP_VERSION=0.9.20220830
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
 validate_cmd rdiff-backup
 [ "$#" -eq 2 ] || die Usage: bak.sh source destination.
-SRC="$1"
-DST="$2"
+readonly \
+	BASE_APP_VERSION=0.9.20220902 \
+	DST="$2" \
+	SRC="$1"
 is_readable "$SRC" || die "$SRC" is not readable.
 is_writable "$DST" || die "$DST" is not writable.
 {

@@ -12,7 +12,7 @@ set -o nounset
 set -- --quiet "$@"
 #
 # Reports download and upload internet speeds in a loop.
-BASE_APP_VERSION=0.9.20220901
+readonly BASE_APP_VERSION=0.9.20220902
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
@@ -123,8 +123,9 @@ main() {
 		has_colon "$1" || die "$1 is not valid parameter for HOST:PORT."
 		has_colon "$2" || die "$2 is not valid parameter for USER:PASS."
 		is_alive "$1" || die "$1 is unavailable."
-		SERV="$1"
-		AUTH="$2"
+		readonly \
+			AUTH="$2" \
+			SERV="$1"
 	fi
 
 	# The index starts with 0, it guarantees the title printing from the begging.

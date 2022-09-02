@@ -16,10 +16,12 @@ NME=$(basename -- "$1")
 
 # Extracts file name only.
 NME="${NME%.*}"
-TEX="$NME.tex"
-DVI="$NME.dvi"
-PDF="$NME.pdf"
-LOG="$NME.log"
+readonly \
+	DVI="$NME.dvi" \
+	LOG="$NME.log" \
+	NME \
+	PDF="$NME.pdf" \
+	TEX="$NME.tex"
 
 # Do not worry about file cleaning on exit. Garbage collector will remove the
 # temporarily directory.

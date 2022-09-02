@@ -7,13 +7,17 @@ set -o nounset
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
-MINV=1
 MAXV=10
+MINV=1
 MIDL=$(((MAXV-MINV+1)/2))
+readonly \
+	MAXV \
+	MIDL \
+	MINV \
+	SCAN='arp-scan --localnet --interface=wlan0'
 CNTR=$MIDL
 NAME=''
 ADDR=''
-SCAN='arp-scan --localnet --interface=wlan0'
 
 scan() {
 	line=$($SCAN | grep "$MACA" | head -1) || :

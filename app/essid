@@ -7,8 +7,9 @@ set -o nounset
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
-OLD=/"$BASE_WIP"/old
-CUR=/"$BASE_WIP"/cur
+readonly \
+	CUR=/"$BASE_WIP"/cur \
+	OLD=/"$BASE_WIP"/old
 
 list() {
 	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 > "$CUR"

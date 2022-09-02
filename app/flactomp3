@@ -7,11 +7,13 @@ set -o nounset
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
 [ "$#" -eq 1 ] || die Usage: flactomp3.sh FILENAME.flac.
-SRC="$1"
+readonly \
+	SRC="$1" \
+	TAG="$BASE_WIP"/tags
 is_readable "$SRC" || die "$SRC" is not readable.
 DST="$(printf %s "$SRC" | sed 's/\.flac/.mp3/')"
+readonly DST
 yes_to_continue Convert "$SRC" to "$DST"?
-TAG="$BASE_WIP"/tags
 metaflac --export-tags-to=/dev/stdout "$SRC" |
 	sed \
 		-e 's/=/="/' \

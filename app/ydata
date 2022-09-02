@@ -7,18 +7,21 @@
 # renamr, rsync, transcode, yt-dlp.
 set -o errexit
 set -o nounset
-BASE_APP_VERSION=0.9.20220901
+AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
+SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
-RES="$BASE_WIP/res"
-AUD="$BASE_WIP/aud"
-VID="$BASE_WIP/vid"
-DST=/mnt/nas-ibx/ytb
-ARC=/mnt/nas-ibx/ytb/app/done.txt
-CKS=/mnt/nas-ibx/ytb/app/cookies.txt
-SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
-AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
+readonly \
+	ARC=/mnt/nas-ibx/ytb/app/done.txt \
+	AUD="$BASE_WIP/aud" \
+	AUT \
+	BASE_APP_VERSION=0.9.20220902 \
+	CKS=/mnt/nas-ibx/ytb/app/cookies.txt \
+	DST=/mnt/nas-ibx/ytb \
+	RES="$BASE_WIP/res" \
+	SRC \
+	VID="$BASE_WIP/vid"
 
 # The script is ran by cron, the environment is stricked.
 export LC_ALL=en_US.UTF-8

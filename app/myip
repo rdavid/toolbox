@@ -11,7 +11,7 @@
 # Reports external IP in a loop.
 set -o errexit
 set -o nounset
-BASE_APP_VERSION=0.9.20220901
+readonly BASE_APP_VERSION=0.9.20220902
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
@@ -34,11 +34,10 @@ title() {
 	log "       IP       | State | since $(base_duration "$BASE_BEG")"
 }
 
-
 # The index starts with 0, it guarantees the title printing from the begging.
 main() {
 	validate_cmd awk dig whois
-	i=0
+	local i=0
 	while :; do
 		[ $((i%12)) -eq 0 ] && title
 		myip
