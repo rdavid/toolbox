@@ -39,7 +39,7 @@ main() {
 	validate_cmd awk dig whois
 	local i=0
 	while :; do
-		[ $((i%12)) -eq 0 ] && title
+		[ $((i%24)) -eq 0 ] && title
 		myip
 		sleep 5
 		i=$((i+1))
