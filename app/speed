@@ -9,124 +9,53 @@
 # shellcheck disable=SC3043
 set -o errexit
 set -o nounset
-set -- --quiet "$@"
-#
-# Reports download and upload internet speeds in a loop.
-readonly BASE_APP_VERSION=0.9.20220902
 
-# shellcheck source=/usr/local/bin/base.sh
+# shellcheck disable=SC2034
+readonly BASE_APP_VERSION=0.9.20220911
+
+# shellcheck disable=SC1091
 . base.sh
 
-# Verifies if a parameter has colon.
-has_colon() {
-	case "$1" in
-		*:*)
-			true
-			;;
-		*)
-			false
-			;;
-	esac
-}
-
-# Verifies if host is up. The parameter is HOST:PORT
-is_alive() {
-	# shellcheck disable=SC2046
-	nc -z $(printf %s "$1" | tr : \ ) >/dev/null 2>&1
-}
-
-restart_server() {
-	if ! is_alive "$SERV"; then
-		loge "Server $SERV is dead."
-		return
-	fi
-	local out
-	if out=$(curl -u "$AUTH" "http://$SERV/reseau-pa4-logs.cgi" 2>&1); then
-		log "Curl output: $(printf '%s' "$out" | xargs)."
-		sleep 10
-		while ! is_alive "$SERV"; do
-			log "Wait for $SERV to be online."
-			sleep 1
-		done
-		sleep 20
-		log "$SERV is restarted."
-	else
-		loge "Curl failed: $(printf %s "$out" | xargs)"
-	fi
-}
-
-# Parses error message to decide restart will help or not.
-is_repairable() {
-	case "$1" in
-		*No\ matched\ servers*)
-			false
-			;;
-		*Cannot\ retrieve*)
-			true
-			;;
-		*)
-			true
-			;;
-	esac
-}
-
-# Prints current download and upload speeds.
+# Prints current download and upload speeds. The function is ran in a loop,
+# rests in case of an error.
 test_speed() {
-	url_exists google.com || {
+	url_exists google.com >/dev/null || {
 		loge Check internet connection.
 		sleep 1
 		return 0
 	}
-	local out
+	local down host out up
 	if out=$(speedtest-cli 2>&1); then
-		local host speed
-		out=$(printf %s "$out" | grep -E 'Download: |Upload: |Hosted by ')
-		speed=$(
+		down=$(
 			printf %s "$out" |
-				tail --lines=2 |
-					gawk '{print $2}' |
-						xargs
+				grep -E '^Download: ' |
+				gawk '{print $2}'
+		)
+		up=$(
+			printf %s "$out" |
+				grep -E '^Upload: ' |
+				gawk '{print $2}'
 		)
 		host=$(
 			printf %s "$out" |
-				head --lines=1 |
-					cut -c11-
+				grep -E '^Hosted by ' |
+				cut -c11-
 		)
-		printf %s\\n "$(timestamp) $speed $host"
-		return 0
+		log " $(printf %6s "$down") | $(printf %6s "$up") | $host"
+	else
+		loge "$(printf %s "$out" | xargs)"
+		sleep 1
 	fi
-	loge "$(printf %s "$out" | xargs)"
-	if [ -n "${SERV+x}" ]; then
-		if is_repairable "$out"; then
-			restart_server
-		else
-			log Server restart will not solve the issue.
-		fi
-	fi
-
-	# The function is ran in a loop, rest in case of an error.
-	sleep 1
 }
 
 # Prints top title.
 title() {
-	printf '%s Down |  Up |  Host by | since %s\n' \
-		"$(timestamp)" \
-		"$(base_duration "$BASE_BEG")"
+	log "  Down  |   Up   |    Host by    | since $(base_duration "$BASE_BEG")"
 }
 
-# Validates parameters and runs.
+# Reports download and upload internet speeds in a loop.
 main() {
 	validate_cmd gawk speedtest-cli
-	if [ "$#" -eq 2 ]; then
-		validate_cmd nc curl
-		has_colon "$1" || die "$1 is not valid parameter for HOST:PORT."
-		has_colon "$2" || die "$2 is not valid parameter for USER:PASS."
-		is_alive "$1" || die "$1 is unavailable."
-		readonly \
-			AUTH="$2" \
-			SERV="$1"
-	fi
 
 	# The index starts with 0, it guarantees the title printing from the begging.
 	local i=0
