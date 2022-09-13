@@ -5,7 +5,7 @@ set -o errexit
 set -o nounset
 set -- --quiet "$@"
 DST=/usr/local/bin
-TAG=v0.9.20220904
+TAG=v0.9.20220914
 TGT=$DST/base.sh
 URL=https://github.com/rdavid/shellbase/releases/download/$TAG/base.sh
 readonly \
