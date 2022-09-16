@@ -17,6 +17,7 @@ backups.
 - [`chowner`](app/chowner) change an owner and set right permissions on a
 directory.
 - [`flactomp3`](app/flactomp3) converts audio to mp3 with tags.
+- [`speed`](app/speed) Continuously prints download and upload internet speeds.
 - [`tru`](app/tru) stands for transmission remote updater. It removes a
 torrent with content and than adds it again. It is usefull with cron to increase
 a ratio.
@@ -28,7 +29,7 @@ keeps safe. It is usefull with cron.
 Make sure `/usr/local/bin/` is in your `PATH`.
 ```sh
 git clone https://github.com/rdavid/toolbox.git &&
-./toolbox/install
+	./toolbox/install
 ```
 ## License
 The scripts are copyright [David Rabkin](http://cv.rabkin.co.il) and available
