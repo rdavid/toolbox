@@ -17,7 +17,9 @@ backups.
 - [`chowner`](app/chowner) change an owner and set right permissions on a
 directory.
 - [`flactomp3`](app/flactomp3) converts audio to mp3 with tags.
-- [`speed`](app/speed) Continuously prints download and upload internet speeds.
+- [`myip`](app/myip) continuously prints external IP, uses `dig`.
+- [`speed`](app/speed) continuously prints download and upload internet speeds,
+uses `speedtest` utility.
 - [`tru`](app/tru) stands for transmission remote updater. It removes a
 torrent with content and than adds it again. It is usefull with cron to increase
 a ratio.
