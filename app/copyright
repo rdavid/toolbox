@@ -1,0 +1,60 @@
+#!/bin/sh
+# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# Copyright 2022 David Rabkin
+# The script uses local variables which are not POSIX but supported by most
+# shells, see more:
+#  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
+# Disables shellcheck warning about using local variables.
+# shellcheck disable=SC3043
+# Disables shellcheck warning about unused variable.
+# shellcheck disable=SC2034
+readonly \
+	BASE_APP_VERSION=0.9.20220919 \
+	OWNER=David\ Rabkin \
+	PATTERN='Copyright\ .*\ David\ Rabkin'
+
+# Disables shellcheck warning about not following the file.
+# shellcheck disable=SC1091
+. base.sh
+
+# Analyzes input files, fixes copyright years if needed.
+fix_outdated() {
+	local arg copyrighted modified
+	for arg do
+		modified="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
+		copyrighted="$(
+			grep -E "$PATTERN" < "$arg" |
+				grep -Eo '[0-9]{4}' |
+				tail -n 1
+		)"
+		[ "$modified" != "$copyrighted" ] ||
+			{ log "$arg: copyrighted $copyrighted."; continue; }
+		sed -i '' \
+			"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
+			"$arg"
+		sed -i '' \
+			"s/^\(.*\)$copyrighted\(.*\)$OWNER/\1$copyrighted-$modified\2$OWNER/g" \
+			"$arg"
+		logw "$arg: copyrighted $copyrighted, modified $modified, fixed."
+	done
+}
+
+# Looks for git files in current directory.
+main() {
+	local files
+	validate_cmd git
+	files="$(
+		git ls-files . 2>&1 |
+			xargs grep -E "$PATTERN" /dev/null |
+			cut -d : -f 1 |
+			sort -V |
+			uniq |
+			xargs
+	)" || die Git failed: "$files"
+
+	# No need for double quates.
+	# shellcheck disable=SC2086
+	fix_outdated $files
+}
+
+main "$@"

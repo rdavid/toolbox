@@ -14,8 +14,9 @@ There are following utilities:
 - [`bak`](app/bak) is a wrapper on
 [`rdiff-backup`](https://github.com/rdiff-backup/rdiff-backup) to produce, well,
 backups.
-- [`chowner`](app/chowner) change an owner and set right permissions on a
+- [`chowner`](app/chowner) changes an owner and sets right permissions on a
 directory.
+- [`copyright`](app/copyright) updates published years in copyrighed title.
 - [`flactomp3`](app/flactomp3) converts audio to mp3 with tags.
 - [`myip`](app/myip) continuously prints external IP, uses `dig`.
 - [`speed`](app/speed) continuously prints download and upload internet speeds,
