@@ -1,9 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2022 David Rabkin
-set -o errexit
-set -o nounset
-
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
 [ "$#" -eq 1 ] || die Usage: flactomp3.sh FILENAME.flac.

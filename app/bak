@@ -2,9 +2,6 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2016-2022 David Rabkin
 # Makes incremental backups from the first parameter to the second.
-set -o errexit
-set -o nounset
-
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
 validate_cmd rdiff-backup

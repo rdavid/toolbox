@@ -9,9 +9,7 @@
 # shellcheck disable=SC3043
 #
 # Reports external IP in a loop.
-set -o errexit
-set -o nounset
-readonly BASE_APP_VERSION=0.9.20220902
+readonly BASE_APP_VERSION=0.9.20220919
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh

@@ -5,8 +5,6 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-set -o errexit
-set -o nounset
 AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
 SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
 
@@ -16,7 +14,7 @@ readonly \
 	ARC=/mnt/nas-ibx/ytb/app/done.txt \
 	AUD="$BASE_WIP/aud" \
 	AUT \
-	BASE_APP_VERSION=0.9.20220902 \
+	BASE_APP_VERSION=0.9.20220919 \
 	CKS=/mnt/nas-ibx/ytb/app/cookies.txt \
 	DST=/mnt/nas-ibx/ytb \
 	RES="$BASE_WIP/res" \

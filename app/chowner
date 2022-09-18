@@ -3,12 +3,9 @@
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
-set -o errexit
-set -o nounset
-set -- --quiet "$@"
 readonly \
 	BASE_APP_USAGE='Usage: chowner user directory.' \
-	BASE_APP_VERSION=0.9.20220902
+	BASE_APP_VERSION=0.9.20220919
 
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh

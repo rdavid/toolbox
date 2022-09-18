@@ -2,9 +2,6 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 # Detects if a device with a certain MAC address is in the local network.
-set -o errexit
-set -o nounset
-
 # shellcheck source=/usr/local/bin/base.sh
 . base.sh
 MAXV=10
