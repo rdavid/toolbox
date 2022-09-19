@@ -16,6 +16,7 @@ readonly \
 # Disables shellcheck warning about not following the file.
 # shellcheck disable=SC1091
 . base.sh
+ACTION=false
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
@@ -29,20 +30,37 @@ fix_outdated() {
 		)"
 		[ "$modified" != "$copyrighted" ] ||
 			{ log "$arg: copyrighted $copyrighted."; continue; }
-		sed -i '' \
-			"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
-			"$arg"
-		sed -i '' \
-			"s/^\(.*\)$copyrighted\(.*\)$OWNER/\1$copyrighted-$modified\2$OWNER/g" \
-			"$arg"
-		logw "$arg: copyrighted $copyrighted, modified $modified, fixed."
+		if [ $ACTION = true ]; then
+			sed -i '' \
+				"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
+				"$arg"
+			sed -i '' \
+				"s/^\(.*\)$copyrighted\(.*\)$OWNER/\1$copyrighted-$modified\2$OWNER/g" \
+				"$arg"
+			log "$arg: copyrighted $copyrighted, modified $modified, fixed."
+		else
+			logw "$arg: copyrighted $copyrighted, modified $modified."
+		fi
 	done
+}
+
+# Validates command line parameters and the environment.
+validate() {
+	validate_cmd git
+	local arg
+	for arg do
+		case "$arg" in
+			-a|--action) ACTION=true;;
+			*)           die Unknown parameter "$arg".;;
+		esac
+	done
+	readonly ACTION
 }
 
 # Looks for git files in current directory.
 main() {
+	validate "$@"
 	local files
-	validate_cmd git
 	files="$(
 		git ls-files . 2>&1 |
 			xargs grep -E "$PATTERN" /dev/null |
