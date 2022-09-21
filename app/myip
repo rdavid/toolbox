@@ -2,16 +2,18 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022 David Rabkin
 #
+# Reports external IP in a loop.
+#
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # Disables shellcheck warning about using local variables.
 # shellcheck disable=SC3043
-#
-# Reports external IP in a loop.
-readonly BASE_APP_VERSION=0.9.20220919
-
-# shellcheck source=/usr/local/bin/base.sh
+# Disables shellcheck warning about unused variable.
+# shellcheck disable=SC2034
+# Disables shellcheck warning about not following the file.
+# shellcheck disable=SC1091
+readonly BASE_APP_VERSION=0.9.20220921
 . base.sh
 
 # Prints external IP.
@@ -20,10 +22,17 @@ myip() {
 	ip="$(dig +short myip.opendns.com @resolver4.opendns.com 2>&1)" ||
 		{ loge dig failed: "$ip"; return 0; }
 	out="$(whois "$ip" 2>&1)" || { loge whois "$ip" failed: "$out"; return 0; }
+
+	# At first tries to find a state of a country.
 	state="$(
 		printf %s "$out" |
-			awk -F':[ \t]+' 'tolower($1) ~ /^country$/ { print toupper($2) }'
+			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ { print toupper($2) }'
 	)"
+	var_exists state >/dev/null ||
+		state="$(
+			printf %s "$out" |
+				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ { print toupper($2) }'
+		)"
 	log "$(printf %15s "$ip") |   $state  |"
 }
 
