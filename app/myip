@@ -26,12 +26,14 @@ myip() {
 	# At first tries to find a state of a country.
 	state="$(
 		printf %s "$out" |
-			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ { print toupper($2) }'
+			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ { print toupper($2) }' |
+			head -1
 	)"
 	var_exists state >/dev/null ||
 		state="$(
 			printf %s "$out" |
-				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ { print toupper($2) }'
+				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ { print toupper($2) }' |
+				head -1
 		)"
 	log "$(printf %15s "$ip") |   $state  |"
 }
