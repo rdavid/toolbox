@@ -8,15 +8,11 @@
 # shellcheck disable=SC3043
 # Disables shellcheck warning about unused variable.
 # shellcheck disable=SC2034
-readonly \
-	BASE_APP_VERSION=0.9.20220919 \
-	OWNER=David\ Rabkin \
-	PATTERN='Copyright\ .*\ David\ Rabkin'
+readonly BASE_APP_VERSION=0.9.20221002
 
 # Disables shellcheck warning about not following the file.
 # shellcheck disable=SC1091
 . base.sh
-ACTION=false
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
@@ -30,7 +26,7 @@ fix_outdated() {
 		)"
 		[ "$modified" != "$copyrighted" ] ||
 			{ log "$arg: copyrighted $copyrighted."; continue; }
-		if [ $ACTION = true ]; then
+		if [ "$ACTION" = true ]; then
 			sed -i '' \
 				"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
 				"$arg"
@@ -44,17 +40,30 @@ fix_outdated() {
 	done
 }
 
-# Validates command line parameters and the environment.
 validate() {
 	validate_cmd git
 	local arg
 	for arg do
+		shift
 		case "$arg" in
-			-a|--action) ACTION=true;;
-			*)           die Unknown parameter "$arg".;;
+			-a|--action)
+				ACTION=true
+				;;
+			-o|--owner)
+				set +o nounset
+				[ -n "$1" ] || die --owner requires a non-empty argument.
+				set -o nounset
+				OWNER="$1"
+				;;
 		esac
 	done
-	readonly ACTION
+	var_exists ACTION || ACTION=false
+	var_exists OWNER || OWNER=David\ Rabkin
+	PATTERN='Copyright .* '$OWNER
+	readonly \
+		ACTION \
+		PATTERN \
+		OWNER
 }
 
 # Looks for git files in current directory.
