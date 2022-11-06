@@ -13,14 +13,34 @@
 # shellcheck disable=SC2034
 # Disables shellcheck warning about not following the file.
 # shellcheck disable=SC1091
-readonly BASE_APP_VERSION=0.9.20220921
+readonly BASE_APP_VERSION=0.9.20221106
 . base.sh
 
 # Prints external IP.
 myip() {
 	local ip out state
-	ip="$(dig +short myip.opendns.com @resolver4.opendns.com 2>&1)" ||
-		{ loge dig failed: "$ip"; return 0; }
+	ip="$(
+		dig \
+			-4 \
+			+short \
+			myip.opendns.com \
+			@resolver4.opendns.com \
+			2>&1
+		)" || { loge OpenDNS failed: "$ip"; return 0; }
+	var_exists ip >/dev/null || {
+		ip="$(
+			dig \
+				-4 \
+				-t txt \
+				+short \
+				o-o.myaddr.l.google.com \
+				@ns1.google.com \
+				2>&1
+			)" || { loge Google DNS failed: "$ip"; return 0; }
+			ip="$(printf %s "$ip" | awk -F\" '{ print $2 }')"
+			var_exists ip >/dev/null ||
+				{ loge OpenDNS and Google DNS failed to resolve my IP; return 0; }
+	}
 	out="$(whois "$ip" 2>&1)" || { loge whois "$ip" failed: "$out"; return 0; }
 
 	# At first tries to find a state of a country.
