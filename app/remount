@@ -2,14 +2,14 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2016-2022 David Rabkin
 readonly \
-	PRM='/etc/fstab-prm' \
-	TMP='/etc/fstab-tmp'
+	PRM=/etc/fstab-prm \
+	TMP=/etc/fstab-tmp
 
-# shellcheck source=/usr/local/bin/base.sh
+# shellcheck disable=SC1091
 . base.sh
 be_root
-[ -f $TMP ] || die "$TMP not found."
-[ -f $PRM ] || die "$PRM not found."
+[ -f $TMP ] || die $TMP not found.
+[ -f $PRM ] || die $PRM not found.
 cp $TMP /etc/fstab && mount -a
 cp $PRM /etc/fstab
 exit 0
