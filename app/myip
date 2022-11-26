@@ -13,7 +13,7 @@
 # shellcheck disable=SC2034
 # Disables shellcheck warning about not following the file.
 # shellcheck disable=SC1091
-readonly BASE_APP_VERSION=0.9.20221106
+readonly BASE_APP_VERSION=0.9.20221126
 . base.sh
 
 # Prints external IP.
@@ -49,12 +49,15 @@ myip() {
 			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ { print toupper($2) }' |
 			head -1
 	)"
-	var_exists state >/dev/null ||
+	var_exists state >/dev/null || {
 		state="$(
 			printf %s "$out" |
 				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ { print toupper($2) }' |
 				head -1
 		)"
+		var_exists state >/dev/null ||
+			state=NO
+	}
 	log "$(printf %15s "$ip") |   $state  |"
 }
 
