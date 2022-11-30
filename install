@@ -4,26 +4,19 @@
 set -o errexit
 set -o nounset
 set -- --quiet "$@"
-DST=/usr/local/bin
-TAG=v0.9.20221129
-TGT=$DST/base.sh
-URL=https://github.com/rdavid/shellbase/releases/download/$TAG/base.sh
 readonly \
-	DST \
-	TAG \
-	TGT \
-	URL
+	DST=/usr/local/bin \
+	TGT=/usr/local/bin/base.sh \
+	SRC=https://github.com/rdavid/shellbase/releases/download/v0.9.20221129/base.sh
 
 # Starting point.
-command -v wget >/dev/null 2>&1 || { printf 'Install wget.\n' >&2; exit 12; }
+command -v curl >/dev/null 2>&1 || { printf >&2 Install\ curl.\\n; exit 12;}
 
-# wget downloads shellbase content to stdout, eval sources it to the script
-# running environment.
-eval "$(
-	wget $URL \
-		--output-document - \
-		--quiet
-	)"
+# Uses Unix shell framework shellbase:
+#  https://github.com/rdavid/shellbase/
+# curl downloads shellbase content to stdout, eval sources it to the running
+# environment.
+eval "$(curl --location --silent $SRC)"
 if file_exists $TGT; then
 	yes_to_continue \
 		"$(sh $TGT --quiet --version)" \
@@ -31,9 +24,8 @@ if file_exists $TGT; then
 		"$BASE_VERSION"?
 fi
 is_writable $DST || die $DST is not writable.
-wget $URL \
-	--output-document $TGT \
-	--quiet || die "Unable to install $URL to $DST."
+curl --location --output $TGT --silent $SRC ||
+	die "Unable to install $SRC to $DST."
 printf \
 	'%s is installed to %s.\n' \
 	"$(sh $TGT --quiet --version)" \
