@@ -13,7 +13,7 @@
 # shellcheck disable=SC2034
 # Disables shellcheck warning about not following the file.
 # shellcheck disable=SC1091
-readonly BASE_APP_VERSION=0.9.20221126
+readonly BASE_APP_VERSION=0.9.20221208
 . base.sh
 
 # Prints external IP.
@@ -26,7 +26,7 @@ myip() {
 			myip.opendns.com \
 			@resolver4.opendns.com \
 			2>&1
-		)" || { loge OpenDNS failed: "$ip"; return 0; }
+		)" || { loge OpenDNS failed: "$ip"; return 0;}
 	var_exists ip >/dev/null || {
 		ip="$(
 			dig \
@@ -36,23 +36,23 @@ myip() {
 				o-o.myaddr.l.google.com \
 				@ns1.google.com \
 				2>&1
-			)" || { loge Google DNS failed: "$ip"; return 0; }
-			ip="$(printf %s "$ip" | awk -F\" '{ print $2 }')"
+			)" || { loge Google DNS failed: "$ip"; return 0;}
+			ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
 			var_exists ip >/dev/null ||
-				{ loge OpenDNS and Google DNS failed to resolve my IP; return 0; }
+				{ loge OpenDNS and Google DNS failed to resolve my IP; return 0;}
 	}
-	out="$(whois "$ip" 2>&1)" || { loge whois "$ip" failed: "$out"; return 0; }
+	out="$(whois "$ip" 2>&1)" || { loge whois "$ip" failed: "$out"; return 0;}
 
 	# At first tries to find a state of a country.
 	state="$(
 		printf %s "$out" |
-			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ { print toupper($2) }' |
+			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ {print toupper($2)}' |
 			head -1
 	)"
 	var_exists state >/dev/null || {
 		state="$(
 			printf %s "$out" |
-				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ { print toupper($2) }' |
+				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ {print toupper($2)}' |
 				head -1
 		)"
 		var_exists state >/dev/null ||

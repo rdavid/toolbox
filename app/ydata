@@ -5,16 +5,19 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
+# Disables shellcheck warning about unused variable.
+# shellcheck disable=SC2034
+readonly BASE_APP_VERSION=0.9.20221206
 AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
 SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
 
-# shellcheck source=/usr/local/bin/base.sh
+# Disables shellcheck warning about not following the file.
+# shellcheck disable=SC1091
 . base.sh
 readonly \
 	ARC=/mnt/nas-ibx/ytb/app/done.txt \
 	AUD="$BASE_WIP/aud" \
 	AUT \
-	BASE_APP_VERSION=0.9.20220919 \
 	CKS=/mnt/nas-ibx/ytb/app/cookies.txt \
 	DST=/mnt/nas-ibx/ytb \
 	RES="$BASE_WIP/res" \
@@ -56,7 +59,7 @@ fi
 	3>&1 1>&2 | to_log
 
 # Stops if there are no downloaded files.
-is_empty "$VID" && { log There is no new downloaded video.; exit 0; }
+is_empty "$VID" && { log There is no new downloaded video.; exit 0;}
 
 # Calculates output table width for renamr and transcode utilities.
 WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))

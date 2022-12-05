@@ -8,7 +8,7 @@
 # shellcheck disable=SC3043
 # Disables shellcheck warning about unused variable.
 # shellcheck disable=SC2034
-readonly BASE_APP_VERSION=0.9.20221002
+readonly BASE_APP_VERSION=0.9.20221106
 
 # Disables shellcheck warning about not following the file.
 # shellcheck disable=SC1091
@@ -25,7 +25,7 @@ fix_outdated() {
 				tail -n 1
 		)"
 		[ "$modified" != "$copyrighted" ] ||
-			{ log "$arg: copyrighted $copyrighted."; continue; }
+			{ log "$arg: copyrighted $copyrighted."; continue;}
 		if [ "$ACTION" = true ]; then
 			sed -i '' \
 				"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \

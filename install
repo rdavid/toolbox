@@ -4,10 +4,11 @@
 set -o errexit
 set -o nounset
 set -- --quiet "$@"
+readonly REL=v0.9.20221129
 readonly \
 	DST=/usr/local/bin \
 	TGT=/usr/local/bin/base.sh \
-	SRC=https://github.com/rdavid/shellbase/releases/download/v0.9.20221129/base.sh
+	SRC=https://github.com/rdavid/shellbase/releases/download/$REL/base.sh
 
 # Starting point.
 command -v curl >/dev/null 2>&1 || { printf >&2 Install\ curl.\\n; exit 12;}

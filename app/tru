@@ -10,7 +10,7 @@
 # Disables shellcheck warning about using local variables.
 # shellcheck disable=SC3043
 # shellcheck disable=SC2034
-readonly BASE_APP_VERSION=0.9.20221118
+readonly BASE_APP_VERSION=0.9.20221206
 
 # shellcheck disable=SC1091
 . base.sh
@@ -22,7 +22,7 @@ tid() {
 	out="$(transmission-remote "$SER" $AUT --list 2>&1)" ||
 		die Unable to communicate with "$SER": "$out"
 	out="$(printf %s "$out" | grep "$NME")"
-	[ -n "$out" ] || { logw There is no "$NME" in "$SER".; return 0; }
+	[ -n "$out" ] || { logw There is no "$NME" in "$SER".; return 0;}
 	out="$(printf %s "$out" | awk '{print $1}')"
 	[ -n "$out" ] || die Wrong format: "$out".
 	printf %s "$out"
