@@ -1,10 +1,7 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022 David Rabkin
-set -o errexit
-set -o nounset
-set -- --quiet "$@"
-readonly REL=v0.9.20221129
+readonly REL=v0.9.20221213
 readonly \
 	DST=/usr/local/bin \
 	TGT=/usr/local/bin/base.sh \
