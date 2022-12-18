@@ -3,9 +3,9 @@
 # Copyright 2022 David Rabkin
 readonly REL=v0.9.20221213
 readonly \
+	BSH=https://github.com/rdavid/shellbase/releases/download/$REL/base.sh \
 	DST=/usr/local/bin \
-	TGT=/usr/local/bin/base.sh \
-	SRC=https://github.com/rdavid/shellbase/releases/download/$REL/base.sh
+	TGT=/usr/local/bin/base.sh
 
 # Starting point.
 command -v curl >/dev/null 2>&1 || { printf >&2 Install\ curl.\\n; exit 12;}
@@ -14,16 +14,15 @@ command -v curl >/dev/null 2>&1 || { printf >&2 Install\ curl.\\n; exit 12;}
 #  https://github.com/rdavid/shellbase/
 # curl downloads shellbase content to stdout, eval sources it to the running
 # environment.
-eval "$(curl --location --silent $SRC)"
-if file_exists $TGT; then
+eval "$(curl --location --silent $BSH)"
+file_exists $TGT &&
 	yes_to_continue \
 		"$(sh $TGT --quiet --version)" \
-		is already installed. Install \
+		is installed. Install \
 		"$BASE_VERSION"?
-fi
 is_writable $DST || die $DST is not writable.
-curl --location --output $TGT --silent $SRC ||
-	die "Unable to install $SRC to $DST."
+curl --location --output $TGT --silent $BSH ||
+	die "Unable to install $BSH to $DST."
 printf \
 	'%s is installed to %s.\n' \
 	"$(sh $TGT --quiet --version)" \
