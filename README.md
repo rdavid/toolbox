@@ -19,6 +19,7 @@ directory.
 - [`copyright`](app/copyright) updates published years in copyrighed title.
 - [`flactomp3`](app/flactomp3) converts audio to mp3 with tags.
 - [`myip`](app/myip) continuously prints external IP, uses `dig`.
+- [`pingo`](app/pingo) adds timestamps to the ping command output.
 - [`speed`](app/speed) continuously prints download and upload internet speeds,
 uses `speedtest` utility.
 - [`tru`](app/tru) stands for transmission remote updater. It removes a
