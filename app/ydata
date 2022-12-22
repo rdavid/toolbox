@@ -5,14 +5,12 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-# Disables shellcheck warning about unused variable.
-# shellcheck disable=SC2034
-readonly BASE_APP_VERSION=0.9.20221206
+# shellcheck disable=SC2034 # Unused variable.
+readonly BASE_APP_VERSION=0.9.20221222
 AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
 SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
 
-# Disables shellcheck warning about not following the file.
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091 # Not following the file.
 . base.sh
 readonly \
 	ARC=/mnt/nas-ibx/ytb/app/done.txt \
@@ -30,7 +28,7 @@ export LANG=en_US.UTF-8
 export PATH="$PATH:/usr/local/bin"
 
 # Makes sure that needed software packages are installed at the host.
-validate_cmd HandBrakeCLI mp4track rsync renamr tput transcode yt-dlp
+validate_cmd HandBrakeCLI mp4track renamr rsync tput transcode yt-dlp
 url_exists http://youtube.com || die Check internet connection.
 is_writable $DST $ARC || die Some directories are not writable.
 is_readable "$AUT" "$SRC" || die Some directories are not readable.
@@ -42,8 +40,7 @@ else
 	CKS_PARAM=''
 fi
 
-# SC2086: Double quote to prevent globbing and word splitting.
-# shellcheck disable=SC2086
+# shellcheck disable=SC2086 # Double quote to prevent globbing.
 {
 	yt-dlp \
 		$CKS_PARAM \
