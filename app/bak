@@ -3,13 +3,11 @@
 # Copyright 2016-2022 David Rabkin
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+readonly BASE_APP_VERSION=0.9.20221222
 . base.sh
-validate_cmd rdiff-backup
 [ "$#" -eq 2 ] || die Usage: bak.sh source destination.
-readonly \
-	BASE_APP_VERSION=0.9.20221222 \
-	DST="$2" \
-	SRC="$1"
+validate_cmd rdiff-backup
+readonly DST="$2" SRC="$1"
 is_readable "$SRC" || die "$SRC" is not readable.
 is_writable "$DST" || die "$DST" is not writable.
 {
