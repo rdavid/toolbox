@@ -27,4 +27,3 @@ printf \
 	'%s is installed to %s.\n' \
 	"$(sh $TGT --quiet --version)" \
 	$DST
-exit 0

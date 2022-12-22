@@ -7,18 +7,16 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
-# Disables shellcheck warning about using local variables.
-# shellcheck disable=SC3043
-# shellcheck disable=SC2034
-readonly BASE_APP_VERSION=0.9.20221206
-
-# shellcheck disable=SC1091
+# shellcheck disable=SC3043 # Uses local variables.
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+readonly BASE_APP_VERSION=0.9.20221222
 . base.sh
 
 # Looks for torrent ID by torrent file name.
 tid() {
 	local out
-	# shellcheck disable=SC2086
+
+	# shellcheck disable=SC2086 # Double quote to prevent globbing.
 	out="$(transmission-remote "$SER" $AUT --list 2>&1)" ||
 		die Unable to communicate with "$SER": "$out"
 	out="$(printf %s "$out" | grep "$NME")"
@@ -32,7 +30,7 @@ validation() {
 	validate_cmd awk nc tr transmission-remote transmission-show
 	[ "$#" -eq 3 ] || die Usage: tru host:port user:pass torrent-file.
 
-	# Single ':' means there is no authentication data.
+	# Single : means there is no authentication data.
 	if [ "$2" != : ]; then
 		AUT="--auth $2"
 	else
@@ -48,7 +46,7 @@ validation() {
 	local out prm
 	prm="$(printf %s "$SER" | tr : \ )"
 
-	# shellcheck disable=SC2086
+	# shellcheck disable=SC2086 # Double quote to prevent globbing.
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
 
 	# Validates third parameter full torrent file name.
@@ -68,7 +66,7 @@ main() {
 	tid=$(tid) || die
 	if [ -n "$tid" ]; then
 		{
-			# shellcheck disable=SC2086
+			# shellcheck disable=SC2086 # Double quote to prevent globbing.
 			transmission-remote "$SER" $AUT --torrent "$tid" --remove-and-delete \
 				2>&1 1>&3 3>&- | to_loge
 		} \
@@ -78,7 +76,7 @@ main() {
 
 	# Adds torrent file name to torrent server.
 	{
-		# shellcheck disable=SC2086
+		# shellcheck disable=SC2086 # Double quote to prevent globbing.
 		transmission-remote "$SER" $AUT --add "$TOR" \
 			2>&1 1>&3 3>&- | to_loge
 	} \
@@ -89,5 +87,5 @@ main() {
 	log "$NME $tid is added to $SER."
 }
 
+# Starting point.
 main "$@"
-exit 0

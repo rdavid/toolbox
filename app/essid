@@ -2,7 +2,7 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 # It watches Wi-Fi ESSID change and report.
-# shellcheck source=/usr/local/bin/base.sh
+# shellcheck disable=SC1091 # File not following.
 . base.sh
 readonly \
 	CUR=/"$BASE_WIP"/cur \
@@ -40,4 +40,3 @@ while :; do
 	list
 	comp
 done
-exit 0

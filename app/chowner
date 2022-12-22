@@ -3,11 +3,10 @@
 # Copyright 2019-2022 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
 	BASE_APP_USAGE='Usage: chowner user directory.' \
-	BASE_APP_VERSION=0.9.20220919
-
-# shellcheck source=/usr/local/bin/base.sh
+	BASE_APP_VERSION=0.9.20221222
 . base.sh
 be_root
 [ "$#" -eq 2 ] || die "$BASE_APP_USAGE"
@@ -21,4 +20,3 @@ chown -R "$USR" "$DIR"
 find "$DIR" -type d -exec chmod 755 {} \;
 find "$DIR" -type f -exec chmod 644 {} \;
 log The owner of "$DIR" is changed to "$USR".
-exit 0

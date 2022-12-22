@@ -1,8 +1,6 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-#
 # tss.sh - Terminal Screen Saver.
-#
 # Copyright 2017-2022 David Rabkin
 
 # All cowsay types in array.

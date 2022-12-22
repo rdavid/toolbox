@@ -5,13 +5,11 @@
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, yt-dlp.
-# shellcheck disable=SC2034 # Unused variable.
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly BASE_APP_VERSION=0.9.20221222
+. base.sh
 AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
 SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
-
-# shellcheck disable=SC1091 # Not following the file.
-. base.sh
 readonly \
 	ARC=/mnt/nas-ibx/ytb/app/done.txt \
 	AUD="$BASE_WIP/aud" \
@@ -135,4 +133,3 @@ if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
 else
 	log "There are $nsrc files copied to $DST."
 fi
-exit 0

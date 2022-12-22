@@ -1,7 +1,7 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2022 David Rabkin
-# shellcheck source=/usr/local/bin/base.sh
+# shellcheck disable=SC1091 # File not following.
 . base.sh
 [ "$#" -eq 1 ] || die Usage: flactomp3.sh FILENAME.flac.
 readonly \
@@ -34,4 +34,3 @@ flac -dc "$SRC" |
 		--tt "${TITLE}" \
 		--ty "${DATE}" \
 		--add-id3v2 /dev/stdin "$DST"
-exit 0

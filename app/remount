@@ -1,15 +1,13 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2016-2022 David Rabkin
+# shellcheck disable=SC1091 # File not following.
+. base.sh
 readonly \
 	PRM=/etc/fstab-prm \
 	TMP=/etc/fstab-tmp
-
-# shellcheck disable=SC1091
-. base.sh
 be_root
 [ -f $TMP ] || die $TMP not found.
 [ -f $PRM ] || die $PRM not found.
 cp $TMP /etc/fstab && mount -a
 cp $PRM /etc/fstab
-exit 0

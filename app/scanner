@@ -2,7 +2,7 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
 # Detects if a device with a certain MAC address is in the local network.
-# shellcheck source=/usr/local/bin/base.sh
+# shellcheck disable=SC1091 # File not following.
 . base.sh
 MAXV=10
 MINV=1
@@ -11,7 +11,7 @@ readonly \
 	MAXV \
 	MIDL \
 	MINV \
-	SCAN='arp-scan --localnet --interface=wlan0'
+	SCAN=arp-scan\ --localnet\ --interface=wlan0
 CNTR=$MIDL
 NAME=''
 ADDR=''
@@ -21,6 +21,7 @@ scan() {
 	if [ -n "$line" ]; then
 		[ -z "$NAME" ] && NAME=$(printf '%s' "$line" | cut -f1)
 		[ -z "$ADDR" ] && ADDR=$(printf '%s' "$line" | cut -f3 | xargs -0)
+
 		# Each success has much more value than a failure.
 		CNTR=$MAXV
 	else
@@ -44,14 +45,14 @@ wait() {
 
 is_mac() {
 	echo "$1" |
-		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' 1>/dev/null ||
-			die "MAC address $1 is invalid."
+		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' >/dev/null ||
+			die MAC address "$1" is invalid.
 }
 
 be_root
 validate_cmd arp-scan
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
-[ "$1" = 'list' ] && ($SCAN; exit 0)
+[ "$1" = list ] && { $SCAN; exit 0;}
 is_mac "$1"
 MACA="$1"
 while :; do
@@ -59,4 +60,3 @@ while :; do
 	report
 	wait
 done
-exit 0

@@ -7,13 +7,9 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
-# Disables shellcheck warning about using local variables.
-# shellcheck disable=SC3043
-# Disables shellcheck warning about unused variable.
-# shellcheck disable=SC2034
-# Disables shellcheck warning about not following the file.
-# shellcheck disable=SC1091
-readonly BASE_APP_VERSION=0.9.20221208
+# shellcheck disable=SC3043 # Uses local variables.
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+readonly BASE_APP_VERSION=0.9.20221222
 . base.sh
 
 # Prints external IP.
@@ -78,5 +74,5 @@ main() {
 	done
 }
 
+# Starting point.
 main "$@"
-exit 0

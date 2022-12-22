@@ -1,7 +1,7 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2022 David Rabkin
-# shellcheck source=/usr/local/bin/base.sh
+# shellcheck disable=SC1091 # File not following.
 . base.sh
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.tex"
 [ -r "$1" ] || die "Unable to read from source $1."
@@ -23,7 +23,7 @@ readonly \
 # Do not worry about file cleaning on exit. Garbage collector will remove the
 # temporarily directory.
 cp "$1" "$BASE_WIP"
-cd "$BASE_WIP"
+cd "$BASE_WIP" || die
 if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
 	cp "./$LOG" "$OLDPWD"
 	die "See $LOG for errors."
@@ -31,4 +31,3 @@ fi
 dvipdfm "./$DVI" >/dev/null 2>&1
 cp "./$PDF" "$OLDPWD"
 open "$OLDPWD/$PDF"
-exit 0
