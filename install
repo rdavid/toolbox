@@ -1,28 +1,40 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022-2023 David Rabkin
-readonly REL=v0.9.20230102
+readonly REL=0.9.20230102
 readonly \
-	BSH=https://github.com/rdavid/shellbase/releases/download/$REL/base.sh \
 	DST=/usr/local/bin \
+	SRC=https://github.com/rdavid/shellbase/archive/refs/tags/v$REL.tar.gz
 	TGT=/usr/local/bin/base.sh
 
 # Starting point.
 command -v curl >/dev/null 2>&1 || { printf >&2 Install\ curl.\\n; exit 12;}
+command -v tar >/dev/null 2>&1 || { printf >&2 Install\ tar.\\n; exit 13;}
 
 # Uses Unix shell framework shellbase:
 #  https://github.com/rdavid/shellbase/
-# curl downloads shellbase content to stdout, eval sources it to the running
-# environment.
-eval "$(curl --location --silent $BSH)"
+eval "$(
+	curl --location --silent $SRC |
+		tar \
+			--extract \
+			--gzip \
+			--to-stdout \
+			shellbase-$REL/lib/base.sh
+)"
+is_writable $DST || die $DST is not writable.
 file_exists $TGT &&
 	yes_to_continue \
 		"$(sh $TGT --quiet --version)" \
 		is installed. Install \
 		"$BASE_VERSION"?
-is_writable $DST || die $DST is not writable.
-curl --location --output $TGT --silent $BSH ||
-	die "Unable to install $BSH to $DST."
+curl --location --silent $SRC |
+	tar \
+		--directory $DST \
+		--extract \
+		--gzip \
+		--strip-components=2 \
+		shellbase-$REL/lib/base.sh ||
+	die Unable to install shellbase to $DST.
 printf \
 	'%s is installed to %s.\n' \
 	"$(sh $TGT --quiet --version)" \
