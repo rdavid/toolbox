@@ -1,5 +1,5 @@
 # Toolbox [![Hits-of-Code](https://hitsofcode.com/github/rdavid/toolbox?branch=master)](https://hitsofcode.com/view/github/rdavid/toolbox?branch=master) [![License](https://img.shields.io/badge/license-0BSD-green)](https://github.com/rdavid/toolbox/blob/master/LICENSE)
-Unix shell scripts for everyday use.
+Unix shell utilities for everyday use.
 
 * [About](#about)
 * [Install](#install)
@@ -8,9 +8,8 @@ Unix shell scripts for everyday use.
 ## About
 Hi, I'm [David Rabkin](http://cv.rabkin.co.il).
 
-Almost every script uses [`shellbase`](https://github.com/rdavid/shellbase).
-
-There are following utilities:
+Almost every utility uses [`shellbase`](https://github.com/rdavid/shellbase).
+The utilities are mostly POSIX-compliant. There are following utilities:
 - [`bak`](app/bak) is a wrapper on
 [`rdiff-backup`](https://github.com/rdiff-backup/rdiff-backup) to produce, well,
 backups.
@@ -30,9 +29,9 @@ a ratio.
 keeps safe. It is usefull with cron.
 
 ## Install
-Make sure `/usr/local/bin/` is in your `PATH`.
+Make sure `/usr/local/bin` is in your `PATH`.
 ```sh
-git clone https://github.com/rdavid/toolbox.git &&
+git clone git@github.com:rdavid/toolbox.git &&
 	./toolbox/install
 ```
 ## License
