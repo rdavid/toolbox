@@ -1,4 +1,4 @@
-# Toolbox [![Linters](https://github.com/rdavid/toolbox/actions/workflows/lint.yml/badge.svg)](https://github.com/rdavid/toolbox/actions/workflows/lint.yml) [![hits of code](https://hitsofcode.com/github/rdavid/toolbox?branch=master&label=hits%20of%20code)](https://hitsofcode.com/view/github/rdavid/toolbox?branch=master) [![license](https://img.shields.io/github/license/rdavid/toolbox?color=blue&labelColor=gray&logo=freebsd&logoColor=lightgray&style=flat)](https://github.com/rdavid/toolbox/blob/master/LICENSE)
+# Toolbox [![linters](https://github.com/rdavid/toolbox/actions/workflows/lint.yml/badge.svg)](https://github.com/rdavid/toolbox/actions/workflows/lint.yml) [![hits of code](https://hitsofcode.com/github/rdavid/toolbox?branch=master&label=hits%20of%20code)](https://hitsofcode.com/view/github/rdavid/toolbox?branch=master) [![license](https://img.shields.io/github/license/rdavid/toolbox?color=blue&labelColor=gray&logo=freebsd&logoColor=lightgray&style=flat)](https://github.com/rdavid/toolbox/blob/master/LICENSE)
 Unix shell utilities for everyday use.
 
 * [About](#about)
@@ -32,7 +32,7 @@ keeps safe. It is usefull with cron.
 Make sure `/usr/local/bin` is in your `PATH`.
 ```sh
 git clone git@github.com:rdavid/toolbox.git &&
-	./toolbox/install
+	./toolbox/app/install
 ```
 ## License
 `toolbox` is copyright [David Rabkin](http://cv.rabkin.co.il) and available
