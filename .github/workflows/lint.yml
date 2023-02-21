@@ -1,21 +1,15 @@
 ---
 name: linters
-'on':
-  push:
-    branches:
-      - master
+'on': [push]
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+      - uses: actions/checkout@v3
+      - uses: ludeeus/action-shellcheck@master
         with:
           ignore_names: pass
           scandir: app
-      - name: Run YamlLint
-        uses: ibiqlik/action-yamllint@v3
+      - uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: .github/workflows/*.yml
