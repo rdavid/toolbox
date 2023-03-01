@@ -4,7 +4,7 @@
 # The script downloads all new video from pre-configured acoounts in
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
-# renamr, rsync, transcode, yt-dlp.
+# renamr, rsync, transcode, transcode-video, yt-dlp.
 # The script is ran by cron, the environment is stricked.
 export \
 	LANG=en_US.UTF-8 \
@@ -12,7 +12,7 @@ export \
 	PATH="$PATH":/usr/local/bin
 
 # shellcheck disable=SC2034 # Variable appears unused.
-readonly BASE_APP_VERSION=0.9.20230126
+readonly BASE_APP_VERSION=0.9.20230301
 
 # shellcheck disable=SC1091 # File not following.
 . base.sh
@@ -29,7 +29,15 @@ readonly \
 	VID="$BASE_WIP"/vid
 
 # Makes sure that needed software packages are installed at the host.
-validate_cmd HandBrakeCLI mp4track renamr rsync tput transcode yt-dlp
+validate_cmd \
+	HandBrakeCLI \
+	mp4track \
+	renamr \
+	rsync \
+	tput \
+	transcode \
+	transcode-video \
+	yt-dlp
 url_exists http://youtube.com || die Check internet connection.
 is_writable $DST $ARC || die Some directories are not writable.
 is_readable "$AUT" "$SRC" || die Some directories are not readable.
