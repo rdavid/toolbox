@@ -1,51 +1,13 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2022 David Rabkin
-#
+# Copyright 2020-2023 David Rabkin
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20221222
+readonly BASE_APP_VERSION=0.9.20230304
 . base.sh
-
-# Prints current download and upload speeds. The function is ran in a loop,
-# rests in case of an error.
-test_speed() {
-	url_exists google.com >/dev/null || {
-		loge Check internet connection.
-		sleep 1
-		return 0
-	}
-	local down host out up
-	if out=$(speedtest-cli 2>&1); then
-		down=$(
-			printf %s "$out" |
-				grep -E '^Download: ' |
-				gawk '{print $2}'
-		)
-		up=$(
-			printf %s "$out" |
-				grep -E '^Upload: ' |
-				gawk '{print $2}'
-		)
-		host=$(
-			printf %s "$out" |
-				grep -E '^Hosted by ' |
-				cut -c11-
-		)
-		log " $(printf %6s "$down") | $(printf %6s "$up") | $host"
-	else
-		loge "$(printf %s "$out" | xargs)"
-		sleep 1
-	fi
-}
-
-# Prints top title.
-title() {
-	log "  Down  |   Up   |    Host by    | since $(base_duration "$BASE_BEG")"
-}
 
 # Reports download and upload internet speeds in a loop.
 main() {
@@ -58,6 +20,43 @@ main() {
 		test_speed
 		i=$((i+1))
 	done
+}
+
+# Prints current download and upload speeds. The function is ran in a loop,
+# rests in case of an error.
+test_speed() {
+	url_exists google.com >/dev/null || {
+		loge Check internet connection.
+		sleep 1
+		return 0
+	}
+	local down host out up
+	if out="$(speedtest-cli 2>&1)"; then
+		down="$(
+			printf %s "$out" |
+				grep -E '^Download: ' |
+				gawk '{print $2}'
+		)"
+		up="$(
+			printf %s "$out" |
+				grep -E '^Upload: ' |
+				gawk '{print $2}'
+		)"
+		host="$(
+			printf %s "$out" |
+				grep -E '^Hosted by ' |
+				cut -c11-
+		)"
+		log " $(printf %6s "$down") | $(printf %6s "$up") | $host"
+	else
+		loge "$(printf %s "$out" | xargs)"
+		sleep 1
+	fi
+}
+
+# Prints top title.
+title() {
+	log "  Down  |   Up   |    Host by    | since $(base_duration "$BASE_BEG")"
 }
 
 # Starting point.
