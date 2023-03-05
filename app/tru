@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2022 David Rabkin
+# Copyright 2020-2023 David Rabkin
 # tru stands for Transmission Remote Updater. The script removes a torrent with
 # content and than adds it again. It is usefull to automatically increase a
 # ratio.
@@ -9,8 +9,37 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20221222
+readonly BASE_APP_VERSION=0.9.20230306
 . base.sh
+
+# Looks for torrent ID by torrent name extracted from torrent file name.
+# Continues if the ID is not existed.
+main() {
+	validation "$@"
+	local tid
+	tid=$(tid) || die
+	if [ -n "$tid" ]; then
+		{
+			# shellcheck disable=SC2086 # Double quote to prevent globbing.
+			transmission-remote "$SER" $AUT --torrent "$tid" --remove-and-delete \
+				2>&1 1>&3 3>&- | to_loge
+		} \
+			3>&1 1>&2 | to_log
+		log "$NME $tid is removed from $SER."
+	fi
+
+	# Adds torrent file name to torrent server.
+	{
+		# shellcheck disable=SC2086 # Double quote to prevent globbing.
+		transmission-remote "$SER" $AUT --add "$TOR" \
+			2>&1 1>&3 3>&- | to_loge
+	} \
+		3>&1 1>&2 | to_log
+
+	# Verifies that a torrent was added.
+	tid=$(tid) || die
+	log "$NME $tid is added to $SER."
+}
 
 # Looks for torrent ID by torrent file name.
 tid() {
@@ -55,36 +84,6 @@ validation() {
 	NME="$(printf %s "$out" | grep Name: | head -1 | cut -c 7-)"
 	readonly NME
 	[ -n "$NME" ] || die Unable to extract name from "$TOR": "$out"
-}
-
-main() {
-	validation "$@"
-
-	# Looks for torrent ID by torrent name extracted from torrent file name.
-	# Continues if the ID is not existed.
-	local tid
-	tid=$(tid) || die
-	if [ -n "$tid" ]; then
-		{
-			# shellcheck disable=SC2086 # Double quote to prevent globbing.
-			transmission-remote "$SER" $AUT --torrent "$tid" --remove-and-delete \
-				2>&1 1>&3 3>&- | to_loge
-		} \
-			3>&1 1>&2 | to_log
-		log "$NME $tid is removed from $SER."
-	fi
-
-	# Adds torrent file name to torrent server.
-	{
-		# shellcheck disable=SC2086 # Double quote to prevent globbing.
-		transmission-remote "$SER" $AUT --add "$TOR" \
-			2>&1 1>&3 3>&- | to_loge
-	} \
-		3>&1 1>&2 | to_log
-
-	# Verifies that a torrent was added.
-	tid=$(tid) || die
-	log "$NME $tid is added to $SER."
 }
 
 # Starting point.
