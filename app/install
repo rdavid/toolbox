@@ -8,7 +8,7 @@
 readonly \
 	BASE_APP_VERSION=0.9.20230308 \
 	DST=/usr/local/bin \
-	REL=0.9.20230212 \
+	REL=0.9.20230308 \
 	TGT=/usr/local/bin/base.sh
 readonly \
 	SRC=https://github.com/rdavid/shellbase/archive/refs/tags/v$REL.tar.gz
