@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2022 David Rabkin
+# Copyright 2022-2023 David Rabkin
 # Adds timestamps to the ping command output.
 # shellcheck disable=SC1091 # Disables not following the file.
 . base.sh

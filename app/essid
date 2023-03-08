@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2022 David Rabkin
+# Copyright 2020-2023 David Rabkin
 # It watches Wi-Fi ESSID change and report.
 # shellcheck disable=SC1091 # File not following.
 . base.sh
