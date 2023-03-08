@@ -6,7 +6,7 @@
 . base.sh
 MAXV=10
 MINV=1
-MIDL=$(((MAXV-MINV+1)/2))
+MIDL=$(((MAXV - MINV + 1) / 2))
 readonly \
 	MAXV \
 	MIDL \
@@ -26,7 +26,7 @@ scan() {
 		CNTR=$MAXV
 	else
 		if [ $CNTR -ne $MINV ]; then
-			CNTR=$((CNTR-1))
+			CNTR=$((CNTR - 1))
 		fi
 	fi
 }
@@ -46,13 +46,16 @@ wait() {
 is_mac() {
 	echo "$1" |
 		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' >/dev/null ||
-			die MAC address "$1" is invalid.
+		die MAC address "$1" is invalid.
 }
 
 be_root
 validate_cmd arp-scan
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
-[ "$1" = list ] && { $SCAN; exit 0;}
+[ "$1" = list ] && {
+	$SCAN
+	exit 0
+}
 is_mac "$1"
 MACA="$1"
 while :; do

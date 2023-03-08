@@ -6,7 +6,7 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230224 \
+	BASE_APP_VERSION=0.9.20230308 \
 	DST=/usr/local/bin \
 	REL=0.9.20230212 \
 	TGT=/usr/local/bin/base.sh
@@ -46,18 +46,25 @@ shellbase() {
 				--to-stdout \
 				shellbase-$REL/lib/base.sh
 	)"
-	[ -n "${BASE_VERSION+x}" ] || { printf >&2 No\ shellbase.\\n; exit 14;}
+	[ -n "${BASE_VERSION+x}" ] || {
+		printf >&2 No\ shellbase.\\n
+		exit 14
+	}
 }
 
 # Certain packages should be installed.
 validate() {
 	local pkg
 	for pkg in curl tar; do
-		command -v $pkg >/dev/null 2>&1 ||
-			{ printf >&2 Install\ %s.\\n $pkg; exit 12;}
+		command -v $pkg >/dev/null 2>&1 || {
+			printf >&2 Install\ %s.\\n $pkg
+			exit 12
+		}
 	done
-	curl --fail --head --output /dev/null --silent $SRC ||
-		{ printf >&2 '%s is unavailable.\n' $SRC; exit 13;}
+	curl --fail --head --output /dev/null --silent $SRC || {
+		printf >&2 '%s is unavailable.\n' $SRC
+		exit 13
+	}
 	shellbase
 	is_writable $DST || die $DST is not writable.
 	file_exists $TGT &&

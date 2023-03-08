@@ -20,7 +20,10 @@ myip() {
 			myip.opendns.com \
 			@resolver4.opendns.com \
 			2>&1
-		)" || { loge OpenDNS failed: "$ip"; return 0;}
+	)" || {
+		loge OpenDNS failed: "$ip"
+		return 0
+	}
 	var_exists ip >/dev/null || {
 		ip="$(
 			dig \
@@ -30,12 +33,20 @@ myip() {
 				o-o.myaddr.l.google.com \
 				@ns1.google.com \
 				2>&1
-			)" || { loge Google DNS failed: "$ip"; return 0;}
-			ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
-			var_exists ip >/dev/null ||
-				{ loge OpenDNS and Google DNS failed to resolve my IP; return 0;}
+		)" || {
+			loge Google DNS failed: "$ip"
+			return 0
+		}
+		ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
+		var_exists ip >/dev/null || {
+			loge OpenDNS and Google DNS failed to resolve my IP
+			return 0
+		}
 	}
-	out="$(whois "$ip" 2>&1)" || { loge whois "$ip" failed: "$out"; return 0;}
+	out="$(whois "$ip" 2>&1)" || {
+		loge whois "$ip" failed: "$out"
+		return 0
+	}
 
 	# At first tries to find a state of a country.
 	state="$(
@@ -65,10 +76,10 @@ main() {
 	validate_cmd awk dig whois
 	local i=0
 	while :; do
-		[ $((i%24)) -eq 0 ] && title
+		[ $((i % 24)) -eq 0 ] && title
 		myip
 		sleep 5
-		i=$((i+1))
+		i=$((i + 1))
 	done
 }
 

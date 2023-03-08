@@ -6,21 +6,23 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20221222
+readonly BASE_APP_VERSION=0.9.20230308
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
 	local arg copyrighted modified
-	for arg do
+	for arg; do
 		modified="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
 		copyrighted="$(
-			grep -E "$PATTERN" < "$arg" |
+			grep -E "$PATTERN" <"$arg" |
 				grep -Eo '[0-9]{4}' |
 				tail -n 1
 		)"
-		[ "$modified" != "$copyrighted" ] ||
-			{ log "$arg: copyrighted $copyrighted."; continue;}
+		[ "$modified" != "$copyrighted" ] || {
+			log "$arg: copyrighted $copyrighted."
+			continue
+		}
 		if [ "$ACTION" = true ]; then
 			sed -i '' \
 				"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
@@ -39,18 +41,18 @@ fix_outdated() {
 validate() {
 	validate_cmd git
 	local arg
-	for arg do
+	for arg; do
 		shift
 		case "$arg" in
-			-a|--action)
-				ACTION=true
-				;;
-			-o|--owner)
-				set +o nounset
-				[ -n "$1" ] || die --owner requires a non-empty argument.
-				set -o nounset
-				OWNER="$1"
-				;;
+		-a | --action)
+			ACTION=true
+			;;
+		-o | --owner)
+			set +o nounset
+			[ -n "$1" ] || die --owner requires a non-empty argument.
+			set -o nounset
+			OWNER="$1"
+			;;
 		esac
 	done
 	var_exists ACTION || ACTION=false

@@ -17,7 +17,7 @@ metaflac --export-tags-to=/dev/stdout "$SRC" |
 		-e 's/$/"/' \
 		-e 's/Album=/ALBUM=/' \
 		-e 's/Genre=/GENRE=/' \
-		-e 's/Artist=/ARTIST=/' > "$TAG"
+		-e 's/Artist=/ARTIST=/' >"$TAG"
 cat "$TAG"
 
 # shellcheck source=/dev/null

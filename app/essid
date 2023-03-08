@@ -9,7 +9,7 @@ readonly \
 	OLD=/"$BASE_WIP"/old
 
 list() {
-	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 > "$CUR"
+	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 >"$CUR"
 }
 
 copy() {

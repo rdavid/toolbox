@@ -16,9 +16,9 @@ main() {
 	# The index starts with 0, it guarantees the title printing from the begging.
 	local i=0
 	while :; do
-		[ $((i%30)) -eq 0 ] && title
+		[ $((i % 30)) -eq 0 ] && title
 		test_speed
-		i=$((i+1))
+		i=$((i + 1))
 	done
 }
 

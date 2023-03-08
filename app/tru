@@ -49,7 +49,10 @@ tid() {
 	out="$(transmission-remote "$SER" $AUT --list 2>&1)" ||
 		die Unable to communicate with "$SER": "$out"
 	out="$(printf %s "$out" | grep "$NME")"
-	[ -n "$out" ] || { logw There is no "$NME" in "$SER".; return 0;}
+	[ -n "$out" ] || {
+		logw There is no "$NME" in "$SER".
+		return 0
+	}
 	out="$(printf %s "$out" | awk '{print $1}')"
 	[ -n "$out" ] || die Wrong format: "$out".
 	printf %s "$out"

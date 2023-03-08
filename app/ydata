@@ -65,10 +65,13 @@ fi
 	3>&1 1>&2 | to_log
 
 # Stops if there are no downloaded files.
-is_empty "$VID" && { log There is no new downloaded video.; exit 0;}
+is_empty "$VID" && {
+	log There is no new downloaded video.
+	exit 0
+}
 
 # Calculates output table width for renamr and transcode utilities.
-WID=$(( $(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m) ))
+WID=$(($(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m)))
 [ "$WID" -le 1 ] && die Terminal\'s width "$(tput cold)" is too small.
 
 # Renames all downloaded files to the same manner: ASCII, lower case, no
@@ -87,7 +90,7 @@ while read -r a; do
 	if file_exists "$VID/$a"*; then
 		mv "$VID/$a"* "$AUD"
 	fi
-done < "$AUT"
+done <"$AUT"
 is_empty "$VID" ||
 	{
 		transcode \
@@ -126,11 +129,11 @@ nsrc=0
 ndst=0
 pipe="$BASE_WIP"/pipe
 mkfifo "$pipe"
-find "$RES" -type f -exec basename {} \; > "$pipe" &
+find "$RES" -type f -exec basename {} \; >"$pipe" &
 while read -r name; do
-	nsrc=$((nsrc+1))
-	[ -f "$DST/$name" ] && ndst=$((ndst+1))
-done < "$pipe"
+	nsrc=$((nsrc + 1))
+	[ -f "$DST/$name" ] && ndst=$((ndst + 1))
+done <"$pipe"
 rm "$pipe"
 
 # Keeps files locally in case of a failure.
