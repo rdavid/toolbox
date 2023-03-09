@@ -12,12 +12,20 @@ export \
 	PATH="$PATH":/usr/local/bin
 
 # shellcheck disable=SC2034 # Variable appears unused.
-readonly BASE_APP_VERSION=0.9.20230301
+readonly \
+	BASE_APP_VERSION=0.9.20230309 \
+	BASE_MIN_VERSION=0.9.20230308
 
 # shellcheck disable=SC1091 # File not following.
 . base.sh
-AUT="$(dirname "$(realpath "$0")")/../cfg/ytda.aut"
-SRC="$(dirname "$(realpath "$0")")/../cfg/ytda.lst"
+
+# Continues only with certain shellbase version.
+ver_ge "$BASE_VERSION" $BASE_MIN_VERSION ||
+	die Shellbase is "$BASE_VERSION", needs $BASE_MIN_VERSION or above.
+dir="$(realdir "$0")"/../cfg/ || die
+AUT="$dir"ytda.aut
+SRC="$dir"ytda.lst
+unset dir
 readonly \
 	ARC=/mnt/nas-ibx/ytb/app/done.txt \
 	AUD="$BASE_WIP"/aud \
