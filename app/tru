@@ -9,7 +9,9 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20230311
+readonly \
+	BASE_APP_VERSION=0.9.20230312 \
+	BASE_MIN_VERSION=0.9.20230312
 . base.sh
 
 # Looks for torrent ID by torrent name extracted from torrent file name.
@@ -82,7 +84,7 @@ validation() {
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
 
 	# Validates third parameter full torrent file name.
-	is_readable "$TOR" || die
+	isreadable "$TOR" || die
 	out="$(transmission-show "$TOR")" || die Unable to read "$TOR": "$out"
 	NME="$(printf %s "$out" | grep Name: | head -1 | cut -c 7-)"
 	readonly NME

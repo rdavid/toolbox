@@ -2,7 +2,10 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2023 David Rabkin
 # It watches Wi-Fi ESSID change and report.
-# shellcheck disable=SC1091 # File not following.
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+readonly \
+	BASE_APP_VERSION=0.9.20230312 \
+	BASE_MIN_VERSION=0.9.20230312
 . base.sh
 readonly \
 	CUR=/"$BASE_WIP"/cur \
@@ -31,7 +34,7 @@ comp() {
 	log "$out"
 }
 
-be_root
+beroot
 validate_cmd iwlist
 list
 while :; do

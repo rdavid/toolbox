@@ -1,21 +1,22 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2019-2022 David Rabkin
+# Copyright 2019-2023 David Rabkin
 # Sets owner to a user from the first argument, set right permitions for files
 # and directories started from the seconds argument.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
 	BASE_APP_USAGE='Usage: chowner user directory.' \
-	BASE_APP_VERSION=0.9.20221222
+	BASE_APP_VERSION=0.9.20230312 \
+	BASE_MIN_VERSION=0.9.20230312
 . base.sh
-be_root
+beroot
 [ "$#" -eq 2 ] || die "$BASE_APP_USAGE"
 readonly \
 	DIR="$2" \
 	USR="$1"
 user_exists "$USR" || die "$USR": No such user.
 file_exists "$DIR" || die "$DIR": No such file or directory.
-is_writable "$DIR" || die "$DIR" is not writable.
+iswritable "$DIR" || die "$DIR" is not writable.
 chown -R "$USR" "$DIR"
 find "$DIR" -type d -exec chmod 755 {} \;
 find "$DIR" -type f -exec chmod 644 {} \;

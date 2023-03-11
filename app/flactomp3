@@ -1,13 +1,16 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2023 David Rabkin
-# shellcheck disable=SC1091 # File not following.
+# shellcheck disable=SC1091,SC2034 # File not following, variable unused.
+readonly \
+	BASE_APP_VERSION=0.9.20230312 \
+	BASE_MIN_VERSION=0.9.20230312
 . base.sh
 [ "$#" -eq 1 ] || die Usage: flactomp3.sh FILENAME.flac.
 readonly \
 	SRC="$1" \
 	TAG="$BASE_WIP"/tags
-is_readable "$SRC" || die "$SRC" is not readable.
+isreadable "$SRC" || die "$SRC" is not readable.
 DST="$(printf %s "$SRC" | sed 's/\.flac/.mp3/')"
 readonly DST
 yes_to_continue Convert "$SRC" to "$DST"?
