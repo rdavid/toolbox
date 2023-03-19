@@ -49,7 +49,7 @@ is_mac() {
 		die MAC address "$1" is invalid.
 }
 
-be_root
+beroot
 validate_cmd arp-scan
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
 [ "$1" = list ] && {
