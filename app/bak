@@ -4,8 +4,8 @@
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230312 \
-	BASE_APP_VERSION=0.9.20230312
+	BASE_APP_VERSION=0.9.20230326 \
+	BASE_MIN_VERSION=0.9.20230312
 . base.sh
 [ "$#" -eq 2 ] || die Usage: bak.sh source destination.
 validate_cmd rdiff-backup
