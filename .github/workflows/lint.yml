@@ -17,5 +17,5 @@ jobs:
       - run: shfmt -d app
       - uses: ibiqlik/action-yamllint@v3
         with:
-          file_or_dir: .github/workflows/*.yml
+          file_or_dir: .github/*.yml .github/workflows/*.yml
           strict: true
