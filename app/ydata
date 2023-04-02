@@ -1,6 +1,10 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2019-2023 David Rabkin
+# The script uses local variables which are not POSIX but supported by most
+# shells, see more:
+#  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
+# shellcheck disable=SC3043 # Uses local variables.
 # The script downloads all new video from pre-configured acoounts in
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
@@ -13,8 +17,8 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230312 \
-	BASE_MIN_VERSION=0.9.20230312
+	BASE_APP_VERSION=0.9.20230403 \
+	BASE_MIN_VERSION=0.9.20230315
 
 # shellcheck disable=SC1091 # File not following.
 . base.sh
@@ -33,122 +37,174 @@ readonly \
 	SRC \
 	VID="$BASE_WIP"/vid
 
-# Makes sure that needed software packages are installed at the host.
-validate_cmd \
-	HandBrakeCLI \
-	mp4track \
-	renamr \
-	rsync \
-	tput \
-	transcode \
-	transcode-video \
-	yt-dlp
-url_exists http://youtube.com || die Check internet connection.
-iswritable $DST $ARC || die Some directories are not writable.
-isreadable "$AUT" "$SRC" || die Some directories are not readable.
-for d in $RES $AUD $VID; do mkdir -p "$d" || die Unable to create "$d".; done
-if isreadable $CKS; then
-	log Uses cookie $CKS.
-	CKS_PARAM=--cookies\ $CKS
-else
-	CKS_PARAM=''
-fi
+# Calculates output table width for renamr and transcode utilities.
+calc_wid() {
+	WID=$(($(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m)))
+	[ "$WID" -le 1 ] && die Terminal\'s width "$(tput cold)" is too small.
+	readonly WID
+}
 
-# shellcheck disable=SC2086 # Double quote to prevent globbing.
-{
-	yt-dlp \
-		$CKS_PARAM \
-		--add-metadata \
-		--batch-file=$SRC \
-		--download-archive $ARC \
-		--format bestvideo+bestaudio \
-		--merge-output-format mp4 \
-		--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
-		--playlist-reverse \
-		2>&1 1>&3 3>&- | tologe
-} \
-	3>&1 1>&2 | tolog
+# Makes sure every file was copied succesfully to destination. Pass each file
+# locally and verifies there is a file with a same name at destination.
+check() {
+	local ndst=0 nsrc=0 pipe
+	pipe="$BASE_WIP"/pipe
+	mkfifo "$pipe"
+	find "$RES" -type f -exec basename {} \; >"$pipe" &
+	while read -r name; do
+		nsrc=$((nsrc + 1))
+		[ -f "$DST/$name" ] && ndst=$((ndst + 1))
+	done <"$pipe"
+	rm "$pipe"
 
-# Stops if there are no downloaded files.
-isempty "$VID" && {
+	# Keeps the results in case of a failure.
+	if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
+		logw "There are $nsrc files in $RES, $ndst in $DST, keeps the results."
+		[ "$BASE_KEEP_WIP" = true ] || keep_arc
+	else
+		log "There are $nsrc files copied to $DST."
+	fi
+}
+
+# Converts to general formats.
+convert() {
+	isempty "$VID" ||
+		{
+			transcode \
+				--act \
+				--dir "$VID" \
+				--out "$RES" \
+				--wid "$WID" \
+				2>&1 1>&3 3>&- | tologe
+		} \
+			3>&1 1>&2 | tolog
+	isempty "$AUD" ||
+		{
+			transcode \
+				--act \
+				--dir "$AUD" \
+				--mp3 \
+				--out "$RES" \
+				--wid "$WID" \
+				2>&1 1>&3 3>&- | tologe
+		} \
+			3>&1 1>&2 | tolog
+}
+
+# Downloads Youtube files.
+download() {
+	# shellcheck disable=SC2086 # Double quote to prevent globbing.
+	{
+		yt-dlp \
+			$CKS_PARAM \
+			--add-metadata \
+			--batch-file=$SRC \
+			--download-archive $ARC \
+			--format bestvideo+bestaudio \
+			--merge-output-format mp4 \
+			--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+			--playlist-reverse \
+			2>&1 1>&3 3>&- | tologe
+	} \
+		3>&1 1>&2 | tolog
+	isempty "$VID" || return 0
+
+	# Stops if there are no downloaded files.
 	log There is no new downloaded video.
 	exit 0
 }
 
-# Calculates output table width for renamr and transcode utilities.
-WID=$(($(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m)))
-[ "$WID" -le 1 ] && die Terminal\'s width "$(tput cold)" is too small.
+# Moves result to local archive.
+keep_arc() {
+	local arc out who
+	who="$(id -nu 2>&1)" || {
+		loge "$who".
+		who=none
+	}
+	arc="${BASE_WIP%.*}_arc_$who"
+	if out="$(rm -fr "$arc" 2>&1)"; then
+		mkdir "$arc"
+		mv "$AUD" "$RES" "$VID" "$arc"
+		cp "$BASE_WIP"/log "$arc"
+		log The results are in "$arc".
+	else
+		loge "$out".
+	fi
+}
+
+# Downloads, renames, convers, uploads.
+main() {
+	validate
+	download
+	calc_wid
+	rename
+	sort
+	convert
+	upload
+	check
+}
 
 # Renames all downloaded files to the same manner: ASCII, lower case, no
 # spaces.
-{
-	renamr \
-		--act \
-		--dir "$VID" \
-		--wid "$WID" \
-		2>&1 1>&3 3>&- | tologe
-} \
-	3>&1 1>&2 | tolog
-
-# Sorts files to audio and video folders by authors.
-while read -r a; do
-	if file_exists "$VID/$a"*; then
-		mv "$VID/$a"* "$AUD"
-	fi
-done <"$AUT"
-isempty "$VID" ||
+rename() {
 	{
-		transcode \
+		renamr \
 			--act \
 			--dir "$VID" \
-			--out "$RES" \
 			--wid "$WID" \
 			2>&1 1>&3 3>&- | tologe
 	} \
 		3>&1 1>&2 | tolog
-isempty "$AUD" ||
-	{
+}
+
+# Sorts files to audio and video folders by authors.
+sort() {
+	while read -r a; do
+		if file_exists "$VID/$a"*; then
+			mv "$VID/$a"* "$AUD"
+		fi
+	done <"$AUT"
+}
+
+# Makes sure that needed software packages are installed at the host.
+validate() {
+	local dir
+	validate_cmd \
+		HandBrakeCLI \
+		mp4track \
+		renamr \
+		rsync \
+		tput \
 		transcode \
-			--act \
-			--dir "$AUD" \
-			--mp3 \
-			--out "$RES" \
-			--wid "$WID" \
+		transcode-video \
+		yt-dlp
+	url_exists http://youtube.com || die Check internet connection.
+	iswritable $DST $ARC || die Some directories are not writable.
+	isreadable "$AUT" "$SRC" || die Some directories are not readable.
+	for dir in $RES $AUD $VID; do mkdir -p "$dir" ||
+		die Unable to create "$dir".; done
+	if isreadable $CKS; then
+		log Uses cookie $CKS.
+		CKS_PARAM=--cookies\ $CKS
+	else
+		CKS_PARAM=''
+	fi
+	readonly CKS_PARAM
+}
+
+# Uploads the results to the destination.
+upload() {
+	{
+		rsync \
+			--compress \
+			--human-readable \
+			--progress \
+			--verbose \
+			"$RES"/* $DST \
 			2>&1 1>&3 3>&- | tologe
 	} \
 		3>&1 1>&2 | tolog
-{
-	rsync \
-		--compress \
-		--human-readable \
-		--progress \
-		--verbose \
-		"$RES"/* $DST \
-		2>&1 1>&3 3>&- | tologe
-} \
-	3>&1 1>&2 | tolog
+}
 
-# Makes sure every file was copied succesfully to destination. Pass each file
-# locally and verifies there is a file with a same name at destination.
-nsrc=0
-ndst=0
-pipe="$BASE_WIP"/pipe
-mkfifo "$pipe"
-find "$RES" -type f -exec basename {} \; >"$pipe" &
-while read -r name; do
-	nsrc=$((nsrc + 1))
-	[ -f "$DST/$name" ] && ndst=$((ndst + 1))
-done <"$pipe"
-rm "$pipe"
-
-# Keeps files locally in case of a failure.
-if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
-	arc="$BASE_WIP/../$BASE_IAM-arc"
-	mkdir -p "$arc"
-	isempty "$VID" || mv "$VID"/* "$arc"
-	isempty "$AUD" || mv "$AUD"/* "$arc"
-	isempty "$RES" || mv "$RES"/* "$arc"
-	logw "There are $nsrc files in $RES, but $ndst in $DST, archived at $arc."
-else
-	log "There are $nsrc files copied to $DST."
-fi
+# Starting point
+main "$@"
