@@ -6,9 +6,19 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+BASE_APP_USAGE="$(
+	cat <<-EOM 2>&1
+		  -a, --action      Replaces copyright years in files if needed.
+		  -o, --owner       A string for an owner, e.g. -o 'David Rabkin'.
+	EOM
+)" || {
+	printf %s\\n "$BASE_APP_USAGE"
+	exit 2
+}
 readonly \
-	BASE_APP_VERSION=0.9.20230405 \
-	BASE_MIN_VERSION=0.9.20230312
+	BASE_APP_USAGE \
+	BASE_APP_VERSION=0.9.20230408 \
+	BASE_MIN_VERSION=0.9.20230405
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
