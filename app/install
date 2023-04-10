@@ -1,20 +1,22 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022-2023 David Rabkin
+# Uses Unix shell framework shellbase:
+#  https://github.com/rdavid/shellbase/
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230405 \
-	BASE_MIN_VERSION=0.9.20230312 \
+	BASE_APP_VERSION=0.9.20230411 \
+	BASE_MIN_VERSION=0.9.20230405 \
 	DST=/usr/local/bin \
 	REL=0.9.20230405 \
 	TGT=/usr/local/bin/base.sh
 readonly \
 	SRC=https://github.com/rdavid/shellbase/archive/refs/tags/v$REL.tar.gz
 
-# Installs shellbase.
+# Installs shellbase to the destination.
 install() {
 	curl --location --silent $SRC |
 		tar \
@@ -24,55 +26,61 @@ install() {
 			--strip-components=2 \
 			shellbase-$REL/lib/base.sh ||
 		die Unable to install shellbase to $DST.
-	printf \
-		'%s is installed to %s.\n' \
-		"$(sh $TGT --quiet --version)" \
-		$DST
 }
 
 # Validates the environment and installs shellbase.
 main() {
+	local \
+		msg \
+		new="shellbase $REL" \
+		old
 	validate
-	install
+	if file_exists $TGT >/dev/null 2>&1; then
+		old="$(sh $TGT --quiet --version 2>&1)" || die "$old"
+		[ "$old" = "$new" ] &&
+			msg="$new is already installed in $DST. Continue anyway?" ||
+			msg="$old is installed in $DST. Update to $new?"
+		yes_to_continue "$msg"
+		install
+		log "$old is updated to $new in $DST."
+	else
+		install
+		log "$new" is installed in $DST.
+	fi
 }
 
-# Uses Unix shell framework shellbase:
-#  https://github.com/rdavid/shellbase/
+# Installs shellbase to the current shell session. Packages curl and tar are
+# required.
 shellbase() {
-	eval "$(
-		curl --location --silent $SRC |
-			tar \
-				--extract \
-				--gzip \
-				--to-stdout \
-				shellbase-$REL/lib/base.sh
-	)"
-	[ -n "${BASE_VERSION+x}" ] || {
-		printf >&2 No\ shellbase.\\n
-		exit 14
-	}
-}
-
-# Certain packages should be installed.
-validate() {
 	local pkg
 	for pkg in curl tar; do
 		command -v $pkg >/dev/null 2>&1 || {
 			printf >&2 Install\ %s.\\n $pkg
-			exit 12
+			exit 1
 		}
 	done
 	curl --fail --head --output /dev/null --silent $SRC || {
 		printf >&2 '%s is unavailable.\n' $SRC
-		exit 13
+		exit 2
 	}
-	shellbase
+	eval "$(
+		curl --location --silent $SRC |
+			tar --extract --gzip --to-stdout shellbase-$REL/lib/base.sh
+	)"
+	[ -n "${BASE_VERSION+x}" ] || {
+		printf >&2 No\ shellbase.\\n
+		exit 3
+	}
+	log shellbase "$BASE_VERSION" is installed to the current shell session.
+}
+
+# Uses functions of shellbase to validate the environment.
+# shellcheck disable=SC1091,SC2015 # File not following, A && B || C.
+validate() {
+	[ -r $DST/base.sh ] && . $DST/base.sh || shellbase
+	validate_cmd curl tar
 	iswritable $DST || die $DST is not writable.
-	file_exists $TGT &&
-		yes_to_continue \
-			"$(sh $TGT --quiet --version)" \
-			is installed. Install \
-			"$BASE_VERSION"?
+	url_exists $SRC || die
 }
 
 # Starting point.
