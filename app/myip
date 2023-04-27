@@ -77,12 +77,12 @@ myip() {
 		var_exists state 2>/dev/null ||
 			state=NO
 	}
-	log "$(printf %15s "$ip") |   $state  |"
+	printf '%15s |   %s  |\n' "$ip" "$state"
 }
 
 # Prints top title.
 title() {
-	log "       IP       | State | since $(base_duration "$BASE_BEG")"
+	printf '        IP      | State | since %s\n' "$(base_duration "$BASE_BEG")"
 }
 
 # Starting point.
