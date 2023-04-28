@@ -46,7 +46,7 @@ myip() {
 		loge OpenDNS failed: "$ip"
 		return 0
 	}
-	var_exists ip 2>/dev/null || {
+	var_exists ip >/dev/null 2>&1 || {
 		ip="$(
 			dig \
 				-4 \
@@ -61,7 +61,7 @@ myip() {
 		}
 		ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
 		ip="$(printf %15s "$ip")"
-		var_exists ip 2>/dev/null || {
+		var_exists ip >/dev/null 2>&1 || {
 			loge OpenDNS and Google DNS failed to resolve my IP
 			return 0
 		}
@@ -77,13 +77,13 @@ myip() {
 			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ {print toupper($2)}' |
 			head -1
 	)"
-	var_exists state 2>/dev/null || {
+	var_exists state >/dev/null 2>&1 || {
 		state="$(
 			printf %s "$out" |
 				awk -F':[ \t]+' 'tolower($1) ~ /^country$/ {print toupper($2)}' |
 				head -1
 		)"
-		var_exists state 2>/dev/null ||
+		var_exists state >/dev/null 2>&1 ||
 			state=NO
 	}
 	cout "| $ip |   $state  |"
