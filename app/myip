@@ -7,10 +7,18 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+set -- --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20230427 \
+	BASE_APP_VERSION=0.9.20230429 \
 	BASE_MIN_VERSION=0.9.20230415
 . base.sh
+
+# Prepends output string with a timestamp.
+cout() {
+	local tms
+	tms="$(timestamp)" || die
+	printf %s\ %s\\n "$tms" "$*"
+}
 
 # The index starts with 0, it guarantees the title printing from the begging.
 main() {
@@ -52,6 +60,7 @@ myip() {
 			return 0
 		}
 		ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
+		ip="$(printf %15s "$ip")"
 		var_exists ip 2>/dev/null || {
 			loge OpenDNS and Google DNS failed to resolve my IP
 			return 0
@@ -77,12 +86,14 @@ myip() {
 		var_exists state 2>/dev/null ||
 			state=NO
 	}
-	printf '%15s |   %s  |\n' "$ip" "$state"
+	cout "| $ip |   $state  |"
 }
 
 # Prints top title.
 title() {
-	printf '        IP      | State | since %s\n' "$(base_duration "$BASE_BEG")"
+	local dur
+	dur="$(base_duration "$BASE_BEG")" || die
+	printf '     Timestamp    |       IP       | State | since %s\n' "$dur"
 }
 
 # Starting point.
