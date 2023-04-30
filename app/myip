@@ -9,7 +9,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20230429 \
+	BASE_APP_VERSION=0.9.20230501 \
 	BASE_MIN_VERSION=0.9.20230415
 . base.sh
 
@@ -34,7 +34,7 @@ main() {
 
 # Prints external IP.
 myip() {
-	local ip out state
+	local dur ip out state
 	ip="$(
 		dig \
 			-4 \
@@ -86,14 +86,15 @@ myip() {
 		var_exists state >/dev/null 2>&1 ||
 			state=NO
 	}
-	cout "| $ip |   $state  |"
+	dur="$(base_duration "$BASE_BEG")" || die
+	cout "| $ip |   $state  | $dur"
 }
 
 # Prints top title.
 title() {
-	local dur
-	dur="$(base_duration "$BASE_BEG")" || die
-	printf '     Timestamp    |       IP       | State | since %s\n' "$dur"
+	printf -- '------------------+----------------+-------+---------\n'
+	printf -- '    Timestamp     |       IP       | State | Duration\n'
+	printf -- '------------------+----------------+-------+---------\n'
 }
 
 # Starting point.
