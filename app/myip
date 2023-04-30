@@ -10,15 +10,8 @@
 set -- --quiet
 readonly \
 	BASE_APP_VERSION=0.9.20230501 \
-	BASE_MIN_VERSION=0.9.20230415
+	BASE_MIN_VERSION=0.9.20230501
 . base.sh
-
-# Prepends output string with a timestamp.
-cout() {
-	local tms
-	tms="$(timestamp)" || die
-	printf %s\ %s\\n "$tms" "$*"
-}
 
 # The index starts with 0, it guarantees the title printing from the begging.
 main() {
@@ -87,7 +80,7 @@ myip() {
 			state=NO
 	}
 	dur="$(base_duration "$BASE_BEG")" || die
-	cout "| $ip |   $state  | $dur"
+	tsout "| $ip |   $state  | $dur"
 }
 
 # Prints top title.
