@@ -9,7 +9,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20230501 \
+	BASE_APP_VERSION=0.9.20230502 \
 	BASE_MIN_VERSION=0.9.20230501
 . base.sh
 
@@ -85,9 +85,11 @@ myip() {
 
 # Prints top title.
 title() {
-	printf -- '------------------+----------------+-------+---------\n'
-	printf -- '    Timestamp     |       IP       | State | Duration\n'
-	printf -- '------------------+----------------+-------+---------\n'
+	cat <<-EOM
+		------------------+----------------+-------+----------------
+		    Timestamp     |       IP       | State |    Duration
+		------------------+----------------+-------+----------------
+	EOM
 }
 
 # Starting point.
