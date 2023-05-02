@@ -2,18 +2,11 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2022-2023 David Rabkin
 # Adds timestamps to the ping command output.
-# shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230502 \
-	BASE_MIN_VERSION=0.9.20230501
+	BASE_APP_VERSION=0.9.20230503 \
+	BASE_MIN_VERSION=0.9.20230503
 . base.sh
-
-# Redirects input to tsout line by line.
-totsout() {
-	local lne
-	while IFS= read -r lne; do tsout "$lne"; done
-}
 
 # Starting point.
 [ $# -ge 1 ] || die Usage: pingo [network resource].
