@@ -53,7 +53,6 @@ myip() {
 			return 0
 		}
 		ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
-		ip="$(printf %15s "$ip")"
 		var_exists ip >/dev/null 2>&1 || {
 			loge OpenDNS and Google DNS failed to resolve my IP
 			return 0
@@ -80,15 +79,16 @@ myip() {
 			state=NO
 	}
 	dur="$(base_duration "$BASE_BEG")" || die
+	ip="$(printf %15s "$ip")"
 	tsout "| $ip |   $state  | $dur"
 }
 
 # Prints top title.
 title() {
 	cat <<-EOM
-		------------------+----------------+-------+----------------
-		    Timestamp     |       IP       | State |    Duration
-		------------------+----------------+-------+----------------
+		------------------+-----------------+-------+----------------
+		    Timestamp     |        IP       | State |    Duration
+		------------------+-----------------+-------+----------------
 	EOM
 }
 
