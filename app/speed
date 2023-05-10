@@ -6,7 +6,10 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20230304
+set -- --quiet
+readonly \
+	BASE_APP_VERSION=0.9.20230510 \
+	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
 # Reports download and upload internet speeds in a loop.
@@ -47,7 +50,7 @@ test_speed() {
 				grep -E '^Hosted by ' |
 				cut -c11-
 		)"
-		log " $(printf %6s "$down") | $(printf %6s "$up") | $host"
+		tsout "| $(printf %6s "$down") | $(printf %6s "$up") | $host"
 	else
 		loge "$(printf %s "$out" | xargs)"
 		sleep 1
@@ -56,7 +59,11 @@ test_speed() {
 
 # Prints top title.
 title() {
-	log "  Down  |   Up   |    Host by    | since $(base_duration "$BASE_BEG")"
+	cat <<-EOM
+		------------------+--------+------- +----------------
+		    Timestamp     |  Down  |   Up   |    Host By
+		------------------+--------+------- +----------------
+	EOM
 }
 
 # Starting point.
