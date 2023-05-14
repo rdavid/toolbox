@@ -16,6 +16,20 @@ CNTR=$MIDL
 NAME=''
 ADDR=''
 
+is_mac() {
+	echo "$1" |
+		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' >/dev/null ||
+		die MAC address "$1" is invalid.
+}
+
+report() {
+	if [ $CNTR -gt $MIDL ]; then
+		log "Master $NAME $ADDR is home: $CNTR!"
+	else
+		log "Master $MACA is not home: $CNTR."
+	fi
+}
+
 scan() {
 	line=$($SCAN | grep "$MACA" | head -1) || :
 	if [ -n "$line" ]; then
@@ -31,24 +45,11 @@ scan() {
 	fi
 }
 
-report() {
-	if [ $CNTR -gt $MIDL ]; then
-		log "Master $NAME $ADDR is home: $CNTR!"
-	else
-		log "Master $MACA is not home: $CNTR."
-	fi
-}
-
 wait() {
 	sleep 1
 }
 
-is_mac() {
-	echo "$1" |
-		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' >/dev/null ||
-		die MAC address "$1" is invalid.
-}
-
+# Starting point.
 beroot
 validate_cmd arp-scan
 [ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
