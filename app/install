@@ -75,9 +75,9 @@ shellbase() {
 }
 
 # Uses functions of shellbase to validate the environment.
-# shellcheck disable=SC1091,SC2015 # File not following, A && B || C.
+# shellcheck disable=SC1090,SC2015 # File not following, A && B || C.
 validate() {
-	[ -r $DST/base.sh ] && . $DST/base.sh || shellbase
+	[ -r $TGT ] && . $TGT || shellbase
 	validate_cmd curl tar
 	iswritable $DST || die $DST is not writable.
 	url_exists $SRC || die
