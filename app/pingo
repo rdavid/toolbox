@@ -3,8 +3,9 @@
 # Copyright 2022-2023 David Rabkin
 # Adds timestamps to the ping command output.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20230505 \
+	BASE_APP_VERSION=0.9.20230531 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
