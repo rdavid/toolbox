@@ -7,10 +7,10 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-set -- --quiet
+set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20230502 \
-	BASE_MIN_VERSION=0.9.20230501
+	BASE_APP_VERSION=0.9.20230604 \
+	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
 # The index starts with 0, it guarantees the title printing from the begging.
