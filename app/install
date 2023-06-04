@@ -8,7 +8,7 @@
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
 # shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230506 \
+	BASE_APP_VERSION=0.9.20230605 \
 	BASE_MIN_VERSION=0.9.20230505 \
 	DST=/usr/local/bin \
 	REL=0.9.20230505 \
@@ -34,7 +34,7 @@ main() {
 		msg \
 		new="shellbase $REL" \
 		old
-	validate
+	validate "$@"
 	if file_exists $TGT >/dev/null 2>&1; then
 		old="$(sh $TGT --quiet --version 2>&1)" || die "$old"
 		[ "$old" = "$new" ] &&
@@ -42,26 +42,28 @@ main() {
 			msg="$old is installed in $DST. Update to $new?"
 		yes_to_continue "$msg"
 		install
-		log "$old is updated to $new in $DST."
+		printf '%s is updated to %s in %s.\n' "$old" "$new" $DST
 	else
 		install
-		log "$new" is installed in $DST.
+		printf '%s is installed in %s.\n' "$new" $DST
 	fi
 }
 
 # Installs shellbase to the current shell session. Packages curl and tar are
 # required.
 shellbase() {
-	local pkg
+	local err pkg
 	for pkg in curl tar; do
 		command -v $pkg >/dev/null 2>&1 || {
+			err=$?
 			printf >&2 Install\ %s.\\n $pkg
-			exit 1
+			exit $err
 		}
 	done
 	curl --fail --head --output /dev/null --silent $SRC || {
+		err=$?
 		printf >&2 '%s is unavailable.\n' $SRC
-		exit 2
+		exit $err
 	}
 	eval "$(
 		curl --location --silent $SRC |
@@ -69,7 +71,7 @@ shellbase() {
 	)"
 	[ -n "${BASE_VERSION+x}" ] || {
 		printf >&2 No\ shellbase.\\n
-		exit 3
+		exit 1
 	}
 	log shellbase "$BASE_VERSION" is installed to the current shell session.
 }
@@ -77,6 +79,7 @@ shellbase() {
 # Uses functions of shellbase to validate the environment.
 # shellcheck disable=SC1090,SC2015 # File not following, A && B || C.
 validate() {
+	set -- "$@" --quiet
 	[ -r $TGT ] && . $TGT || shellbase
 	validate_cmd curl tar
 	iswritable $DST || die $DST is not writable.
