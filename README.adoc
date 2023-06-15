@@ -1,0 +1,63 @@
+// Settings:
+:toc: macro
+:!toc-title:
+// URLs:
+:url-cv: http://cv.rabkin.co.il
+:url-license: https://github.com/rdavid/toolbox/blob/master/LICENSE
+:url-goredo: http://www.goredo.cypherpunks.ru/Install.html
+:url-goredoer: https://github.com/rdavid/goredoer
+:url-rdiff: https://github.com/rdiff-backup/rdiff-backup
+:url-redo: http://cr.yp.to/redo.html
+:url-shellcheck: https://github.com/koalaman/shellcheck
+:url-shellbase: https://github.com/rdavid/shellbase
+:url-shfmt: https://github.com/mvdan/sh
+:url-speed: https://github.com/sivel/speedtest-cli
+:url-vale: https://vale.sh
+:url-yamllint: https://github.com/adrienverge/yamllint
+:url-yt-dlp: https://github.com/yt-dlp/yt-dlp
+
+= Toolbox
+
+image:https://github.com/rdavid/toolbox/actions/workflows/lint.yml/badge.svg[linters,link=https://github.com/rdavid/toolbox/actions/workflows/lint.yml]
+image:https://hitsofcode.com/github/rdavid/toolbox?branch=master&label=hits%20of%20code[hits of code,link=https://hitsofcode.com/view/github/rdavid/toolbox?branch=master]
+image:https://img.shields.io/github/v/release/rdavid/toolbox?color=blue&label=%20&logo=semver&logoColor=white&style=flat[release),link=https://github.com/rdavid/toolbox/releases]
+image:https://img.shields.io/github/license/rdavid/toolbox?color=blue&labelColor=gray&logo=freebsd&logoColor=lightgray&style=flat[license,link=https://github.com/rdavid/toolbox/blob/master/LICENSE]
+
+toc::[]
+
+== About
+
+`toolbox` is a set of Unix shell utilities for everyday use.
+Every utility is a POSIX-compliant and uses Unix shell framework
+{url-shellbase}[`shellbase`]:
+
+* link:app/bak[`bak`] is a wrapper on {url-rdiff}[`rdiff-backup`] to produce,
+well, backups.
+* link:app/chowner[`chowner`] changes an owner and sets right permissions on a
+directory.
+* link:app/copyright[`copyright`] updates published years in copyrighed title.
+* link:app/flactomp3[`flactomp3`] converts audio to `mp3` with tags.
+* link:app/myip[`myip`] continuously prints external IP, uses `dig`.
+* link:app/pingo[`pingo`] adds timestamps to the ping command output.
+* link:app/speed[`speed`] continuously prints download and upload internet
+speeds, uses {url-speed}[`speedtest`] utility.
+* link:app/tru[`tru`] stands for transmission remote updater.
+It removes a torrent with content and than adds it again.
+It could be ran by `cron` to increase a ratio.
+* link:app/ydata[`ydata`] is a wrapper on {url-yt-dlp}[`yt-dlp`]: downloads,
+converts, renames and keeps safe. It could be ran by `cron`.
+
+== Install
+
+Make sure `/usr/local/bin` is in your `PATH`.
+
+[,sh]
+----
+git clone git@github.com:rdavid/toolbox.git &&
+  ./toolbox/app/install
+----
+
+== License
+
+`toolbox` is copyright {url-cv}[David Rabkin] and available under a
+{url-license}[Zero-Clause BSD license].
