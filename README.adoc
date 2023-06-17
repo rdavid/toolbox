@@ -36,7 +36,7 @@ well, backups.
 * link:app/chowner[`chowner`] changes an owner and sets right permissions on a
 directory.
 * link:app/copyright[`copyright`] updates published years in copyrighed title.
-* link:app/flactomp3[`flactomp3`] converts audio to `mp3` with tags.
+* link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
 * link:app/myip[`myip`] continuously prints external IP, uses `dig`.
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
 * link:app/speed[`speed`] continuously prints download and upload internet
