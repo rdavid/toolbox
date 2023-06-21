@@ -1,8 +1,11 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2022 David Rabkin
+# Copyright 2020-2023 David Rabkin
 # Validates image files.
-# shellcheck disable=SC1091 # File not following.
+# shellcheck disable=SC1091,SC2034 # File not following, variable unused.
+readonly \
+	BASE_APP_VERSION=0.9.20230621 \
+	BASE_MIN_VERSION=0.9.20230606
 . base.sh
 validate_cmd convert
 [ "$#" -eq 1 ] || die Usage: "$BASE_IAM" DIRECTORY
@@ -10,5 +13,6 @@ validate_cmd convert
 find "$1" -type f \
 	\( -name \*.jpg -o -name \*.nef -o -name \*.raf -o -name \*.heic \) |
 	while read -r img; do
-		convert "$img" null >/dev/null 2>&1 || loge "File is corrupted: $img."
+		convert "$img" null >/dev/null 2>&1 || loge File is corrupted: "$img".
+		log "$img" is OK.
 	done
