@@ -16,6 +16,10 @@ jobs:
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d app
       - uses: crate-ci/typos@master
+      - uses: errata-ai/vale-action@reviewdog
+        with:
+          fail_on_error: true
+          files: README.adoc
       - uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: .github/*.yml .github/workflows/*.yml

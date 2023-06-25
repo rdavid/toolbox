@@ -1,1 +1,7 @@
-shellbase/
+styles/.vale-config
+styles/alex
+styles/Google
+styles/Joblint
+styles/proselint
+styles/Readability
+styles/write-good
