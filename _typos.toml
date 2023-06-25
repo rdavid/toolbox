@@ -1,0 +1,6 @@
+[files]
+extend-exclude = ["cfg/ytda.dne"]
+
+[default.extend-words]
+dne = "dne"
+SER = "SER"

@@ -44,7 +44,7 @@ calc_wid() {
 	readonly WID
 }
 
-# Makes sure every file was copied succesfully to destination. Pass each file
+# Makes sure every file was copied successfully to destination. Pass each file
 # locally and verifies there is a file with a same name at destination.
 check() {
 	local ndst=0 nsrc=0 pipe
@@ -69,7 +69,7 @@ check() {
 # Converts to general formats. If other-transcode fails doesn't die.
 convert() {
 	if ! isempty "$VID"; then
-		cd "$RES" || die Unable to change direcory to "$RES".
+		cd "$RES" || die Unable to change directory to "$RES".
 		{
 			other-transcode "$VID"/* || : 2>&1 1>&3 3>&- | tologe
 		} \
@@ -131,7 +131,7 @@ keep_arc() {
 	fi
 }
 
-# Downloads, renames, convers, uploads.
+# Downloads, renames, converts, uploads.
 main() {
 	validate
 	download

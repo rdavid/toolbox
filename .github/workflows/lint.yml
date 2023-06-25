@@ -15,6 +15,7 @@ jobs:
           ignore_names: pass
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d app
+      - uses: crate-ci/typos@master
       - uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: .github/*.yml .github/workflows/*.yml

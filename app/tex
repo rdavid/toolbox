@@ -8,8 +8,8 @@
 validate_cmd tex dvipdfm
 NME=$(basename -- "$1")
 
-# Makes sure that source filename has tex extention.
-[ 'tex' = "${NME##*.}" ] || die "Source file $1 should have .tex extention."
+# Makes sure that source filename has tex extension.
+[ 'tex' = "${NME##*.}" ] || die "Source file $1 should have .tex extension."
 
 # Extracts file name only.
 NME="${NME%.*}"
