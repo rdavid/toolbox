@@ -37,6 +37,8 @@ well, backups.
 directory.
 * link:app/copyright[`copyright`] updates published years in copyrighted title.
 * link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
+* link:app/ival[`ival`] Validates image files. `ival` stands for Image
+Validation.
 * link:app/myip[`myip`] continuously prints external IP, uses `dig`.
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
 * link:app/speed[`speed`] continuously prints download and upload internet
