@@ -1,7 +1,7 @@
-styles/.vale-config
-styles/alex
-styles/Google
-styles/Joblint
-styles/proselint
-styles/Readability
-styles/write-good
+.github/styles/.vale-config
+.github/styles/alex
+.github/styles/Google
+.github/styles/Joblint
+.github/styles/proselint
+.github/styles/Readability
+.github/styles/write-good
