@@ -27,14 +27,15 @@ toc::[]
 
 == About
 
-`toolbox` is a set of Unix shell utilities for everyday use.
-Every utility is a POSIX-compliant and uses Unix shell framework
-{url-shellbase}[`shellbase`]:
+The `toolbox` comprises a collection of Unix shell utilities designed for
+regular use.
+Each utility within the `toolbox` adheres to the Portable Operating System
+Interface for uniX (POSIX) standards, and operates within the Unix shell
+framework known as {url-shellbase}[`shellbase`]:
 
-* link:app/bak[`bak`] is a wrapper on {url-rdiff}[`rdiff-backup`] to produce,
-well, backups.
-* link:app/chowner[`chowner`] changes an owner and sets right permissions on a
-directory.
+ * link:app/bak[`bak`] serves as a wrapper for {url-rdiff}[`rdiff-backup`],
+specifically designed to generate backups effectively.
+* link:app/chowner[`chowner`] changes the owner and permissions on a directory.
 * link:app/copyright[`copyright`] updates published years in copyrighted title.
 * link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
 * link:app/ival[`ival`] Validates image files. `ival` stands for Image
