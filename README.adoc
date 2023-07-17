@@ -3,6 +3,7 @@
 :!toc-title:
 // URLs:
 :url-cv: http://cv.rabkin.co.il
+:url-dig: https://linux.die.net/man/1/dig
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSE
 :url-goredo: http://www.goredo.cypherpunks.ru/Install.html
 :url-goredoer: https://github.com/rdavid/goredoer
@@ -40,10 +41,11 @@ specifically designed to generate backups effectively.
 * link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
 * link:app/ival[`ival`] Validates image files. `ival` stands for Image
 Validation.
-* link:app/myip[`myip`] continuously prints external IP, uses `dig`.
+* link:app/myip[`myip`] continuously displays the external IP address, uses
+{url-dig}[`dig`].
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
-* link:app/speed[`speed`] continuously prints download and upload internet
-speeds, uses {url-speed}[`speedtest`] utility.
+* link:app/speed[`speed`] continuously displays download and upload internet
+speeds, uses {url-speed}[`speedtest`].
 * link:app/tru[`tru`] stands for transmission remote updater.
 It removes a torrent with content and than adds it again.
 It could be ran by `cron` to increase a ratio.
