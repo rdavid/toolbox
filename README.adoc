@@ -30,17 +30,17 @@ toc::[]
 
 The `toolbox` comprises a collection of Unix shell utilities designed for
 regular use.
-Each utility within the `toolbox` adheres to the Portable Operating System
-Interface for uniX (POSIX) standards, and operates within the Unix shell
-framework known as {url-shellbase}[`shellbase`]:
+Each utility within the `toolbox` adheres to the POSIX,
+`Portable Operating System Interface for uniX`, and operates within the Unix
+shell framework known as {url-shellbase}[`shellbase`]:
 
  * link:app/bak[`bak`] serves as a wrapper for {url-rdiff}[`rdiff-backup`],
 specifically designed to generate backups effectively.
 * link:app/chowner[`chowner`] changes the owner and permissions on a directory.
 * link:app/copyright[`copyright`] updates published years in copyrighted title.
 * link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
-* link:app/ival[`ival`] Validates image files. `ival` stands for Image
-Validation.
+* link:app/ival[`ival`] Validates image files. `ival` stands for
+`Image Validation`.
 * link:app/myip[`myip`] continuously displays the external IP address, uses
 {url-dig}[`dig`].
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
