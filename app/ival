@@ -4,16 +4,16 @@
 # Validates image files.
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230623 \
+	BASE_APP_VERSION=0.9.20230805 \
 	BASE_MIN_VERSION=0.9.20230606
 . base.sh
 validate_cmd convert
-[ "$#" -eq 1 ] || die Usage: "$BASE_IAM" DIRECTORY
-readonly dir="$1"
-isreadable "$dir"
-find "$dir" -type f \
+[ "$#" -eq 1 ] || die Usage: "$BASE_IAM" directory.
+readonly DIR="$1"
+isreadable "$DIR" || die Directory "$DIR" is not readable.
+find "$DIR" -type f \
 	\( -name \*.jpg -o -name \*.nef -o -name \*.raf -o -name \*.heic \) |
 	while read -r img; do
 		convert "$img" null >/dev/null 2>&1 || loge FAIL: "$img".
-		log OK: "$img".
+		log OKAY: "$img".
 	done
