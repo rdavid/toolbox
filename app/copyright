@@ -18,7 +18,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20230707 \
+	BASE_APP_VERSION=0.9.20230810 \
 	BASE_MIN_VERSION=0.9.20230405
 . base.sh
 
@@ -50,21 +50,29 @@ fix_outdated() {
 	done
 }
 
-# Looks for git files in current directory.
+# Searches for Git files in the current directory.
 main() {
 	validate "$@"
-	local files
-	files="$(
+	local fil
+	fil="$(
 		git ls-files . 2>&1 |
-			xargs grep -E "$PATTERN" /dev/null |
-			cut -d : -f 1 |
-			sort -V |
-			uniq |
-			xargs
-	)" || die Git failed: "$files"
+			xargs grep -E "$PATTERN" /dev/null 2>&1 |
+			cut -d : -f 1 2>&1 |
+			sort -V 2>&1 |
+			uniq 2>&1 |
+			xargs 2>&1
+	)" || {
+		local err=$?
+		if [ "$fil" = "" ]; then
+			logw Unable to continue, err=$err.
+			printf '%s is not found.\n' "$PATTERN"
+			exit 0
+		fi
+		die Unable to continue, err=$err, msg="$fil".
+	}
 
 	# shellcheck disable=SC2086 # No need for double quates.
-	fix_outdated $files
+	fix_outdated $fil
 }
 
 # Validates the environment.
