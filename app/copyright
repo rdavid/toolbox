@@ -18,7 +18,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20230810 \
+	BASE_APP_VERSION=0.9.20230816 \
 	BASE_MIN_VERSION=0.9.20230405
 . base.sh
 
@@ -36,17 +36,18 @@ fix_outdated() {
 			log "$arg: copyrighted $copyrighted."
 			continue
 		}
-		if [ "$ACTION" = true ]; then
-			sed -i '' \
-				"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
-				"$arg"
-			sed -i '' \
-				"s/^\(.*\)$copyrighted\(.*\)$OWNER/\1$copyrighted-$modified\2$OWNER/g" \
-				"$arg"
-			log "$arg: copyrighted $copyrighted, modified $modified, fixed."
-		else
+		[ "$ACTION" = true ] || {
 			logw "$arg: copyrighted $copyrighted, modified $modified."
-		fi
+			continue
+		}
+		sed -i.bak \
+			"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
+			"$arg"
+		sed -i.bak \
+			"s/^\(.*\)$copyrighted\(.*\)$OWNER/\1$copyrighted-$modified\2$OWNER/g" \
+			"$arg"
+		rm "$arg".bak
+		log "$arg: copyrighted $copyrighted, modified $modified, fixed."
 	done
 }
 
