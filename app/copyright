@@ -4,7 +4,7 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
 #  https://stackoverflow.com/questions/18597697/posix-compliant-way-to-scope-variables-to-a-function-in-a-shell-script
-# shellcheck disable=SC3043 # Uses local variables.
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
