@@ -18,13 +18,13 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20230816 \
+	BASE_APP_VERSION=0.9.20230825 \
 	BASE_MIN_VERSION=0.9.20230405
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
-	local arg copyrighted modified
+	local arg copyrighted modified ret=0
 	for arg; do
 		modified="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
 		copyrighted="$(
@@ -32,11 +32,12 @@ fix_outdated() {
 				grep -Eo '[0-9]{4}' |
 				tail -n 1
 		)"
-		[ "$modified" != "$copyrighted" ] || {
+		[ "$modified" = "$copyrighted" ] && {
 			log "$arg: copyrighted $copyrighted."
 			continue
 		}
-		[ "$ACTION" = true ] || {
+		[ "$ACTION" = false ] && {
+			ret=1
 			logw "$arg: copyrighted $copyrighted, modified $modified."
 			continue
 		}
@@ -49,6 +50,7 @@ fix_outdated() {
 		rm "$arg".bak
 		log "$arg: copyrighted $copyrighted, modified $modified, fixed."
 	done
+	return $ret
 }
 
 # Searches for Git files in the current directory.
