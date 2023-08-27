@@ -54,7 +54,7 @@ converts, renames and keeps safe. It could be ran by `cron`.
 
 == Install
 
-Make sure `/usr/local/bin` is in your `PATH`.
+Ensure that you have added the directory `/usr/local/bin` to your `PATH`.
 
 [,sh]
 ----
