@@ -13,7 +13,7 @@ jobs:
         with:
           additional_files: app/*
           ignore_names: pass
-      - uses: mfinelli/setup-shfmt@v2
+      - uses: mfinelli/setup-shfmt@v3
       - run: shfmt -d app
       - uses: crate-ci/typos@master
       - uses: errata-ai/vale-action@reviewdog
