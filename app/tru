@@ -2,7 +2,7 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2023 David Rabkin
 # tru stands for Transmission Remote Updater. The script removes a torrent with
-# content and than adds it again. It is usefull to automatically increase a
+# content and than adds it again. It is useful to automatically increase a
 # ratio.
 # The script uses local variables which are not POSIX but supported by most
 # shells, see more:
