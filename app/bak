@@ -4,16 +4,16 @@
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20230805 \
+	BASE_APP_VERSION=0.9.20231021 \
 	BASE_MIN_VERSION=0.9.20230312
 . base.sh
 [ "$#" -eq 2 ] || die Usage: bak.sh source destination.
-validate_cmd rdiff-backup
 readonly \
 	DST="$2" \
 	SRC="$1"
-iswritable "$DST" || die "$DST" is not writable.
+validate_cmd rdiff-backup
 isreadable "$SRC" || die "$SRC" is not readable.
+iswritable "$DST" || die "$DST" is not writable.
 {
 	rdiff-backup \
 		--force \
