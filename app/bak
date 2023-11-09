@@ -4,10 +4,10 @@
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231021 \
+	BASE_APP_VERSION=0.9.20231109 \
 	BASE_MIN_VERSION=0.9.20230312
 . base.sh
-[ "$#" -eq 2 ] || die Usage: bak.sh source destination.
+[ "$#" -eq 2 ] || die Usage: bak source destination.
 readonly \
 	DST="$2" \
 	SRC="$1"
