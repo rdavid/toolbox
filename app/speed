@@ -8,7 +8,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20230604 \
+	BASE_APP_VERSION=0.9.20231112 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
@@ -21,6 +21,7 @@ main() {
 	while :; do
 		[ $((i % 30)) -eq 0 ] && title
 		test_speed
+		sleep 1
 		i=$((i + 1))
 	done
 }
@@ -30,31 +31,26 @@ main() {
 test_speed() {
 	url_exists google.com >/dev/null || {
 		loge Check internet connection.
-		sleep 1
 		return 0
 	}
 	local down host out up
-	if out="$(speedtest-cli 2>&1)"; then
-		down="$(
-			printf %s "$out" |
-				grep -E '^Download: ' |
-				gawk '{print $2}'
-		)"
-		up="$(
-			printf %s "$out" |
-				grep -E '^Upload: ' |
-				gawk '{print $2}'
-		)"
-		host="$(
-			printf %s "$out" |
-				grep -E '^Hosted by ' |
-				cut -c11-
-		)"
-		tsout "| $(printf %6s "$down") | $(printf %6s "$up") | $host"
-	else
-		loge "$(printf %s "$out" | xargs)"
-		sleep 1
-	fi
+	out="$(speedtest-cli 2>&1)" || {
+		loge "$out"
+		return 0
+	}
+	down="$(printf %s "$out" | grep -E '^Download: ' | gawk '{print $2}')" || {
+		loge "$out: $down: down."
+		return 0
+	}
+	up="$(printf %s "$out" | grep -E '^Upload: ' | gawk '{print $2}')" || {
+		loge "$out: $up: up."
+		return 0
+	}
+	host="$(printf %s "$out" | grep -E '^Hosted by ' | cut -c11-)" || {
+		loge "$out: $host: host."
+		return 0
+	}
+	tsout "| $(printf %6s "$down") | $(printf %6s "$up") | $host"
 }
 
 # Prints top title.
