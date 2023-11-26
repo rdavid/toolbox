@@ -19,36 +19,36 @@ BASE_APP_USAGE="$(
 readonly \
 	BASE_APP_USAGE \
 	BASE_APP_VERSION=0.9.20231126 \
-	BASE_MIN_VERSION=0.9.20230405
+	BASE_MIN_VERSION=0.9.20231111
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
-	local arg copyrighted modified ret=0
+	local arg dst src ret=0
 	for arg; do
-		modified="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
-		copyrighted="$(
+		dst="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
+		src="$(
 			grep -E "$PATTERN" <"$arg" |
 				grep -Eo '[0-9]{4}' |
 				tail -n 1
 		)"
-		[ "$modified" = "$copyrighted" ] && {
-			log "$arg: copyrighted $copyrighted."
+		[ "$dst" = "$src" ] && {
+			log "$arg: copyrighted $src."
 			continue
 		}
 		[ "$ACTION" = false ] && {
 			ret=1
-			logw "$arg: copyrighted $copyrighted, modified $modified."
+			logw "$arg: copyrighted $src, modified $dst."
 			continue
 		}
 		sed -i.bak \
-			"s/^\(.*\)-$copyrighted\(.*\)$OWNER/\1-$modified\2$OWNER/g" \
+			"s/^\(.*\)-$src\(.*\)$OWNER/\1-$dst\2$OWNER/g" \
 			"$arg"
 		sed -i.bak \
-			"s/^\(.*\)$copyrighted\(.*\)$OWNER/\1$copyrighted-$modified\2$OWNER/g" \
+			"s/^\(.*\)$src\(.*\)$OWNER/\1$src-$dst\2$OWNER/g" \
 			"$arg"
 		rm "$arg".bak
-		log "$arg: copyrighted $copyrighted, modified $modified, fixed."
+		log "$arg: copyrighted $src, modified $dst, fixed."
 	done
 	return $ret
 }
