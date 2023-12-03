@@ -18,13 +18,13 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20231126 \
+	BASE_APP_VERSION=0.9.20231203 \
 	BASE_MIN_VERSION=0.9.20231111
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
-	local arg dst src ret=0
+	local arg dst ret=0 src
 	for arg; do
 		dst="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
 		src="$(
