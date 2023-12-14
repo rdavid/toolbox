@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2022-2023 David Rabkin
+# Copyright 2022-2023-2023 David Rabkin
 # The script uses local variables which are not POSIX but supported by most
 # shells, see:
 #  https://stackoverflow.com/q/18597697
@@ -18,8 +18,8 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20231203 \
-	BASE_MIN_VERSION=0.9.20231111
+	BASE_APP_VERSION=0.9.20231214 \
+	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
@@ -66,12 +66,9 @@ main() {
 			xargs 2>&1
 	)" || {
 		local err=$?
-		if [ "$fil" = "" ]; then
-			logw Unable to continue, err=$err.
-			printf '%s is not found.\n' "$PATTERN"
-			exit 0
-		fi
-		die Unable to continue, err=$err, msg="$fil".
+		[ "$fil" = "" ] || die Unable to continue, err=$err, msg="$fil".
+		printf '%s is not found.\n' "$PATTERN"
+		cya Unable to continue, err=$err.
 	}
 
 	# shellcheck disable=SC2086 # No need for double quates.

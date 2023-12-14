@@ -17,8 +17,8 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231126 \
-	BASE_MIN_VERSION=0.9.20230315
+	BASE_APP_VERSION=0.9.20231214 \
+	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
 . base.sh
@@ -114,8 +114,7 @@ download() {
 	isempty "$VID" || return 0
 
 	# Stops if there are no downloaded files.
-	log There is no new downloaded video.
-	exit 0
+	cya There is no new downloaded video.
 }
 
 # Moves result to local archive.
