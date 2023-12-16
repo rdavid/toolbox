@@ -4,11 +4,11 @@
 # Uses Unix shell framework shellbase:
 #  https://github.com/rdavid/shellbase/
 # The script uses local variables which are not POSIX but supported by most
-# shells, see:
+# shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231212 \
+	BASE_APP_VERSION=0.9.20231216 \
 	BASE_MIN_VERSION=0.9.20230505 \
 	DST=/usr/local/bin \
 	REL=0.9.20231212 \

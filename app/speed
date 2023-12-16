@@ -2,13 +2,13 @@
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
 # Copyright 2020-2023 David Rabkin
 # The script uses local variables which are not POSIX but supported by most
-# shells, see:
+# shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20231126 \
+	BASE_APP_VERSION=0.9.20231216 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
