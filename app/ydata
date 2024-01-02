@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2019-2023 David Rabkin
+# Copyright 2019-2024 David Rabkin
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
@@ -17,7 +17,7 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231216 \
+	BASE_APP_VERSION=0.9.20240102 \
 	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
@@ -184,8 +184,9 @@ validate() {
 	url_exists http://youtube.com || die Check internet connection.
 	iswritable $DST $ARC || die Some directories are not writable.
 	isreadable "$AUT" "$SRC" || die Some directories are not readable.
-	for dir in $RES $AUD $VID; do mkdir -p "$dir" ||
-		die Unable to create "$dir".; done
+	for dir in $RES $AUD $VID; do
+		mkdir -p "$dir" || die Unable to create "$dir".
+	done
 	if isreadable $CKS; then
 		log Uses cookie $CKS.
 		CKS_PARAM=--cookies\ $CKS
