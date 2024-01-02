@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2022-2023 David Rabkin
+# Copyright 2022-2024 David Rabkin
 # Reports external IP in a loop.
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
@@ -9,13 +9,14 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20231216 \
-	BASE_MIN_VERSION=0.9.20230505
+	BASE_APP_VERSION=0.9.20240102 \
+	BASE_MIN_VERSION=0.9.20240102
 . base.sh
 
 # The index starts with 0, it guarantees the title printing from the begging.
 main() {
 	validate_cmd awk dig whois
+	chrono_sta run || die
 	local i=0
 	while :; do
 		[ $((i % 24)) -eq 0 ] && title
@@ -78,7 +79,7 @@ myip() {
 		var_exists state >/dev/null 2>&1 ||
 			state=NO
 	}
-	dur="$(base_duration "$BASE_BEG")" || die
+	dur="$(chrono_get run)" || die
 	ip="$(printf %15s "$ip")"
 	tsout "| $ip |   $state  | $dur"
 }
