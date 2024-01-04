@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2023 David Rabkin
+# Copyright 2020-2024 David Rabkin
 # tru stands for Transmission Remote Updater. The script removes a torrent with
 # content and than adds it again. It is useful to automatically increase a
 # ratio.
@@ -10,8 +10,8 @@
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231216 \
-	BASE_MIN_VERSION=0.9.20230312
+	BASE_APP_VERSION=0.9.20240105 \
+	BASE_MIN_VERSION=0.9.20240104
 . base.sh
 
 # Looks for torrent ID by torrent name extracted from torrent file name.
@@ -84,7 +84,7 @@ validation() {
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
 
 	# Validates third parameter full torrent file name.
-	isreadable "$TOR" || die
+	isreadable "$TOR" || die Unable to read "$TOR".
 	out="$(transmission-show "$TOR")" || die Unable to read "$TOR": "$out"
 	NME="$(printf %s "$out" | grep Name: | head -1 | cut -c 7-)"
 	readonly NME

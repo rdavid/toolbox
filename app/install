@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2022-2023 David Rabkin
+# Copyright 2022-2024 David Rabkin
 # Uses Unix shell framework shellbase:
 #  https://github.com/rdavid/shellbase/
 # The script uses local variables which are not POSIX but supported by most
@@ -8,8 +8,8 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231216 \
-	BASE_MIN_VERSION=0.9.20230505 \
+	BASE_APP_VERSION=0.9.20240105 \
+	BASE_MIN_VERSION=0.9.20240104 \
 	DST=/usr/local/bin \
 	REL=0.9.20231212 \
 	TGT=/usr/local/bin/base.sh
@@ -35,7 +35,7 @@ main() {
 		new="shellbase $REL" \
 		old
 	validate "$@"
-	if file_exists $TGT >/dev/null 2>&1; then
+	if file_exists $TGT; then
 		old="$(sh $TGT --quiet --version 2>&1)" || die "$old"
 		[ "$old" = "$new" ] &&
 			msg="$new is already installed in $DST. Continue anyway?" ||
