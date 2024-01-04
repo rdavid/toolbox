@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2022-2023-2023 David Rabkin
+# Copyright 2022-2024 David Rabkin
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
@@ -18,7 +18,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20231216 \
+	BASE_APP_VERSION=0.9.20240105 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 
