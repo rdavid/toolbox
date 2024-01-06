@@ -13,6 +13,7 @@
 :url-shellbase: https://github.com/rdavid/shellbase
 :url-shfmt: https://github.com/mvdan/sh
 :url-speed: https://github.com/sivel/speedtest-cli
+:url-typos: https://github.com/crate-ci/typos
 :url-vale: https://vale.sh
 :url-yamllint: https://github.com/adrienverge/yamllint
 :url-yt-dlp: https://github.com/yt-dlp/yt-dlp
@@ -61,6 +62,14 @@ Ensure that you have added the directory `/usr/local/bin` to your `PATH`.
 git clone git@github.com:rdavid/toolbox.git &&
   ./toolbox/app/install
 ----
+
+== Test
+
+The project uses Daniel J. Bernstein's build system {url-redo}[`redo`].
+You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
+`redo lint` applies the following linters to the source files:
+{url-shellcheck}[`shellcheck`], {url-shfmt}[`shfmt`], {url-typos}[`typos`],
+{url-vale}[`vale`], {url-yamllint}[`yamllint`].
 
 == License
 
