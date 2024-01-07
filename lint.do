@@ -10,7 +10,7 @@ redo-ifchange \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240106 \
+	BASE_APP_VERSION=0.9.20240107 \
 	BASE_MIN_VERSION=0.9.20231212 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
@@ -21,12 +21,14 @@ set -- "$@" --quiet
 
 # shellcheck disable=SC1090 # File not following.
 . "$BSH"
-cmd_exists shellcheck &&
-	find app -name "*" ! -path app ! -name pass -exec shellcheck {} +
-cmd_exists shfmt && {
-	shfmt -d ./*.do
-	find app -name "*" ! -path app ! -name pass -exec shfmt -d {} +
-}
+find . \
+	-name '*.do' \
+	-or \
+	-name '*' -not -name pass -path '*/app/*' |
+	while read -r f; do
+		cmd_exists shellcheck && shellcheck "$f"
+		cmd_exists shfmt && shfmt -d "$f"
+	done
 cmd_exists typos && typos
 cmd_exists vale && {
 	vale sync >/dev/null 2>&1 || :
