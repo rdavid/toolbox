@@ -6,15 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: nosborn/github-action-markdown-cli@v3.3.0
-        with:
-          files: .
       - uses: ludeeus/action-shellcheck@master
         with:
-          additional_files: app/*
+          additional_files: ./*.do ./app/*
           ignore_names: pass
       - uses: mfinelli/setup-shfmt@v3
-      - run: shfmt -d app
+      - run: shfmt -d ./*.do ./app/[bcefimrsty]*
       - uses: crate-ci/typos@master
       - uses: errata-ai/vale-action@reviewdog
         with:
