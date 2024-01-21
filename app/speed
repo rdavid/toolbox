@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2023 David Rabkin
+# Copyright 2020-2024 David Rabkin
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
@@ -8,7 +8,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20231216 \
+	BASE_APP_VERSION=0.9.20240121 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
@@ -29,7 +29,7 @@ main() {
 # Prints current download and upload speeds. The function is ran in a loop,
 # rests in case of an error.
 test_speed() {
-	url_exists google.com >/dev/null || {
+	url_exists google.com || {
 		loge Check internet connection.
 		return 0
 	}
