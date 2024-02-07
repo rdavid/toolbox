@@ -1,9 +1,15 @@
 ---
-name: linters
+name: lint
 'on': push
+env:
+  BASE_REL: 0.9.20240202
+  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20240202.tar.gz # yamllint disable-line
 jobs:
-  lint:
-    runs-on: ubuntu-latest
+  text-linux:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: ludeeus/action-shellcheck@master
@@ -21,3 +27,27 @@ jobs:
         with:
           file_or_dir: .github/*.yml .github/workflows/*.yml
           strict: true
+  test-macos:
+    strategy:
+      matrix:
+        os: [macos-12, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          brew install \
+            asciidoctor \
+            goredo \
+            shellcheck \
+            shfmt \
+            typos-cli \
+            vale \
+            yamllint
+          curl --location --silent $BASE_SRC |
+            tar \
+              --directory /usr/local/bin \
+              --extract \
+              --gzip \
+              --strip-components=2 \
+              shellbase-$BASE_REL/lib/base.sh
+          redo -xx lint
