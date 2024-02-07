@@ -10,7 +10,7 @@
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240109 \
+	BASE_APP_VERSION=0.9.20240208 \
 	BASE_MIN_VERSION=0.9.20240104
 . base.sh
 
@@ -62,7 +62,7 @@ tid() {
 
 validation() {
 	validate_cmd awk nc tr transmission-remote transmission-show
-	[ "$#" -eq 3 ] || die Usage: tru host:port user:pass torrent-file.
+	[ "$#" -eq 3 ] || cya Usage: tru host:port user:pass torrent-file.
 
 	# Single ':' means there is no authentication data.
 	[ "$2" != : ] && AUT="--auth $2" || AUT=''

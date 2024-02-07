@@ -1,16 +1,16 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2019-2023 David Rabkin
+# Copyright 2019-2024 David Rabkin
 # Sets owner to a user from the first argument, set right permissions for files
 # and directories started from the seconds argument.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
 	BASE_APP_USAGE='Usage: chowner user directory.' \
-	BASE_APP_VERSION=0.9.20230626 \
-	BASE_MIN_VERSION=0.9.20230312
+	BASE_APP_VERSION=0.9.20240208 \
+	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 beroot
-[ "$#" -eq 2 ] || die "$BASE_APP_USAGE"
+[ "$#" -eq 2 ] || cya "$BASE_APP_USAGE"
 readonly \
 	DIR="$2" \
 	USR="$1"

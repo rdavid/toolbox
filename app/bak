@@ -1,13 +1,13 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2016-2023 David Rabkin
+# Copyright 2016-2024 David Rabkin
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231109 \
-	BASE_MIN_VERSION=0.9.20230312
+	BASE_APP_VERSION=0.9.20240208 \
+	BASE_MIN_VERSION=0.9.20231212
 . base.sh
-[ "$#" -eq 2 ] || die Usage: bak source destination.
+[ "$#" -eq 2 ] || cya Usage: bak source destination.
 readonly \
 	DST="$2" \
 	SRC="$1"

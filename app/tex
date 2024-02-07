@@ -1,15 +1,15 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2023 David Rabkin
+# Copyright 2020-2024 David Rabkin
 # shellcheck disable=SC1091 # File not following.
 . base.sh
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM FILENAME.tex"
-[ -r "$1" ] || die "Unable to read from source $1."
+[ "$#" -eq 1 ] || cya Usage: "$BASE_IAM" FILENAME.tex
+[ -r "$1" ] || die Unable to read from source "$1".
 validate_cmd tex dvipdfm
 NME=$(basename -- "$1")
 
 # Makes sure that source filename has tex extension.
-[ 'tex' = "${NME##*.}" ] || die "Source file $1 should have .tex extension."
+[ 'tex' = "${NME##*.}" ] || die Source file "$1" should have .tex extension.
 
 # Extracts file name only.
 NME="${NME%.*}"
@@ -26,7 +26,7 @@ cp "$1" "$BASE_WIP"
 cd "$BASE_WIP" || die
 if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
 	cp "./$LOG" "$OLDPWD"
-	die "See $LOG for errors."
+	die See "$LOG" for errors.
 fi
 dvipdfm "./$DVI" >/dev/null 2>&1
 cp "./$PDF" "$OLDPWD"

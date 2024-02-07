@@ -18,7 +18,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20240105 \
+	BASE_APP_VERSION=0.9.20240208 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 
@@ -87,7 +87,7 @@ validate() {
 			;;
 		-o | --owner)
 			set +o nounset
-			[ -n "$1" ] || die --owner requires a non-empty argument.
+			[ -n "$1" ] || cya --owner requires a non-empty argument.
 			set -o nounset
 			OWNER="$1"
 			;;

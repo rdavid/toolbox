@@ -1,10 +1,10 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2023 David Rabkin
+# Copyright 2020-2024 David Rabkin
 # Detects if a device with a certain MAC address is in the local network.
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20231214 \
+	BASE_APP_VERSION=0.9.20240208 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 MAXV=10
@@ -55,7 +55,7 @@ wait() {
 # Starting point.
 beroot
 validate_cmd arp-scan
-[ "$#" -eq 1 ] || die "Usage: $BASE_IAM [MAC-ADDRESS:list]"
+[ "$#" -eq 1 ] || cya "Usage: $BASE_IAM [MAC-ADDRESS:list]"
 [ "$1" = list ] && {
 	$SCAN
 	cya
