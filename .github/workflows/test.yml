@@ -1,11 +1,11 @@
 ---
-name: lint
+name: test
 'on': push
 env:
   BASE_REL: 0.9.20240202
   BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20240202.tar.gz # yamllint disable-line
 jobs:
-  text-linux:
+  test-linux:
     strategy:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04]
