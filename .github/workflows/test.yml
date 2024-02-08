@@ -50,4 +50,4 @@ jobs:
               --gzip \
               --strip-components=2 \
               shellbase-$BASE_REL/lib/base.sh
-          redo -xx lint
+          redo -xx
