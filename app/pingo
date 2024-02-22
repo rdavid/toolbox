@@ -5,10 +5,11 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20240208 \
+	BASE_APP_VERSION=0.9.20240222 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
-
-# Starting point.
-[ $# -ge 1 ] || cya Usage: pingo [network resource].
+[ $# -ge 1 ] || {
+	printf 'Usage: pingo [network resource].\n'
+	cya
+}
 { ping "$1" 2>&1 1>&3 3>&- | tologe; } 3>&1 1>&2 | totsout
