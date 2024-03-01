@@ -8,7 +8,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20240121 \
+	BASE_APP_VERSION=0.9.20240301 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
@@ -21,7 +21,7 @@ main() {
 	while :; do
 		[ $((i % 30)) -eq 0 ] && title
 		test_speed
-		sleep 1
+		sleep 30
 		i=$((i + 1))
 	done
 }
