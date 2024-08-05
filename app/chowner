@@ -5,12 +5,11 @@
 # and directories started from the seconds argument.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_USAGE='Usage: chowner user directory.' \
-	BASE_APP_VERSION=0.9.20240208 \
+	BASE_APP_VERSION=0.9.20240806 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 beroot
-[ "$#" -eq 2 ] || cya "$BASE_APP_USAGE"
+[ "$#" -eq 2 ] || die chowner: try chowner [user directory]
 readonly \
 	DIR="$2" \
 	USR="$1"

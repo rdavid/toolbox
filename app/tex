@@ -3,7 +3,7 @@
 # Copyright 2020-2024 David Rabkin
 # shellcheck disable=SC1091 # File not following.
 . base.sh
-[ "$#" -eq 1 ] || cya Usage: "$BASE_IAM" FILENAME.tex
+[ "$#" -eq 1 ] || die tex: try tex [file name]
 [ -r "$1" ] || die Unable to read from source "$1".
 validate_cmd tex dvipdfm
 NME=$(basename -- "$1")

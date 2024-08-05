@@ -4,7 +4,7 @@
 # Detects if a device with a certain MAC address is in the local network.
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240208 \
+	BASE_APP_VERSION=0.9.20240806 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 MAXV=10
@@ -55,7 +55,7 @@ wait() {
 # Starting point.
 beroot
 validate_cmd arp-scan
-[ "$#" -eq 1 ] || cya "Usage: $BASE_IAM [MAC-ADDRESS:list]"
+[ "$#" -eq 1 ] || die scanner: try scanner [mac address:list]
 [ "$1" = list ] && {
 	$SCAN
 	cya

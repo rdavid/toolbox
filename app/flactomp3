@@ -3,10 +3,10 @@
 # Copyright 2019-2024 David Rabkin
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240208 \
+	BASE_APP_VERSION=0.9.20240806 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
-[ "$#" -eq 1 ] || cya Usage: flactomp3 filename.
+[ "$#" -eq 1 ] || die flactomp3: try flactomp3 [file name]
 readonly \
 	SRC="$1" \
 	TAG="$BASE_WIP"/tags

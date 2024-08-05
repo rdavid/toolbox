@@ -4,11 +4,11 @@
 # Validates image files.
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240208 \
+	BASE_APP_VERSION=0.9.20240806 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 validate_cmd convert
-[ "$#" -eq 1 ] || cya Usage: "$BASE_IAM" directory.
+[ "$#" -eq 1 ] || cya ival: try ival [user directory]
 readonly DIR="$1"
 isreadable "$DIR" || die Directory "$DIR" is not readable.
 find "$DIR" -type f \
