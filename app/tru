@@ -10,7 +10,7 @@
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240806 \
+	BASE_APP_VERSION=0.9.20240813 \
 	BASE_MIN_VERSION=0.9.20240104
 . base.sh
 
@@ -49,14 +49,14 @@ tid() {
 
 	# shellcheck disable=SC2086 # Double quote to prevent globbing.
 	out="$(transmission-remote "$SER" $AUT --list 2>&1)" ||
-		die Unable to communicate with "$SER": "$out"
-	out="$(printf %s "$out" | grep "$NME")"
-	[ -n "$out" ] || {
-		logw There is no "$NME" in "$SER".
+		die "Unable to communicate with $SER: $out"
+	out="$(printf %s "$out" | grep "$NME")" || {
+		log "There is no $NME in $SER."
 		return 0
 	}
-	out="$(printf %s "$out" | awk '{print $1}')"
-	[ -n "$out" ] || die Wrong format: "$out".
+	[ -n "$out" ] || die "Something wrong with grep $NME on $SER."
+	out="$(printf %s "$out" | awk '{print $1}')" || die Wrong format: "$out"
+	[ -n "$out" ] || die Something wrong with awk: "$out"
 	printf %s "$out"
 }
 
