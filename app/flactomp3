@@ -3,8 +3,8 @@
 # Copyright 2019-2024 David Rabkin
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240806 \
-	BASE_MIN_VERSION=0.9.20231212
+	BASE_APP_VERSION=0.9.20240831 \
+	BASE_MIN_VERSION=0.9.20240831
 . base.sh
 [ "$#" -eq 1 ] || die flactomp3: try flactomp3 [file name]
 readonly \
@@ -13,7 +13,7 @@ readonly \
 isreadable "$SRC" || die "$SRC" is not readable.
 DST="$(printf %s "$SRC" | sed 's/\.flac/.mp3/')"
 readonly DST
-yes_to_continue Convert "$SRC" to "$DST"?
+should_continue "Convert $SRC to $DST" || cya
 metaflac --export-tags-to=/dev/stdout "$SRC" |
 	sed \
 		-e 's/=/="/' \
