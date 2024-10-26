@@ -2,8 +2,8 @@
 name: test
 'on': push
 env:
-  BASE_REL: 0.9.20240202
-  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20240202.tar.gz # yamllint disable-line
+  BASE_REL: 0.9.20240909
+  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20240909.tar.gz # yamllint disable-line
 jobs:
   test-linux:
     strategy:
@@ -12,6 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - run: sudo apt-get install asciidoctor
       - uses: ludeeus/action-shellcheck@master
         with:
           additional_files: ./*.do ./app/*
