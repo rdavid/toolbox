@@ -8,10 +8,10 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240911 \
+	BASE_APP_VERSION=0.9.20241111 \
 	BASE_MIN_VERSION=0.9.20240909 \
 	DST=/usr/local/bin \
-	REL=0.9.20240909 \
+	REL=0.9.20241111 \
 	TGT=/usr/local/bin/base.sh
 readonly \
 	SRC=https://github.com/rdavid/shellbase/archive/refs/tags/v$REL.tar.gz

@@ -2,8 +2,8 @@
 name: test
 'on': push
 env:
-  BASE_REL: 0.9.20240909
-  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20240909.tar.gz # yamllint disable-line
+  BASE_REL: 0.9.20241111
+  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20241111.tar.gz # yamllint disable-line
 jobs:
   test-linux:
     strategy:
