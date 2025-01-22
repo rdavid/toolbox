@@ -5,7 +5,7 @@
 :url-cv: http://cv.rabkin.co.il
 :url-dig: https://linux.die.net/man/1/dig
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSE
-:url-goredo: http://www.goredo.cypherpunks.ru/Install.html
+:url-goredo: http://www.goredo.cypherpunks.su/Install.html
 :url-goredoer: https://github.com/rdavid/goredoer
 :url-rdiff: https://github.com/rdiff-backup/rdiff-backup
 :url-redo: http://cr.yp.to/redo.html
