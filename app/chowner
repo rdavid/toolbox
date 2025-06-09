@@ -1,11 +1,14 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2019-2024 David Rabkin
+# SPDX-FileCopyrightText: 2019-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
 # Sets owner to a user from the first argument, set right permissions for files
 # and directories started from the seconds argument.
+#
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240806 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 beroot

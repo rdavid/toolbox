@@ -9,6 +9,7 @@
 :url-goredoer: https://github.com/rdavid/goredoer
 :url-rdiff: https://github.com/rdiff-backup/rdiff-backup
 :url-redo: http://cr.yp.to/redo.html
+:url-reuse: https://github.com/fsfe/reuse-action
 :url-shellcheck: https://github.com/koalaman/shellcheck
 :url-shellbase: https://github.com/rdavid/shellbase
 :url-shfmt: https://github.com/mvdan/sh
@@ -68,8 +69,8 @@ git clone git@github.com:rdavid/toolbox.git &&
 The project uses Daniel J. Bernstein's build system {url-redo}[`redo`].
 You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
 `redo lint` applies the following linters to the source files:
-{url-shellcheck}[`shellcheck`], {url-shfmt}[`shfmt`], {url-typos}[`typos`],
-{url-vale}[`vale`], {url-yamllint}[`yamllint`].
+{url-reuse}[`reuse`], {url-shellcheck}[`shellcheck`], {url-shfmt}[`shfmt`],
+{url-typos}[`typos`], {url-vale}[`vale`], {url-yamllint}[`yamllint`].
 
 == License
 

@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+version = 1
+[[annotations]]
+path = [
+	".dockerignore",
+	".DS_Store",
+	".github/styles/config/vocabularies/Base/accept.txt",
+	".gitignore",
+	".vale.ini",
+	"cfg/*",
+	"README.adoc",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2025 David Rabkin"
+SPDX-License-Identifier = "0BSD"

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2023-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
 ---
 name: test
 'on': push
@@ -15,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get install asciidoctor
+      - uses: fsfe/reuse-action@v5
       - uses: ludeeus/action-shellcheck@master
         with:
           additional_files: ./*.do ./app/*
@@ -44,6 +47,7 @@ jobs:
           brew install \
             asciidoctor \
             goredo \
+            reuse \
             shellcheck \
             shfmt \
             typos-cli \

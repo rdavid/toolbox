@@ -1,6 +1,8 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2024 David Rabkin
+# SPDX-FileCopyrightText: 2020-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
@@ -8,7 +10,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20240301 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 

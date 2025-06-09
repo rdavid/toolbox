@@ -1,9 +1,11 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2019-2024 David Rabkin
+# SPDX-FileCopyrightText: 2019-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240831 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20240831
 . base.sh
 [ "$#" -eq 1 ] || die flactomp3: try flactomp3 [file name]

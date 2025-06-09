@@ -1,6 +1,7 @@
 # shellcheck shell=sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2024 David Rabkin
+# SPDX-FileCopyrightText: 2024-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
 redo-ifchange \
 	./*.do \
 	.github/*.yml \
@@ -10,7 +11,7 @@ redo-ifchange \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240208 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20231212 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
@@ -29,6 +30,7 @@ find . \
 		cmd_exists shellcheck && shellcheck "$f"
 		cmd_exists shfmt && shfmt -d "$f"
 	done
+cmd_exists reuse && reuse lint
 cmd_exists typos && typos
 cmd_exists vale && {
 	vale sync

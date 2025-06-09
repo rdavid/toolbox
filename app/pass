@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2021-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
 # -*- coding: utf-8 -*-
 
 import base64

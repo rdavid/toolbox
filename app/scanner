@@ -1,10 +1,12 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2020-2024 David Rabkin
+# SPDX-FileCopyrightText: 2020-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
 # Detects if a device with a certain MAC address is in the local network.
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240806 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 MAXV=10

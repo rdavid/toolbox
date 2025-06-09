@@ -1,10 +1,12 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2016-2024 David Rabkin
+# SPDX-FileCopyrightText: 2016-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240806 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 [ "$#" -eq 2 ] || die bak: try bak [source directory] [destination directory]

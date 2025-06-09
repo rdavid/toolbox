@@ -1,15 +1,18 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# Copyright 2019-2024 David Rabkin
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
-#  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC3043 # Uses local variables.
+# SPDX-FileCopyrightText: 2019-2025 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
 # The script downloads all new video from pre-configured acoounts in
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
 # The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, transcode-video, yt-dlp.
 # The script is ran by cron, the environment is stricked.
+#
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+# shellcheck disable=SC3043 # Uses local variables.
 export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
@@ -17,7 +20,7 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20240102 \
+	BASE_APP_VERSION=0.9.20250609 \
 	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
