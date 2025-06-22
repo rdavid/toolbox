@@ -7,16 +7,28 @@
 #
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
-	BASE_MIN_VERSION=0.9.20231212
+	BASE_APP_VERSION=0.9.20250623 \
+	BASE_MIN_VERSION=0.9.20231212 \
+	TMP=_tmp
 . base.sh
 validate_cmd convert
 [ "$#" -eq 1 ] || cya ival: try ival [user directory]
 readonly DIR="$1"
 isreadable "$DIR" || die Directory "$DIR" is not readable.
-find "$DIR" -type f \
-	\( -name \*.jpg -o -name \*.nef -o -name \*.raf -o -name \*.heic \) |
+iswritable "$TMP" || die File "$TMP" is not writable.
+find "$DIR" \
+	\( \
+	-name \*.jpg \
+	-o \
+	-name \*.nef \
+	-o \
+	-name \*.raf \
+	-o \
+	-name \*.heic \
+	\) \
+	-type f |
 	while read -r img; do
-		convert "$img" null >/dev/null 2>&1 || loge no: "$img".
+		convert "$img" "$TMP" >/dev/null 2>&1 || loge no: "$img".
 		log ok: "$img".
 	done
+rm "$TMP"
