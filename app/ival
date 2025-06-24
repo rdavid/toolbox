@@ -14,6 +14,7 @@ validate_cmd convert
 [ "$#" -eq 1 ] || cya ival: try ival [user directory]
 readonly DIR="$1"
 isreadable "$DIR" || die Directory "$DIR" is not readable.
+map_put img cnt 0
 find "$DIR" \
 	\( \
 	-name '*.[dD][nN][gG]' \
@@ -30,4 +31,8 @@ find "$DIR" \
 	while read -r img; do
 		convert "$img" "$BASE_DIR_WIP/img" >/dev/null 2>&1 || loge no: "$img".
 		log ok: "$img".
+		cnt="$(map_get img cnt)"
+		cnt=$((cnt + 1))
+		map_put img cnt "$cnt"
 	done
+log Total successfully verified: "$(map_get img cnt)".
