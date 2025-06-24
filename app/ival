@@ -16,13 +16,15 @@ readonly DIR="$1"
 isreadable "$DIR" || die Directory "$DIR" is not readable.
 find "$DIR" \
 	\( \
-	-name \*.jpg \
+	-name '*.[dD][nN][gG]' \
 	-o \
-	-name \*.nef \
+	-name '*.[hH][eE][iI][cC]' \
 	-o \
-	-name \*.raf \
+	-name '*.[jJ][pP][gG]' \
 	-o \
-	-name \*.heic \
+	-name '*.[nN][eE][fF]' \
+	-o \
+	-name '*.[rR][aA][fF]' \
 	\) \
 	-type f |
 	while read -r img; do
