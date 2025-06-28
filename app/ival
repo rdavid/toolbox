@@ -7,14 +7,15 @@
 #
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250625 \
+	BASE_APP_VERSION=0.9.20250629 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 validate_cmd convert
 [ "$#" -eq 1 ] || cya ival: try ival [user directory]
 readonly DIR="$1"
 isreadable "$DIR" || die Directory "$DIR" is not readable.
-map_put img cnt 0
+map_put cnt no 0
+map_put cnt ok 0
 find "$DIR" \
 	\( \
 	-name '*.[dD][nN][gG]' \
@@ -29,10 +30,19 @@ find "$DIR" \
 	\) \
 	-type f |
 	while read -r img; do
-		convert "$img" "$BASE_DIR_WIP/img" >/dev/null 2>&1 || loge no: "$img".
-		log ok: "$img".
-		cnt="$(map_get img cnt)"
-		cnt=$((cnt + 1))
-		map_put img cnt "$cnt"
+		if convert "$img" "$BASE_DIR_WIP/img" >/dev/null 2>&1; then
+			cnt="$(map_get cnt ok)"
+			cnt=$((cnt + 1))
+			map_put cnt ok "$cnt"
+			log ok: "$img".
+		else
+			cnt="$(map_get cnt no)"
+			cnt=$((cnt + 1))
+			map_put cnt no "$cnt"
+			logw no: "$img".
+		fi
 	done
-log Total successfully verified: "$(map_get img cnt)".
+cnt="$(map_get cnt ok)"
+[ "$cnt" -eq 0 ] || log Total successfully verified: "$cnt".
+cnt="$(map_get cnt no)"
+[ "$cnt" -eq 0 ] || log Total failed verifications: "$cnt".
