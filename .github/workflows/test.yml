@@ -53,11 +53,11 @@ jobs:
             typos-cli \
             vale \
             yamllint
-          curl --location --silent $BASE_SRC |
+          curl --location --silent "$BASE_SRC" |
             tar \
               --directory /usr/local/bin \
               --extract \
               --gzip \
               --strip-components=2 \
-              shellbase-$BASE_REL/lib/base.sh
+              shellbase-"$BASE_REL"/lib/base.sh
           redo -xx
