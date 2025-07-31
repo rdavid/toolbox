@@ -22,6 +22,7 @@ set -- "$@" --quiet
 
 # shellcheck disable=SC1090 # File not following.
 . "$BSH"
+cmd_exists actionlint && actionlint
 find . \
 	-name '*.do' \
 	-or \
