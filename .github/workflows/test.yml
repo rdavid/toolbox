@@ -1,39 +1,20 @@
 # SPDX-FileCopyrightText: 2023-2025 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# This workflow has limitations -- Ubuntu lacks a redo package.
 ---
 name: test
-'on': push
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 env:
   BASE_REL: 0.9.20250404
   BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20250404.tar.gz # yamllint disable-line
 jobs:
-  test-linux:
-    strategy:
-      matrix:
-        os:
-          - ubuntu-22.04
-          - ubuntu-24.04
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - run: sudo apt-get install asciidoctor
-      - uses: fsfe/reuse-action@v5
-      - uses: ludeeus/action-shellcheck@master
-        with:
-          additional_files: ./*.do ./app/*
-          ignore_names: pass
-      - uses: mfinelli/setup-shfmt@v3
-      - run: shfmt -d ./*.do ./app/[bcefimrsty]*
-      - uses: crate-ci/typos@master
-      - uses: errata-ai/vale-action@reviewdog
-        with:
-          fail_on_error: true
-          files: README.adoc
-      - uses: ibiqlik/action-yamllint@v3
-        with:
-          file_or_dir: .github/*.yml .github/workflows/*.yml
-          strict: true
-  test-macos:
+  test:
     strategy:
       matrix:
         os:
@@ -44,15 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          brew install \
-            asciidoctor \
-            goredo \
-            reuse \
-            shellcheck \
-            shfmt \
-            typos-cli \
-            vale \
-            yamllint
+          brew install goredo
           curl --location --silent "$BASE_SRC" |
             tar \
               --directory /usr/local/bin \

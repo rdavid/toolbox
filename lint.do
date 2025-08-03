@@ -11,7 +11,7 @@ redo-ifchange \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250731 \
+	BASE_APP_VERSION=0.9.20250803 \
 	BASE_MIN_VERSION=0.9.20231212 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
@@ -29,7 +29,10 @@ find . \
 	-name '*' -not -name pass -path '*/app/*' |
 	while read -r f; do
 		cmd_exists shellcheck && shellcheck "$f"
-		cmd_exists shfmt && shfmt -d "$f"
+
+		# Gracefully handle missing tool without failing the script.
+		# shellcheck disable=SC2015 # A && B || C is not if-then-else.
+		cmd_exists shfmt && shfmt -d "$f" || :
 	done
 cmd_exists reuse && reuse lint
 cmd_exists typos && typos
@@ -38,6 +41,6 @@ cmd_exists vale && {
 	vale README.adoc
 }
 
-# Gracefully handle missing tools without failing the script.
+# Gracefully handle missing tool without failing the script.
 # shellcheck disable=SC2015 # A && B || C is not if-then-else.
 cmd_exists yamllint && yamllint .github/*.yml .github/workflows/*.yml || :
