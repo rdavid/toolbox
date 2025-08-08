@@ -11,8 +11,8 @@ name: test
     branches:
       - master
 env:
-  BASE_REL: 0.9.20250404
-  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20250404.tar.gz # yamllint disable-line
+  BASE_REL: 0.9.20250808
+  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20250808.tar.gz # yamllint disable-line
 jobs:
   test:
     strategy:
