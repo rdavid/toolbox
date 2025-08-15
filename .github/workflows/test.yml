@@ -26,6 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
+          brew update
           brew install goredo
           curl --location --silent "$BASE_SRC" |
             tar \
