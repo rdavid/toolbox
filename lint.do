@@ -3,15 +3,15 @@
 # SPDX-FileCopyrightText: 2024-2025 David Rabkin
 # SPDX-License-Identifier: 0BSD
 redo-ifchange \
+	./.github/*.yml \
+	./.github/workflows/*.yml \
 	./*.do \
-	.github/*.yml \
-	.github/workflows/*.yml \
-	app/* \
-	README.adoc
+	./app/* \
+	./README.adoc
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250803 \
+	BASE_APP_VERSION=0.9.20250820 \
 	BASE_MIN_VERSION=0.9.20231212 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
@@ -38,9 +38,9 @@ cmd_exists reuse && reuse lint
 cmd_exists typos && typos
 cmd_exists vale && {
 	vale sync
-	vale README.adoc
+	vale ./README.adoc
 }
 
 # Gracefully handle missing tool without failing the script.
 # shellcheck disable=SC2015 # A && B || C is not if-then-else.
-cmd_exists yamllint && yamllint .github/*.yml .github/workflows/*.yml || :
+cmd_exists yamllint && yamllint ./.github/*.yml ./.github/workflows/*.yml || :
