@@ -2,13 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 ---
 name: shellcheck
-'on':
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+'on': [pull_request, push]
 jobs:
   shellcheck:
     runs-on: ubuntu-24.04

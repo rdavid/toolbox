@@ -3,13 +3,7 @@
 # This workflow has limitations -- Ubuntu lacks a redo package.
 ---
 name: test
-'on':
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+'on': [pull_request, push]
 env:
   BASE_REL: 0.9.20250808
   BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20250808.tar.gz # yamllint disable-line
