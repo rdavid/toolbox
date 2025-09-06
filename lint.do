@@ -11,8 +11,7 @@ redo-ifchange \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250821 \
-	BASE_MIN_VERSION=0.9.20231212 \
+	BASE_APP_VERSION=0.9.20250906 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
 	printf >&2 Install\ Shellbase.\\n
@@ -40,7 +39,10 @@ cmd_exists vale && {
 	vale sync
 	vale ./README.adoc
 }
-cmd_exists yamllint && yamllint ./.github/*.yml ./.github/workflows/*.yml
+cmd_exists yamllint &&
+	yamllint \
+		./.github/*.yml \
+		./.github/workflows/*.yml
 
 # Gracefully handle missing last tool without failing the script.
 :
