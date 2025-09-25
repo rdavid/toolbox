@@ -6,21 +6,24 @@
 # shellcheck disable=SC1091 # File not following.
 . base.sh
 [ "$#" -eq 1 ] || die tex: try tex [file name]
-[ -r "$1" ] || die Unable to read from source "$1".
-validate_cmd tex dvipdfm
+isreadable "$1" || die Unable to read file "$1".
+validate_cmd dvipdfm sed tex
 NME=$(basename -- "$1")
 
-# Makes sure that source filename has tex extension.
-[ 'tex' = "${NME##*.}" ] || die Source file "$1" should have .tex extension.
+# Makes sure that source filename has .tex extension.
+case "$NME" in
+*.tex) : ;;
+*) die Source file "$1" should have .tex extension. ;;
+esac
 
 # Extracts file name only.
-NME="${NME%.*}"
+NME="$(printf %s "$NME" | sed 's/\.[^./]*$//')"
 readonly \
-	DVI="$NME.dvi" \
-	LOG="$NME.log" \
+	DVI="$NME".dvi \
+	LOG="$NME".log \
 	NME \
-	PDF="$NME.pdf" \
-	TEX="$NME.tex"
+	PDF="$NME".pdf \
+	TEX="$NME".tex
 
 # Do not worry about file cleaning on exit. Garbage collector will remove the
 # temporarily directory.
