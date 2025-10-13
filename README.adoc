@@ -29,6 +29,20 @@
 
 = Toolbox
 
+// The width is set to 71 characters, and the height is 7 lines. An ASCII art
+// generator is used with the specific font Roman:
+//  http://patorjk.com/software/taag/#p=display&f=Roman&t=toolbox
+[,sh]
+----
+        .                       oooo   .o8                             
+      .o8                       `888  "888                             
+    .o888oo  .ooooo.   .ooooo.   888   888oooo.   .ooooo.  oooo    ooo 
+      888   d88' `88b d88' `88b  888   d88' `88b d88' `88b  `88b..8P'  
+      888   888   888 888   888  888   888   888 888   888    Y888'    
+      888 . 888   888 888   888  888   888   888 888   888  .o8"'88b   
+      "888" `Y8bod8P' `Y8bod8P' o888o  `Y8bod8P' `Y8bod8P' o88'   888o 
+----
+
 image:{img-test}[test,link={url-test}]
 image:{img-hoc}[hits of code,link={url-hoc}]
 image:{img-releases}[release),link={url-releases}]
