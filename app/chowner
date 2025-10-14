@@ -8,11 +8,11 @@
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20251015 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
+[ "$#" -eq 2 ] || die Wrong arguments, try chowner user directory.
 beroot
-[ "$#" -eq 2 ] || die chowner: try chowner [user directory]
 readonly \
 	DIR="$2" \
 	USR="$1"
