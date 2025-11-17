@@ -30,7 +30,7 @@ find "$DIR" \
 	\) \
 	-type f |
 	while read -r img; do
-		if convert "$img" "$BASE_DIR_WIP/img" >/dev/null 2>&1; then
+		if convert "$img" "$BASE_DIR_WIP/out.tiff" >/dev/null 2>&1; then
 			cnt="$(map_get cnt ok)"
 			cnt=$((cnt + 1))
 			map_put cnt ok "$cnt"
