@@ -1,15 +1,13 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2019-2025 David Rabkin
+# SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # Sets owner to a user from the first argument, set right permissions for files
 # and directories started from the seconds argument.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly \
-	BASE_APP_VERSION=0.9.20251015 \
-	BASE_MIN_VERSION=0.9.20231212
+readonly BASE_APP_VERSION=0.9.20260119
 . base.sh
 [ "$#" -eq 2 ] || die Wrong arguments, try chowner user directory.
 beroot
@@ -20,6 +18,7 @@ user_exists "$USR" || die "$USR": No such user.
 file_exists "$DIR" || die "$DIR": No such file or directory.
 iswritable "$DIR" || die "$DIR" is not writable.
 chown -R "$USR" "$DIR"
+find "$DIR" -name .DS_Store -delete
 find "$DIR" -type d -exec chmod 755 {} \;
 find "$DIR" -type f -exec chmod 644 {} \;
 log The owner of "$DIR" is changed to "$USR".
