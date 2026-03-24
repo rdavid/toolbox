@@ -47,8 +47,8 @@ calc_wid() {
 	readonly WID
 }
 
-# Makes sure every file was copied successfully to destination. Pass each file
-# locally and verifies there is a file with a same name at destination.
+# Verifies that every file was copied successfully to the destination.
+# Compares each local result file with a file of the same name in destination.
 check() {
 	local ndst=0 nsrc=0 pipe
 	pipe="$BASE_WIP"/pipe
@@ -65,7 +65,7 @@ check() {
 		logw "There are $nsrc files in $RES, $ndst in $DST, keeps the results."
 		[ "$BASE_KEEP_WIP" = true ] || keep_arc
 	else
-		log "There are $nsrc files copied to $DST."
+		log "Copied $nsrc files to $DST."
 	fi
 }
 
@@ -118,7 +118,7 @@ download() {
 	isempty "$VID" || return 0
 
 	# Stops if there are no downloaded files.
-	cya There is no new downloaded video.
+	cya No new videos were downloaded.
 }
 
 # Moves result to local archive.
@@ -151,7 +151,7 @@ main() {
 	check
 }
 
-# Renames all downloaded files to the same manner: ASCII, lower case, no
+# Renames all downloaded files to a consistent format: ASCII, lower case, no
 # spaces.
 rename() {
 	{
@@ -173,7 +173,7 @@ sort() {
 	done <"$AUT"
 }
 
-# Makes sure that needed software packages are installed at the host.
+# Verifies that required software packages are installed on the host.
 validate() {
 	local dir
 	validate_cmd \

@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2022-2025 David Rabkin
+# SPDX-FileCopyrightText: 2022-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # The script uses local variables which are not POSIX but supported by most
@@ -73,7 +73,7 @@ main() {
 		cya Unable to continue, err=$err.
 	}
 
-	# shellcheck disable=SC2086 # No need for double quates.
+	# shellcheck disable=SC2086 # No need for double quotes.
 	fix_outdated $fil
 }
 

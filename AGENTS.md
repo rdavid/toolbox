@@ -3,12 +3,12 @@
 
 # AGENTS
 
-Purpose: quick operating notes for humans and automation working in this repo.
+Purpose: concise operating notes for humans and automation working in this repository.
 
 ## Project
 - Name: `toolbox`
 - Language: POSIX shell (`#!/bin/sh`) scripts in `app/`
-- Build/lint entrypoint: `redo lint` (via `all.do` / `lint.do`)
+- Build and lint entrypoint: `redo lint` (via `all.do` / `lint.do`)
 
 ## Repo Layout
 - `app/`: executable utilities
@@ -18,7 +18,7 @@ Purpose: quick operating notes for humans and automation working in this repo.
 
 ## Conventions
 - Keep scripts POSIX-friendly for `sh`.
-- Use `shellcheck` + `shfmt` compatible style.
+- Follow style that is compatible with `shellcheck` and `shfmt`.
 - Preserve SPDX headers in edited files.
 - Use Conventional Commits for commit subjects (for example: `fix: ...`,
   `style: ...`, `chore: ...`).
@@ -26,7 +26,7 @@ Purpose: quick operating notes for humans and automation working in this repo.
 
 ## Common Commands
 - Run lint: `redo lint`
-- Run shell syntax check on all apps:
+- Run a shell syntax check on all apps:
   `for f in app/*; do sh -n "$f"; done`
 
 ## Safety

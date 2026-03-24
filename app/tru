@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2020-2025 David Rabkin
+# SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # tru stands for Transmission Remote Updater. The script removes a torrent with
@@ -82,7 +82,7 @@ validation() {
 	# shellcheck disable=SC2086 # Double quote to prevent globbing.
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
 
-	# Validates third parameter full torrent file name.
+	# Validates the full torrent filename from the third parameter.
 	isreadable "$TOR" || die Unable to read "$TOR".
 	out="$(transmission-show "$TOR")" || die Unable to read "$TOR": "$out"
 	NME="$(printf %s "$out" | grep Name: | head -1 | cut -c 7-)"

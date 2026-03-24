@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2020-2025 David Rabkin
+# SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # shellcheck disable=SC1091 # File not following.
@@ -10,7 +10,7 @@ isreadable "$1" || die Unable to read file "$1".
 validate_cmd dvipdfm sed tex
 NME=$(basename -- "$1")
 
-# Makes sure that source filename has .tex extension.
+# Ensures that the source filename has a .tex extension.
 case "$NME" in
 *.tex) : ;;
 *) die Source file "$1" should have .tex extension. ;;

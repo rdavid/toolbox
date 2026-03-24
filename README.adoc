@@ -61,9 +61,9 @@ shell framework known as {url-shellbase}[`shellbase`]:
  * link:app/bak[`bak`] serves as a wrapper for {url-rdiff}[`rdiff-backup`],
 specifically designed to generate backups effectively.
 * link:app/chowner[`chowner`] changes the owner and permissions on a directory.
-* link:app/copyright[`copyright`] updates published years in copyrighted title.
+* link:app/copyright[`copyright`] updates years in copyright notices.
 * link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
-* link:app/ival[`ival`] Validates image files. `ival` stands for
+* link:app/ival[`ival`] validates image files. `ival` stands for
 `Image Validation`.
 * link:app/myip[`myip`] continuously displays the external IP address, uses
 {url-dig}[`dig`].
