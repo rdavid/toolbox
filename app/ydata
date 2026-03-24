@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: 0BSD
 #
 # The script downloads all new videos from pre-configured accounts in
-# ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
+# ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in GitHub).
 # The script can run as a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, transcode-video, yt-dlp.
 # The script is run by cron, so the environment is strict.

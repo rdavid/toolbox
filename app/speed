@@ -59,7 +59,7 @@ test_speed() {
 title() {
 	cat <<-EOM
 		------------------+--------+------- +----------------
-		    Timestamp     |  Down  |   Up   |    Host By
+		    Timestamp     |  Down  |   Up   |   Hosted By
 		------------------+--------+------- +----------------
 	EOM
 }

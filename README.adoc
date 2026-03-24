@@ -45,7 +45,7 @@
 
 image:{img-test}[test,link={url-test}]
 image:{img-hoc}[hits of code,link={url-hoc}]
-image:{img-releases}[release),link={url-releases}]
+image:{img-releases}[release,link={url-releases}]
 image:{img-license}[license,link={url-license}]
 
 toc::[]
@@ -55,7 +55,7 @@ toc::[]
 The `toolbox` comprises a collection of Unix shell utilities designed for
 regular use.
 Each utility within the `toolbox` adheres to the POSIX,
-`Portable Operating System Interface for uniX`, and operates within the Unix
+`Portable Operating System Interface for Unix`, and operates within the Unix
 shell framework known as {url-shellbase}[`shellbase`]:
 
  * link:app/bak[`bak`] serves as a wrapper for {url-rdiff}[`rdiff-backup`],
@@ -73,7 +73,7 @@ speeds, uses {url-speed}[`speedtest`].
 * link:app/tru[`tru`] stands for transmission remote updater.
 It removes a torrent with content and then adds it again.
 It can be run by `cron` to increase a ratio.
-* link:app/ydata[`ydata`] is a wrapper on {url-yt-dlp}[`yt-dlp`]: downloads,
+* link:app/ydata[`ydata`] is a wrapper around {url-yt-dlp}[`yt-dlp`]: downloads,
 converts, renames and keeps safe. It can be run by `cron`.
 
 == Install
