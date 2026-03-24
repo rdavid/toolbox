@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2019-2025 David Rabkin
+# SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # The script downloads all new video from pre-configured acoounts in
@@ -20,7 +20,7 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20260324 \
 	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
@@ -108,6 +108,7 @@ download() {
 			--batch-file=$SRC \
 			--download-archive $ARC \
 			--format bestvideo+bestaudio \
+			--js-runtimes deno \
 			--merge-output-format mp4 \
 			--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
 			--playlist-reverse \
@@ -176,6 +177,7 @@ sort() {
 validate() {
 	local dir
 	validate_cmd \
+		deno \
 		HandBrakeCLI \
 		mp4track \
 		renamr \
