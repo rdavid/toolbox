@@ -16,7 +16,7 @@ readonly \
 	BASE_MIN_VERSION=0.9.20240102
 . base.sh
 
-# The index starts with 0, it guarantees the title printing from the begging.
+# The index starts with 0, it guarantees title printing from the beginning.
 main() {
 	validate_cmd awk dig whois
 	chrono_sta run || die

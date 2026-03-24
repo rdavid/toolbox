@@ -18,7 +18,7 @@ readonly \
 main() {
 	validate_cmd gawk speedtest-cli
 
-	# The index starts with 0, it guarantees the title printing from the begging.
+	# The index starts with 0, it guarantees title printing from the beginning.
 	local i=0
 	while :; do
 		[ $((i % 30)) -eq 0 ] && title
@@ -28,7 +28,7 @@ main() {
 	done
 }
 
-# Prints current download and upload speeds. The function is ran in a loop,
+# Prints current download and upload speeds. The function runs in a loop,
 # rests in case of an error.
 test_speed() {
 	url_exists google.com || {

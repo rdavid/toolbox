@@ -3,11 +3,11 @@
 # SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# The script downloads all new video from pre-configured acoounts in
+# The script downloads all new videos from pre-configured accounts in
 # ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in Github).
-# The script could be ran by a cron job. Uses: curl, HandBrakeCLI, mp4track,
+# The script can run as a cron job. Uses: curl, HandBrakeCLI, mp4track,
 # renamr, rsync, transcode, transcode-video, yt-dlp.
-# The script is ran by cron, the environment is stricked.
+# The script is run by cron, so the environment is strict.
 #
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
@@ -43,7 +43,7 @@ readonly \
 # Calculates output table width for renamr and transcode utilities.
 calc_wid() {
 	WID=$(($(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m)))
-	[ "$WID" -le 1 ] && die Terminal\'s width "$(tput cold)" is too small.
+	[ "$WID" -le 1 ] && die Terminal\'s width "$(tput cols)" is too small.
 	readonly WID
 }
 

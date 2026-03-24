@@ -71,10 +71,10 @@ specifically designed to generate backups effectively.
 * link:app/speed[`speed`] continuously displays download and upload internet
 speeds, uses {url-speed}[`speedtest`].
 * link:app/tru[`tru`] stands for transmission remote updater.
-It removes a torrent with content and than adds it again.
-It could be ran by `cron` to increase a ratio.
+It removes a torrent with content and then adds it again.
+It can be run by `cron` to increase a ratio.
 * link:app/ydata[`ydata`] is a wrapper on {url-yt-dlp}[`yt-dlp`]: downloads,
-converts, renames and keeps safe. It could be ran by `cron`.
+converts, renames and keeps safe. It can be run by `cron`.
 
 == Install
 
