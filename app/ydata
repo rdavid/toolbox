@@ -210,6 +210,10 @@ validate() {
 
 # Uploads the results to the destination.
 upload() {
+	isempty "$RES" && {
+		log "No files to upload from $RES."
+		return 0
+	}
 	{
 		rsync \
 			--compress \
