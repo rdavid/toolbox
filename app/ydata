@@ -20,7 +20,7 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260324 \
+	BASE_APP_VERSION=0.9.20260330 \
 	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
@@ -42,8 +42,15 @@ readonly \
 
 # Calculates output table width for renamr and transcode utilities.
 calc_wid() {
-	WID=$(($(tput cols) - $(printf '19700101-01:01:01 I ' | wc -m)))
-	[ "$WID" -le 1 ] && die Terminal\'s width "$(tput cols)" is too small.
+	local cols
+	cols="$(tput cols 2>/dev/null || printf %s 79)"
+	case "$cols" in
+	'' | *[!0-9]*)
+		cols=79
+		;;
+	esac
+	WID=$((cols - $(printf '19700101-01:01:01 I ' | wc -m)))
+	[ "$WID" -le 1 ] && die Terminal\'s width "$cols" is too small.
 	readonly WID
 }
 
