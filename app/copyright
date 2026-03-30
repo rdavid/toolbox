@@ -14,13 +14,13 @@ BASE_APP_USAGE="$(
 		  -o, --owner       A string for an owner, e.g. -o 'David Rabkin'.
 	EOM
 )" || {
-	local err=$?
+	err=$?
 	printf >&2 %s\\n "$BASE_APP_USAGE"
 	exit $err
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20260331 \
 	BASE_MIN_VERSION=0.9.20231212
 . base.sh
 
