@@ -3,7 +3,8 @@
 # SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# shellcheck disable=SC1091 # File not following.
+# shellcheck disable=SC2034,SC1091 # Variable appears unused, file not following.
+readonly BASE_APP_VERSION=0.9.20260331
 . base.sh
 [ "$#" -eq 1 ] || die tex: try tex [file name]
 isreadable "$1" || die Unable to read file "$1".
@@ -24,6 +25,14 @@ readonly \
 	NME \
 	PDF="$NME".pdf \
 	TEX="$NME".tex
+if cmd_exists -q open; then
+	OPENER=open
+elif cmd_exists -q xdg-open; then
+	OPENER=xdg-open
+else
+	die Neither open nor xdg-open is available.
+fi
+readonly OPENER
 
 # Do not worry about file cleaning on exit. Garbage collector will remove the
 # temporarily directory.
@@ -35,4 +44,4 @@ if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
 fi
 dvipdfm "./$DVI" >/dev/null 2>&1
 cp "./$PDF" "$OLDPWD"
-open "$OLDPWD/$PDF"
+"$OPENER" "$OLDPWD/$PDF"
