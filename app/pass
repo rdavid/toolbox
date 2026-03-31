@@ -16,16 +16,16 @@ TOP = 'PARAMS'
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
-		print("Usage: %s <config-file>" % sys.argv[0])
+		print("Usage: %s <config-file>" % sys.argv[0], file=sys.stderr)
 		sys.exit(1)
 	cfg_path = sys.argv[1]
 	if not os.path.isfile(cfg_path):
-		print("Unable to find configuration file %s." % cfg_path)
+		print("Unable to find configuration file %s." % cfg_path, file=sys.stderr)
 		sys.exit(1)
 	cfg = ConfigObj(cfg_path)
 	fil = cfg[TOP]['shared']
 	if not os.path.isfile(fil):
-		print("Unable to find shared configuration file %s." % fil)
+		print("Unable to find shared configuration file %s." % fil, file=sys.stderr)
 		sys.exit(1)
 	shr = ConfigObj(fil)
 	sec = cfg[TOP]['secret']
