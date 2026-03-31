@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: 0BSD
 #
 # shellcheck disable=SC2034,SC1091 # Variable appears unused, file not following.
-readonly BASE_APP_VERSION=0.9.20260331
+readonly BASE_APP_VERSION=0.9.20260401
 . base.sh
 [ "$#" -eq 1 ] || die tex: try tex [file name]
 isreadable "$1" || die Unable to read file "$1".
@@ -42,6 +42,6 @@ if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
 	cp "./$LOG" "$OLDPWD"
 	die See "$LOG" for errors.
 fi
-dvipdfm "./$DVI" >/dev/null 2>&1
-cp "./$PDF" "$OLDPWD"
+dvipdfm "./$DVI" >/dev/null 2>&1 || die Unable to convert "$DVI" to "$PDF".
+cp "./$PDF" "$OLDPWD" || die Unable to copy "$PDF" to "$OLDPWD".
 "$OPENER" "$OLDPWD/$PDF"
