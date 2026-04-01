@@ -3,11 +3,11 @@
 # SPDX-FileCopyrightText: 2020-2025 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# It watches Wi-Fi ESSID change and report.
+# Watches for Wi-Fi ESSID changes and reports them.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20260402 \
 	BASE_MIN_VERSION=0.9.20230312
 . base.sh
 readonly \

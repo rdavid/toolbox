@@ -12,7 +12,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20260402 \
 	BASE_MIN_VERSION=0.9.20240102
 . base.sh
 
@@ -67,7 +67,7 @@ myip() {
 		return 0
 	}
 
-	# At first tries to find a state of a country.
+	# First, tries to find a state/province value.
 	state="$(
 		printf %s "$out" |
 			awk -F':[ \t]+' 'tolower($1) ~ /^stateprov$/ {print toupper($2)}' |

@@ -13,7 +13,7 @@
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20260402 \
 	BASE_MIN_VERSION=0.9.20240104
 . base.sh
 
@@ -33,7 +33,7 @@ main() {
 		log "$NME $tid is removed from $SER."
 	fi
 
-	# Adds torrent file name to torrent server.
+	# Adds the torrent file to the server.
 	{
 		# shellcheck disable=SC2086 # Double quote to prevent globbing.
 		transmission-remote "$SER" $AUT --add "$TOR" \

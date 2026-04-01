@@ -10,7 +10,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20250609 \
+	BASE_APP_VERSION=0.9.20260402 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
@@ -28,8 +28,8 @@ main() {
 	done
 }
 
-# Prints current download and upload speeds. The function runs in a loop,
-# rests in case of an error.
+# Prints current download and upload speeds. Runs in a loop and pauses on
+# errors.
 test_speed() {
 	url_exists google.com || {
 		loge Check internet connection.

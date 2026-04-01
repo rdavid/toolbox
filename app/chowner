@@ -3,11 +3,11 @@
 # SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Sets owner to a user from the first argument, set right permissions for files
-# and directories started from the seconds argument.
+# Sets the owner from the first argument and sets proper permissions for files
+# and directories under the second argument.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260119
+readonly BASE_APP_VERSION=0.9.20260402
 . base.sh
 [ "$#" -eq 2 ] || die Wrong arguments, try chowner user directory.
 beroot

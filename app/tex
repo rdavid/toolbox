@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: 0BSD
 #
 # shellcheck disable=SC2034,SC1091 # Variable appears unused, file not following.
-readonly BASE_APP_VERSION=0.9.20260401
+readonly BASE_APP_VERSION=0.9.20260402
 . base.sh
 [ "$#" -eq 1 ] || die tex: try tex [file name]
 isreadable "$1" || die Unable to read file "$1".
@@ -34,8 +34,8 @@ else
 fi
 readonly OPENER
 
-# Do not worry about file cleaning on exit. Garbage collector will remove the
-# temporarily directory.
+# Do not clean temporary files on exit. The system cleanup process will remove
+# the temporary directory.
 cp "$1" "$BASE_WIP"
 cd "$BASE_WIP" || die
 if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
