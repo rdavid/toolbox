@@ -1,12 +1,12 @@
-# SPDX-FileCopyrightText: 2023-2025 David Rabkin
+# SPDX-FileCopyrightText: 2023-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 # This workflow has limitations -- Ubuntu lacks a redo package.
 ---
 name: test
 'on': [pull_request, push]
 env:
-  BASE_REL: 0.9.20251111
-  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20251111.tar.gz # yamllint disable-line
+  BASE_REL: 0.9.20260404
+  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20260404.tar.gz # yamllint disable-line
 jobs:
   test:
     strategy:
