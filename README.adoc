@@ -11,7 +11,7 @@
 :url-dig: https://linux.die.net/man/1/dig
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
-:url-goredo: http://www.goredo.cypherpunks.su/Install.html
+:url-goredo: http://www.goredo.stargrave.org/INSTALL.html
 :url-goredoer: https://github.com/rdavid/goredoer
 :url-rdiff: https://github.com/rdiff-backup/rdiff-backup
 :url-redo: http://cr.yp.to/redo.html
