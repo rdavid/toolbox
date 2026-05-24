@@ -3,7 +3,7 @@
 
 # AGENTS
 
-Purpose: concise operating notes for humans and automation working in this repository.
+Purpose: concise operating notes for humans and automated tools working in this repository.
 
 ## Project
 - Name: `toolbox`

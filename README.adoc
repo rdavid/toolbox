@@ -54,27 +54,26 @@ toc::[]
 
 The `toolbox` comprises a collection of Unix shell utilities designed for
 regular use.
-Each utility within the `toolbox` adheres to the POSIX,
-`Portable Operating System Interface for Unix`, and operates within the Unix
-shell framework known as {url-shellbase}[`shellbase`]:
+Each utility adheres to POSIX (`Portable Operating System Interface for Unix`)
+and operates within the Unix shell framework {url-shellbase}[`shellbase`]:
 
- * link:app/bak[`bak`] serves as a wrapper for {url-rdiff}[`rdiff-backup`],
-specifically designed to generate backups effectively.
+* link:app/bak[`bak`] wraps {url-rdiff}[`rdiff-backup`] to create
+incremental backups.
 * link:app/chowner[`chowner`] changes the owner and permissions on a directory.
 * link:app/copyright[`copyright`] updates years in copyright notices.
-* link:app/flactomp3[`flactomp3`] converts an audio to `mp3` with tags.
+* link:app/flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
 * link:app/ival[`ival`] validates image files. `ival` stands for
-`Image Validation`.
+Image Validation.
 * link:app/myip[`myip`] continuously displays the external IP address, uses
 {url-dig}[`dig`].
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
 * link:app/speed[`speed`] continuously displays download and upload internet
 speeds, uses {url-speed}[`speedtest`].
-* link:app/tru[`tru`] stands for transmission remote updater.
-It removes a torrent with content and then adds it again.
+* link:app/tru[`tru`] stands for Transmission Remote Updater.
+It removes a torrent and its content, then adds it again.
 It can be run by `cron` to increase a ratio.
-* link:app/ydata[`ydata`] is a wrapper around {url-yt-dlp}[`yt-dlp`]: downloads,
-converts, renames and keeps safe. It can be run by `cron`.
+* link:app/ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: downloads, converts,
+renames, and stores safely. It can be run by `cron`.
 
 == Install
 
