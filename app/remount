@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2016-2025 David Rabkin
+# SPDX-FileCopyrightText: 2016-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # shellcheck disable=SC1091 # File not following.
@@ -9,7 +9,7 @@ readonly \
 	PRM=/etc/fstab-prm \
 	TMP=/etc/fstab-tmp
 beroot
-[ -f $TMP ] || die $TMP not found.
-[ -f $PRM ] || die $PRM not found.
-cp $TMP /etc/fstab && mount -a
-cp $PRM /etc/fstab
+[ -f "$TMP" ] || die $TMP not found.
+[ -f "$PRM" ] || die $PRM not found.
+cp "$TMP" /etc/fstab && mount -a
+cp "$PRM" /etc/fstab

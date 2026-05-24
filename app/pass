@@ -3,38 +3,35 @@
 # SPDX-License-Identifier: 0BSD
 # -*- coding: utf-8 -*-
 
-import base64
-import click
-import pyperclip
-import pyotp
 import os
 import sys
-from subprocess import Popen, PIPE
 from configobj import ConfigObj
+import pyotp
+import pyperclip
 
 TOP = 'PARAMS'
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
-		print("Usage: %s <config-file>" % sys.argv[0], file=sys.stderr)
+		print(f"Usage: {sys.argv[0]} <config-file>", file=sys.stderr)
 		sys.exit(1)
 	cfg_path = sys.argv[1]
 	if not os.path.isfile(cfg_path):
-		print("Unable to find configuration file %s." % cfg_path, file=sys.stderr)
+		print(f"Unable to find configuration file {cfg_path}.", file=sys.stderr)
 		sys.exit(1)
 	cfg = ConfigObj(cfg_path)
 	fil = cfg[TOP]['shared']
 	if not os.path.isfile(fil):
-		print("Unable to find shared configuration file %s." % fil, file=sys.stderr)
+		print(f"Unable to find shared configuration file {fil}.", file=sys.stderr)
 		sys.exit(1)
 	shr = ConfigObj(fil)
 	sec = cfg[TOP]['secret']
 	pin = cfg[TOP]['pin']
 	cnt = int(shr[TOP]['counter'])
 	otp = pyotp.HOTP(sec)
-	res = r"%s%s" % (pin, int(otp.at(cnt)))
+	res = f"{pin}{int(otp.at(cnt))}"
 	pyperclip.copy(res)
 	cnt += 1
 	shr[TOP]['counter'] = cnt
 	shr.write()
-	print("The counter is set to %s." % str(cnt))
+	print(f"The counter is set to {cnt}.")
