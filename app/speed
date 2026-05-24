@@ -1,6 +1,6 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2020-2025 David Rabkin
+# SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # The script uses local variables which are not POSIX but supported by most
@@ -10,7 +10,7 @@
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20260402 \
+	BASE_APP_VERSION=0.9.20260524 \
 	BASE_MIN_VERSION=0.9.20230505
 . base.sh
 
@@ -58,9 +58,9 @@ test_speed() {
 # Prints top title.
 title() {
 	cat <<-EOM
-		------------------+--------+------- +----------------
+		------------------+--------+--------+----------------
 		    Timestamp     |  Down  |   Up   |   Hosted By
-		------------------+--------+------- +----------------
+		------------------+--------+--------+----------------
 	EOM
 }
 
