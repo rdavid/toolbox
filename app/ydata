@@ -20,7 +20,7 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260330 \
+	BASE_APP_VERSION=0.9.20260524 \
 	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
@@ -54,8 +54,7 @@ calc_wid() {
 	readonly WID
 }
 
-# Verifies that every file was copied successfully to the destination.
-# Compares each local result file with a file of the same name in destination.
+# Verifies that every result file was copied to the destination.
 check() {
 	local ndst=0 nsrc=0 pipe
 	pipe="$BASE_WIP"/pipe
@@ -76,7 +75,7 @@ check() {
 	fi
 }
 
-# Converts to general formats.
+# Transcodes video and audio to standard formats.
 convert() {
 	if ! isempty "$VID"; then
 		cd "$RES" || die Unable to change directory to "$RES".
@@ -105,7 +104,7 @@ convert() {
 			3>&1 1>&2 | tolog
 }
 
-# Downloads Youtube files.
+# Downloads YouTube files.
 download() {
 	# shellcheck disable=SC2086 # Double quote to prevent globbing.
 	{
@@ -128,7 +127,7 @@ download() {
 	cya No new videos were downloaded.
 }
 
-# Moves result to local archive.
+# Moves results to a local archive.
 keep_arc() {
 	local arc out who
 	who="$(id -nu 2>&1)" || {
@@ -171,7 +170,7 @@ rename() {
 		3>&1 1>&2 | tolog
 }
 
-# Sorts files to audio and video folders by authors.
+# Moves audio files by author into the audio folder.
 sort() {
 	while read -r a; do
 		if file_exists "$VID/$a"*; then
@@ -226,5 +225,5 @@ upload() {
 		3>&1 1>&2 | tolog
 }
 
-# Starting point
+# Starting point.
 main "$@"
