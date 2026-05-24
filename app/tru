@@ -3,8 +3,8 @@
 # SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# tru stands for Transmission Remote Updater. The script removes a torrent with
-# content and then adds it again. It is useful to automatically increase a
+# tru stands for Transmission Remote Updater. The script removes a torrent and
+# its content, then adds it again. It is useful to automatically increase a
 # ratio.
 #
 # The script uses local variables which are not POSIX but supported by most
@@ -13,12 +13,11 @@
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260402 \
+	BASE_APP_VERSION=0.9.20260524 \
 	BASE_MIN_VERSION=0.9.20240104
 . base.sh
 
-# Looks for torrent ID by torrent name extracted from torrent file name.
-# Continues if the ID does not exist.
+# Removes the existing torrent if present, then adds it from the file.
 main() {
 	validation "$@"
 	local tid

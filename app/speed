@@ -28,8 +28,7 @@ main() {
 	done
 }
 
-# Prints current download and upload speeds. Runs in a loop and pauses on
-# errors.
+# Prints current download and upload speeds, logging errors and returning early.
 test_speed() {
 	url_exists google.com || {
 		loge Check internet connection.
