@@ -20,7 +20,7 @@ export \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260524 \
+	BASE_APP_VERSION=0.9.20260601 \
 	BASE_MIN_VERSION=0.9.20231212
 
 # shellcheck disable=SC1091 # File not following.
@@ -157,8 +157,7 @@ main() {
 	check
 }
 
-# Renames all downloaded files to a consistent format: ASCII, lower case, no
-# spaces.
+# Renames downloaded files to ASCII lower-case without spaces.
 rename() {
 	{
 		renamr \
