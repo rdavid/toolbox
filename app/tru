@@ -12,14 +12,12 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly \
-	BASE_APP_VERSION=0.9.20260601 \
-	BASE_MIN_VERSION=0.9.20240104
+readonly BASE_APP_VERSION=0.9.20260603
 . base.sh
 
 # Removes the existing torrent if present, then adds it from the file.
 main() {
-	validation "$@"
+	validate "$@"
 	local tid
 	tid=$(tid) || die
 	if [ -n "$tid" ]; then
@@ -62,7 +60,7 @@ tid() {
 	printf %s "$out"
 }
 
-validation() {
+validate() {
 	validate_cmd awk nc tr transmission-remote transmission-show
 	[ "$#" -eq 3 ] || die tru: try tru [host:port user:pass torrent-file]
 

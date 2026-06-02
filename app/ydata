@@ -19,9 +19,7 @@ export \
 	PATH="$PATH":/usr/local/bin
 
 # shellcheck disable=SC2034 # Variable appears unused.
-readonly \
-	BASE_APP_VERSION=0.9.20260601 \
-	BASE_MIN_VERSION=0.9.20231212
+readonly BASE_APP_VERSION=0.9.20260603
 
 # shellcheck disable=SC1091 # File not following.
 . base.sh

@@ -6,9 +6,7 @@
 # Validates image files.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
-readonly \
-	BASE_APP_VERSION=0.9.20250629 \
-	BASE_MIN_VERSION=0.9.20231212
+readonly BASE_APP_VERSION=0.9.20260603
 . base.sh
 validate_cmd convert
 [ "$#" -eq 1 ] || cya ival: try ival [user directory]

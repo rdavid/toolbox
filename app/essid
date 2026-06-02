@@ -6,9 +6,7 @@
 # Watches for Wi-Fi ESSID changes and reports them.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly \
-	BASE_APP_VERSION=0.9.20260524 \
-	BASE_MIN_VERSION=0.9.20230312
+readonly BASE_APP_VERSION=0.9.20260603
 . base.sh
 readonly \
 	CUR=/"$BASE_WIP"/cur \
