@@ -88,5 +88,5 @@ validation() {
 	[ -n "$NME" ] || die Unable to extract name from "$TOR": "$out"
 }
 
-# Starting point.
+# Entry point.
 main "$@"
