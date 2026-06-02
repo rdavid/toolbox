@@ -70,8 +70,8 @@ Image Validation.
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
 * link:app/reel[`reel`] converts a video clip to a vertical (1080×1920) social
 media reel with a blurred background using {url-ffmpeg}[`ffmpeg`].
-Accepts `-f` for input file, `-o` for output file, `-d` for duration, and
-`-s` for start time.
+Accepts `-f` for input file, `-o` for output file, `-s` for start time, and
+`-u` for duration.
 * link:app/speed[`speed`] continuously displays download and upload internet
 speeds, uses {url-speed}[`speedtest`].
 * link:app/tru[`tru`] stands for Transmission Remote Updater.
