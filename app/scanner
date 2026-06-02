@@ -54,7 +54,7 @@ pause() {
 	sleep 1
 }
 
-# Starting point.
+# Entry point.
 beroot
 validate_cmd arp-scan
 [ "$#" -eq 1 ] || die scanner: try scanner [mac address:list]

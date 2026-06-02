@@ -104,5 +104,5 @@ validate() {
 		OWNER
 }
 
-# Starting point.
+# Entry point.
 main "$@"

@@ -98,5 +98,5 @@ title() {
 	EOM
 }
 
-# Starting point.
+# Entry point.
 main "$@"
