@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023-2025 David Rabkin
+# SPDX-FileCopyrightText: 2023-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 [files]
 extend-exclude = ["cfg/ytda.dne"]
@@ -7,4 +7,5 @@ extend-exclude = ["cfg/ytda.dne"]
 dne = "dne"
 noet = "noet"
 tru = "tru"
+FLE = "FLE"
 SER = "SER"
