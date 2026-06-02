@@ -11,6 +11,7 @@
 :url-dig: https://linux.die.net/man/1/dig
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
+:url-ffmpeg: https://ffmpeg.org
 :url-goredo: http://www.goredo.stargrave.org/INSTALL.html
 :url-goredoer: https://github.com/rdavid/goredoer
 :url-rdiff: https://github.com/rdiff-backup/rdiff-backup
@@ -67,6 +68,10 @@ Image Validation.
 * link:app/myip[`myip`] continuously displays the external IP address, uses
 {url-dig}[`dig`].
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
+* link:app/reel[`reel`] converts a video clip to a vertical (1080×1920) social
+media reel with a blurred background using {url-ffmpeg}[`ffmpeg`].
+Accepts `-f` for input file, `-o` for output file, `-d` for duration, and
+`-s` for start time.
 * link:app/speed[`speed`] continuously displays download and upload internet
 speeds, uses {url-speed}[`speedtest`].
 * link:app/tru[`tru`] stands for Transmission Remote Updater.
