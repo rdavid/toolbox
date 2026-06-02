@@ -20,8 +20,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260603 \
-	BASE_MIN_VERSION=0.9.20231212
+	BASE_APP_VERSION=0.9.20260603
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.

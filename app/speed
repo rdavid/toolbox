@@ -9,9 +9,7 @@
 # shellcheck disable=SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
-readonly \
-	BASE_APP_VERSION=0.9.20260524 \
-	BASE_MIN_VERSION=0.9.20230505
+readonly BASE_APP_VERSION=0.9.20260603
 . base.sh
 
 # Reports download and upload internet speeds in a loop.
