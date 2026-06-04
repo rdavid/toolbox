@@ -1,17 +1,18 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2020-2025 David Rabkin
+# SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # Validates image files.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260604
 . base.sh
 validate_cmd convert
 [ "$#" -eq 1 ] || cya ival: try ival [user directory]
 readonly DIR="$1"
 isreadable "$DIR" || die Directory "$DIR" is not readable.
+map_put cnt all 0
 map_put cnt no 0
 map_put cnt ok 0
 find "$DIR" \
@@ -28,19 +29,23 @@ find "$DIR" \
 	\) \
 	-type f |
 	while read -r img; do
+		all="$(map_get cnt all)"
+		all=$((all + 1))
+		map_put cnt all "$all"
 		if convert "$img" "$BASE_DIR_WIP/out.tiff" >/dev/null 2>&1; then
-			cnt="$(map_get cnt ok)"
-			cnt=$((cnt + 1))
-			map_put cnt ok "$cnt"
-			log ok: "$img".
+			num="$(map_get cnt ok)"
+			num=$((num + 1))
+			map_put cnt ok "$num"
+			log ok "$all" "$img"
 		else
-			cnt="$(map_get cnt no)"
-			cnt=$((cnt + 1))
-			map_put cnt no "$cnt"
-			logw no: "$img".
+			num="$(map_get cnt no)"
+			num=$((num + 1))
+			map_put cnt no "$num"
+			logw no "$all" "$img"
 		fi
 	done
-cnt="$(map_get cnt ok)"
-[ "$cnt" -eq 0 ] || log Total successfully verified: "$cnt".
-cnt="$(map_get cnt no)"
-[ "$cnt" -eq 0 ] || log Total failed verifications: "$cnt".
+all="$(map_get cnt all)"
+num="$(map_get cnt ok)"
+[ "$num" -eq 0 ] || log ok "$num/$all".
+num="$(map_get cnt no)"
+[ "$num" -eq 0 ] || logw no "$num/$all".
