@@ -9,9 +9,10 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC3043,SC2034 # Uses local variables, appears unused.
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
+# shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260601 \
+	BASE_APP_VERSION=0.9.20260605 \
 	DST=/usr/local/bin \
 	REL=0.9.20260404 \
 	TGT=/usr/local/bin/base.sh
@@ -30,13 +31,18 @@ install() {
 		die Unable to install shellbase to "$DST".
 }
 
-# Validates the environment and installs shellbase.
+# Installs or updates shellbase.
 main() {
+	validate "$@"
+	process
+}
+
+# Checks the installed version and installs or updates shellbase.
+process() {
 	local \
 		msg \
 		new="shellbase $REL" \
 		old
-	validate "$@"
 	if file_exists "$TGT"; then
 		old="$(sh "$TGT" --quiet --version 2>&1)" || die "$old"
 		[ "$old" = "$new" ] &&
