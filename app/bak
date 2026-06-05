@@ -1,26 +1,43 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2016-2025 David Rabkin
+# SPDX-FileCopyrightText: 2016-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # Makes incremental backups from the first parameter to the second.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
-[ "$#" -eq 2 ] || die bak: try bak [source directory] [destination directory]
-readonly \
-	DST="$2" \
-	SRC="$1"
-validate_cmd rdiff-backup
-isreadable "$SRC" || die "$SRC" is not readable.
-iswritable "$DST" || die "$DST" is not writable.
-{
-	rdiff-backup \
-		--force \
-		--preserve-numerical-ids \
-		--print-statistics \
-		--terminal-verbosity 4 \
-		"$SRC" "$DST" \
-		2>&1 1>&3 3>&- | tologe
-} \
-	3>&1 1>&2 | tolog
+
+# Runs the incremental backup from SRC to DST.
+main() {
+	validate "$@"
+	process
+}
+
+# Executes rdiff-backup, routing stderr to the error log.
+process() {
+	{
+		rdiff-backup \
+			--force \
+			--preserve-numerical-ids \
+			--print-statistics \
+			--terminal-verbosity 4 \
+			"$SRC" "$DST" \
+			2>&1 1>&3 3>&- | tologe
+	} \
+		3>&1 1>&2 | tolog
+}
+
+# Validates arguments and sets SRC and DST.
+validate() {
+	[ "$#" -eq 2 ] || die bak: try bak [source directory] [destination directory]
+	readonly \
+		DST="$2" \
+		SRC="$1"
+	isreadable "$SRC" || die "$SRC" is not readable.
+	iswritable "$DST" || die "$DST" is not writable.
+	validate_cmd rdiff-backup
+}
+
+# Entry point.
+main "$@"
