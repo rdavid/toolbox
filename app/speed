@@ -6,24 +6,33 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC3043 # Uses local variables.
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
 
 # Reports download and upload internet speeds in a loop.
 main() {
-	validate_cmd gawk speedtest-cli
+	validate
+	loop
+}
 
-	# The index starts with 0, it guarantees title printing from the beginning.
+# The index starts with 0, it guarantees title printing from the beginning.
+# Runs the polling loop; prints a title header every 30 iterations.
+loop() {
 	local i=0
 	while :; do
 		[ $((i % 30)) -eq 0 ] && title
 		test_speed
-		sleep 30
+		pause
 		i=$((i + 1))
 	done
+}
+
+# Pauses between speed checks.
+pause() {
+	sleep 30
 }
 
 # Prints current download and upload speeds, logging errors and returning early.
@@ -59,6 +68,11 @@ title() {
 		    Timestamp     |  Down  |   Up   |   Hosted By
 		------------------+--------+--------+----------------
 	EOM
+}
+
+# Validates the environment.
+validate() {
+	validate_cmd gawk speedtest-cli
 }
 
 # Entry point.
