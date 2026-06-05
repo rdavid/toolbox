@@ -20,7 +20,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260603
+	BASE_APP_VERSION=0.9.20260605
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
@@ -54,9 +54,15 @@ fix_outdated() {
 	return $ret
 }
 
-# Searches for Git files in the current directory.
+# Searches for Git files and fixes their copyright years.
 main() {
 	validate "$@"
+	process
+}
+
+# Finds files matching PATTERN and passes them to fix_outdated.
+# shellcheck disable=SC2086 # Word splitting required for fil.
+process() {
 	local fil
 	fil="$(
 		git ls-files . 2>&1 |
@@ -71,8 +77,6 @@ main() {
 		printf '%s is not found.\n' "$PATTERN"
 		cya Unable to continue, err=$err.
 	}
-
-	# shellcheck disable=SC2086 # No need for double quotes.
 	fix_outdated $fil
 }
 
