@@ -8,25 +8,34 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC3043 # Uses local variables.
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
 
 # Reports external IP and location in a loop.
 main() {
-	validate_cmd awk dig whois
+	validate
 	chrono_sta run || die
+	loop
+}
 
-	# The index starts with 0, it guarantees title printing from the beginning.
+# The index starts with 0, it guarantees title printing from the beginning.
+# Runs the polling loop; prints a title header every 24 iterations.
+loop() {
 	local i=0
 	while :; do
 		[ $((i % 24)) -eq 0 ] && title
 		myip
-		sleep 5
+		pause
 		i=$((i + 1))
 	done
+}
+
+# Pauses between IP checks.
+pause() {
+	sleep 5
 }
 
 # Prints external IP.
@@ -40,7 +49,7 @@ myip() {
 			@resolver4.opendns.com \
 			2>&1
 	)" || {
-		loge OpenDNS failed: "$ip"
+		loge OpenDNS failed: "$ip".
 		return 0
 	}
 	var_exists ip || {
@@ -53,17 +62,17 @@ myip() {
 				@ns1.google.com \
 				2>&1
 		)" || {
-			loge Google DNS failed: "$ip"
+			loge Google DNS failed: "$ip".
 			return 0
 		}
 		ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
 		var_exists ip || {
-			loge OpenDNS and Google DNS failed to resolve my IP
+			loge OpenDNS and Google DNS failed to resolve my IP.
 			return 0
 		}
 	}
 	out="$(whois "$ip" 2>&1)" || {
-		loge whois "$ip" failed: "$out"
+		loge whois "$ip" failed: "$out".
 		return 0
 	}
 
@@ -94,6 +103,11 @@ title() {
 		    Timestamp     |        IP       | State |    Duration
 		------------------+-----------------+-------+----------------
 	EOM
+}
+
+# Validates the environment.
+validate() {
+	validate_cmd awk dig whois
 }
 
 # Entry point.
