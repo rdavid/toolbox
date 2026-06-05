@@ -3,13 +3,31 @@
 # SPDX-FileCopyrightText: 2016-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# shellcheck disable=SC1091 # File not following.
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
 readonly \
 	PRM=/etc/fstab-prm \
 	TMP=/etc/fstab-tmp
-beroot
-[ -f "$TMP" ] || die $TMP not found.
-[ -f "$PRM" ] || die $PRM not found.
-cp "$TMP" /etc/fstab && mount -a
-cp "$PRM" /etc/fstab
+
+# Remounts using the temporary fstab, then restores the permanent one.
+main() {
+	validate
+	process
+}
+
+# Copies TMP to fstab, mounts all, then restores PRM.
+process() {
+	cp "$TMP" /etc/fstab && mount -a
+	cp "$PRM" /etc/fstab
+}
+
+# Validates the environment.
+validate() {
+	beroot
+	[ -f "$TMP" ] || die $TMP not found.
+	[ -f "$PRM" ] || die $PRM not found.
+}
+
+# Entry point.
+main "$@"
