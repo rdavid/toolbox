@@ -5,26 +5,26 @@
 #
 # Watches for Wi-Fi ESSID changes and reports them.
 #
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
 readonly \
-	CUR=/"$BASE_WIP"/cur \
-	OLD=/"$BASE_WIP"/old
+	CUR="$BASE_WIP"/cur \
+	OLD="$BASE_WIP"/old
 
-list() {
-	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 >"$CUR"
+# Reports ESSID changes in a loop.
+main() {
+	validate
+	loop
 }
 
-copy() {
-	cp -f "$CUR" "$OLD"
-}
-
-pause() {
-	sleep 5
-}
-
+# Compares current and previous ESSID lists and logs any changes.
 comp() {
+	local changed out
 	out='ESSID list is'
 	changed="$(diff -y --suppress-common-lines "$CUR" "$OLD" | wc -l)"
 	if [ "$changed" -ne '0' ]; then
@@ -35,12 +35,37 @@ comp() {
 	log "$out"
 }
 
-beroot
-validate_cmd iwlist
-list
-while :; do
-	pause
-	copy
+# Saves the current ESSID list to OLD.
+copy() {
+	cp -f "$CUR" "$OLD"
+}
+
+# Scans and compares ESSID lists continuously.
+loop() {
 	list
-	comp
-done
+	while :; do
+		pause
+		copy
+		list
+		comp
+	done
+}
+
+# Scans available ESSIDs and writes them to CUR.
+list() {
+	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 >"$CUR"
+}
+
+# Pauses between scans.
+pause() {
+	sleep 5
+}
+
+# Validates the environment.
+validate() {
+	beroot
+	validate_cmd iwlist
+}
+
+# Entry point.
+main "$@"
