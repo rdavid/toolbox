@@ -3,44 +3,62 @@
 # SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# shellcheck disable=SC2034,SC1091 # Variable appears unused, file not following.
-readonly BASE_APP_VERSION=0.9.20260601
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
+# shellcheck disable=SC1091,SC2034 # File not following, variable appears unused.
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
-[ "$#" -eq 1 ] || die tex: try tex [file name]
-isreadable "$1" || die Unable to read file "$1".
-validate_cmd dvipdfm sed tex
-NME=$(basename -- "$1")
 
-# Ensures that the source filename has a .tex extension.
-case "$NME" in
-*.tex) : ;;
-*) die Source file "$1" should have .tex extension. ;;
-esac
+# Compiles a TeX file to PDF and opens it.
+main() {
+	validate "$@"
+	process
+}
 
-# Extracts file name only.
-NME="$(printf %s "$NME" | sed 's/\.[^./]*$//')"
-readonly \
-	DVI="$NME".dvi \
-	LOG="$NME".log \
-	NME \
-	PDF="$NME".pdf \
-	TEX="$NME".tex
-if cmd_exists -q open; then
-	OPENER=open
-elif cmd_exists -q xdg-open; then
-	OPENER=xdg-open
-else
-	die Neither open nor xdg-open is available.
-fi
-readonly OPENER
+# Compiles TEX to DVI, converts to PDF, and opens it.
+# The system removes BASE_WIP on exit; no explicit cleanup needed.
+process() {
+	cp "$SRC" "$BASE_WIP"
+	cd "$BASE_WIP" || die
+	if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
+		cp "./$LOG" "$OLDPWD"
+		die See "$LOG" for errors.
+	fi
+	dvipdfm "./$DVI" >/dev/null 2>&1 || die Unable to convert "$DVI" to "$PDF".
+	cp "./$PDF" "$OLDPWD" || die Unable to copy "$PDF" to "$OLDPWD".
+	"$OPENER" "$OLDPWD/$PDF"
+}
 
-# Skips cleanup; the system removes the working directory on exit.
-cp "$1" "$BASE_WIP"
-cd "$BASE_WIP" || die
-if ! tex --interaction=batchmode "./$TEX" >/dev/null 2>&1; then
-	cp "./$LOG" "$OLDPWD"
-	die See "$LOG" for errors.
-fi
-dvipdfm "./$DVI" >/dev/null 2>&1 || die Unable to convert "$DVI" to "$PDF".
-cp "./$PDF" "$OLDPWD" || die Unable to copy "$PDF" to "$OLDPWD".
-"$OPENER" "$OLDPWD/$PDF"
+# Validates the environment and sets DVI, LOG, NME, PDF, SRC, TEX, and OPENER.
+validate() {
+	[ "$#" -eq 1 ] || die tex: try tex [file name]
+	isreadable "$1" || die Unable to read file "$1".
+	validate_cmd dvipdfm sed tex
+	local nme
+	nme=$(basename -- "$1")
+	case "$nme" in
+	*.tex) : ;;
+	*) die Source file "$1" should have .tex extension. ;;
+	esac
+	nme="$(printf %s "$nme" | sed 's/\.[^./]*$//')"
+	readonly \
+		DVI="$nme".dvi \
+		LOG="$nme".log \
+		NME="$nme" \
+		PDF="$nme".pdf \
+		SRC="$1" \
+		TEX="$nme".tex
+	if cmd_exists -q open; then
+		OPENER=open
+	elif cmd_exists -q xdg-open; then
+		OPENER=xdg-open
+	else
+		die Neither open nor xdg-open is available.
+	fi
+	readonly OPENER
+}
+
+# Entry point.
+main "$@"
