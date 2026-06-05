@@ -16,12 +16,17 @@ BASE_APP_USAGE="$(
 	printf >&2 %s\\n "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
 
-# Converts the input video to a vertical reel.
+# Validates the environment and converts the input video.
 main() {
 	validate "$@"
+	process
+}
+
+# Converts the input video to a vertical reel.
+process() {
 	{
 		ffmpeg -y \
 			-ss "$STA" \
