@@ -4,8 +4,13 @@
 # SPDX-License-Identifier: 0BSD
 #
 # Detects if a device with a certain MAC address is in the local network.
+#
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
 MAXV=10
 MINV=1
@@ -19,11 +24,26 @@ CNTR=$MIDL
 NAME=''
 ADDR=''
 
+# Detects the target device in a loop.
+main() {
+	validate "$@"
+	loop
+}
+
 # Validates that $1 is a well-formed MAC address.
 is_mac() {
 	printf %s\\n "$1" |
 		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' >/dev/null ||
 		die MAC address "$1" is invalid.
+}
+
+# Scans for the target MAC address and reports its presence continuously.
+loop() {
+	while :; do
+		scan
+		report
+		pause
+	done
 }
 
 # Pauses between scans.
@@ -41,8 +61,9 @@ report() {
 }
 
 # Scans the local network for the target MAC address.
+# shellcheck disable=SC2086 # Word splitting required for SCAN args.
 scan() {
-	# shellcheck disable=SC2086 # Word splitting required for SCAN args.
+	local line
 	line="$($SCAN | grep "$MACA" | head -1)" || :
 	if [ -n "$line" ]; then
 		[ -z "$NAME" ] && NAME="$(printf '%s' "$line" | cut -f1)"
@@ -57,18 +78,19 @@ scan() {
 	fi
 }
 
-# Entry point.
-beroot
-validate_cmd arp-scan
-[ "$#" -eq 1 ] || die scanner: try scanner [mac address:list]
-[ "$1" = list ] && {
-	$SCAN
-	cya
+# Validates the environment and sets MACA.
+# shellcheck disable=SC2086 # Word splitting required for SCAN args.
+validate() {
+	beroot
+	validate_cmd arp-scan
+	[ "$#" -eq 1 ] || die scanner: try scanner [mac address:list]
+	[ "$1" = list ] && {
+		$SCAN
+		cya
+	}
+	is_mac "$1"
+	MACA="$1"
 }
-is_mac "$1"
-MACA="$1"
-while :; do
-	scan
-	report
-	pause
-done
+
+# Entry point.
+main "$@"
