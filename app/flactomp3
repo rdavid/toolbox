@@ -1,39 +1,60 @@
 #!/bin/sh
 # vi:et lbr noet sw=2 ts=2 tw=79 wrap
-# SPDX-FileCopyrightText: 2019-2025 David Rabkin
+# SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # shellcheck disable=SC1091,SC2034 # File not following, variable unused.
-readonly BASE_APP_VERSION=0.9.20260603
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
-[ "$#" -eq 1 ] || die flactomp3: try flactomp3 [file name]
-readonly \
-	SRC="$1" \
-	TAG="$BASE_WIP"/tags
-isreadable "$SRC" || die "$SRC" is not readable.
-DST="$(printf %s "$SRC" | sed 's/\.flac/.mp3/')"
-readonly DST
-should_continue "Convert $SRC to $DST" || cya
-metaflac --export-tags-to=/dev/stdout "$SRC" |
-	sed \
-		-e 's/=/="/' \
-		-e 's/$/"/' \
-		-e 's/Album=/ALBUM=/' \
-		-e 's/Genre=/GENRE=/' \
-		-e 's/Artist=/ARTIST=/' >"$TAG"
-cat "$TAG"
 
-# shellcheck source=/dev/null
-. "$TAG"
-rm "$TAG"
-flac -dc "$SRC" |
-	lame \
-		-b 320 \
-		-h \
-		--ta "${ARTIST}" \
-		--tg "${GENRE}" \
-		--tl "${ALBUM}" \
-		--tn "${TRACKNUMBER}" \
-		--tt "${TITLE}" \
-		--ty "${DATE}" \
-		--add-id3v2 /dev/stdin "$DST"
+# Converts SRC from FLAC to MP3 at DST.
+main() {
+	validate "$@"
+	process
+}
+
+# Exports tags, transcodes audio, and writes DST.
+process() {
+	log Converting "$SRC" to "$DST".
+	metaflac --export-tags-to=/dev/stdout "$SRC" |
+		sed \
+			-e 's/=/="/' \
+			-e 's/$/"/' \
+			-e 's/Album=/ALBUM=/' \
+			-e 's/Genre=/GENRE=/' \
+			-e 's/Artist=/ARTIST=/' >"$TAG"
+	cat "$TAG"
+
+	# shellcheck source=/dev/null
+	. "$TAG"
+	rm "$TAG"
+	flac -dc "$SRC" |
+		lame \
+			-b 320 \
+			-h \
+			--ta "${ARTIST}" \
+			--tg "${GENRE}" \
+			--tl "${ALBUM}" \
+			--tn "${TRACKNUMBER}" \
+			--tt "${TITLE}" \
+			--ty "${DATE}" \
+			--add-id3v2 /dev/stdin "$DST"
+}
+
+# Strips the directory path and replaces the .flac extension with .mp3.
+# Validates arguments and sets SRC, DST, and TAG.
+validate() {
+	[ "$#" -eq 1 ] || die flactomp3: try flactomp3 [file]
+	validate_cmd flac lame metaflac sed
+	readonly \
+		SRC="$1" \
+		TAG="$BASE_WIP"/tags
+	isreadable "$SRC" || die "$SRC" is not readable.
+	iswritable . || die Current directory is not writable.
+	DST="$(basename "$SRC" .flac).mp3"
+	readonly DST
+	file_exists "$DST" && { should_continue "$DST exists, overwrite" || cya; }
+}
+
+# Entry point.
+main "$@"
