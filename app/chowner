@@ -6,18 +6,35 @@
 # Sets the owner and permissions on files and directories under a given path.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260524
+readonly BASE_APP_VERSION=0.9.20260605
 . base.sh
-[ "$#" -eq 2 ] || die Wrong arguments, try chowner user directory.
-beroot
-readonly \
-	DIR="$2" \
-	USR="$1"
-user_exists "$USR" || die "$USR": No such user.
-file_exists "$DIR" || die "$DIR": No such file or directory.
-iswritable "$DIR" || die "$DIR" is not writable.
-chown -R "$USR" "$DIR"
-find "$DIR" -name .DS_Store -delete
-find "$DIR" -type d -exec chmod 755 {} \;
-find "$DIR" -type f -exec chmod 644 {} \;
-log The owner of "$DIR" is changed to "$USR".
+
+# Sets ownership and permissions under DIR.
+main() {
+	validate "$@"
+	process
+}
+
+# Changes owner and resets permissions on all files and directories under DIR.
+process() {
+	chown -R "$USR" "$DIR"
+	find "$DIR" -name .DS_Store -delete
+	find "$DIR" -type d -exec chmod 755 {} \;
+	find "$DIR" -type f -exec chmod 644 {} \;
+	log The owner of "$DIR" is changed to "$USR".
+}
+
+# Validates arguments and sets USR and DIR.
+validate() {
+	[ "$#" -eq 2 ] || die Wrong arguments, try chowner [user] [dir].
+	beroot
+	readonly \
+		DIR="$2" \
+		USR="$1"
+	user_exists "$USR" || die "$USR": No such user.
+	file_exists "$DIR" || die "$DIR": No such file or directory.
+	iswritable "$DIR" || die "$DIR" is not writable.
+}
+
+# Entry point.
+main "$@"
