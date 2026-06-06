@@ -5,6 +5,10 @@
 #
 # Converts a video file to a vertical short-form reel.
 #
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+# shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
@@ -56,6 +60,7 @@ need() {
 
 # Parses command-line arguments.
 parse() {
+	local arg
 	for arg; do
 		shift
 		case "$arg" in
