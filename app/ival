@@ -27,25 +27,30 @@ main() {
 	report
 }
 
-# Scans DIR for image files and validates each one.
+# Scans DIR for image files (BMP, CR2, CRW, DNG, GIF, HEIC, JPEG, JPG, NEF,
+# ORF, PNG, RAF, RW2, TIF) and validates each one.
 scan() {
 	local img
 	map_put cnt all 0
 	map_put cnt no 0
 	map_put cnt ok 0
-	find "$DIR" \
+	find "$DIR" -type f \
 		\( \
-		-name '*.[dD][nN][gG]' \
-		-o \
-		-name '*.[hH][eE][iI][cC]' \
-		-o \
-		-name '*.[jJ][pP][gG]' \
-		-o \
-		-name '*.[nN][eE][fF]' \
-		-o \
-		-name '*.[rR][aA][fF]' \
-		\) \
-		-type f |
+		-name '*.[bB][mM][pP]' -o \
+		-name '*.[cC][rR]2' -o \
+		-name '*.[cC][rR][wW]' -o \
+		-name '*.[dD][nN][gG]' -o \
+		-name '*.[gG][iI][fF]' -o \
+		-name '*.[hH][eE][iI][cC]' -o \
+		-name '*.[jJ][pP][eE][gG]' -o \
+		-name '*.[jJ][pP][gG]' -o \
+		-name '*.[nN][eE][fF]' -o \
+		-name '*.[oO][rR][fF]' -o \
+		-name '*.[pP][nN][gG]' -o \
+		-name '*.[rR][aA][fF]' -o \
+		-name '*.[rR][wW]2' -o \
+		-name '*.[tT][iI][fF]' \
+		\) |
 		while read -r img; do
 			process "$img"
 		done
