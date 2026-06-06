@@ -29,6 +29,7 @@ main() {
 
 # Scans DIR for image files and validates each one.
 scan() {
+	local img
 	map_put cnt all 0
 	map_put cnt no 0
 	map_put cnt ok 0
@@ -50,30 +51,34 @@ scan() {
 		done
 }
 
-# Validates a single image, updates ok/no/all counters.
+# Validates a single image and updates counters. Decodes to a raw pixel sink
+# (rgb:/dev/null) to skip the temporary file write on every image.
 process() {
+	local img out
+	img="$1"
 	increment all
-	if convert "$1" "$BASE_DIR_WIP/out.tiff" >/dev/null 2>&1; then
+	if out="$(magick "$img" rgb:/dev/null 2>&1)"; then
 		increment ok
-		log ok "$(map_get cnt all) $1"
+		log ok "$img"
 	else
 		increment no
-		logw no "$(map_get cnt all) $1"
+		logw no "$img: $out"
 	fi
 }
 
 # Prints ok and no totals out of all processed.
 report() {
-	local num
-	num="$(map_get cnt ok)"
-	[ "$num" -eq 0 ] || log ok "$num/$(map_get cnt all)".
-	num="$(map_get cnt no)"
-	[ "$num" -eq 0 ] || logw no "$num/$(map_get cnt all)".
+	local all no ok
+	all="$(map_get cnt all)"
+	no="$(map_get cnt no)"
+	ok="$(map_get cnt ok)"
+	[ "$ok" -eq 0 ] || log ok "$ok/$all".
+	[ "$no" -eq 0 ] || logw no "$no/$all".
 }
 
 # Validates the environment and sets defaults.
 validate() {
-	validate_cmd convert
+	validate_cmd magick
 	[ "$#" -eq 1 ] || cya ival: try ival [user directory]
 	readonly DIR="$1"
 	isreadable "$DIR" || die Directory "$DIR" is not readable.
