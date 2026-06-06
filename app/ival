@@ -10,7 +10,7 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260607
 . base.sh
 
 # Increments a named counter by one.
@@ -66,10 +66,14 @@ process() {
 	fi
 }
 
-# Prints ok and no totals out of all processed.
+# Prints ok and no totals, or a notice when no files were processed.
 report() {
 	local all no ok
 	all="$(map_get cnt all)"
+	[ "$all" -eq 0 ] && {
+		log No files to validate.
+		return 0
+	}
 	no="$(map_get cnt no)"
 	ok="$(map_get cnt ok)"
 	[ "$ok" -eq 0 ] || log ok "$ok/$all".
