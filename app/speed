@@ -3,13 +3,15 @@
 # SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
+# Reports internet download and upload speeds in a loop.
+#
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260606
 . base.sh
 
 # Reports download and upload internet speeds in a loop.

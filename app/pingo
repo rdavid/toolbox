@@ -7,10 +7,10 @@
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260606
 . base.sh
 
-# Timestamps the ping output for the given network resource.
+# Timestamps the ping output for the given host.
 main() {
 	validate "$@"
 	process

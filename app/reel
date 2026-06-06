@@ -3,6 +3,8 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
+# Converts a video file to a vertical short-form reel.
+#
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
@@ -16,7 +18,7 @@ BASE_APP_USAGE="$(
 	printf >&2 %s\\n "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260606
 . base.sh
 
 # Validates the environment and converts the input video.

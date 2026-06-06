@@ -3,6 +3,8 @@
 # SPDX-FileCopyrightText: 2022-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
+# Updates SPDX copyright years in Git-tracked files.
+#
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
@@ -20,7 +22,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260605
+	BASE_APP_VERSION=0.9.20260606
 . base.sh
 
 # Analyzes input files, fixes copyright years if needed.
