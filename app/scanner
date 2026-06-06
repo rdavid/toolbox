@@ -9,8 +9,8 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
-# shellcheck disable=SC1091,SC2034 # File not following, variable unused.
-readonly BASE_APP_VERSION=0.9.20260605
+# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+readonly BASE_APP_VERSION=0.9.20260606
 . base.sh
 MAXV=10
 MINV=1
