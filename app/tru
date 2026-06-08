@@ -12,34 +12,24 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 
-# Removes the existing torrent if present, then adds it from the file.
+# Validates arguments and runs the remove-then-add cycle.
 main() {
 	validate "$@"
 	process
 }
 
-# Removes the existing torrent if present, then adds it from the file.
-# Adds the torrent file to the server and verifies the addition.
-# shellcheck disable=SC2086 # Word splitting required for AUT.
+# Removes the existing torrent if present, then re-adds it from the file.
 process() {
 	local tid
 	tid=$(tid) || die
 	if [ -n "$tid" ]; then
-		{
-			transmission-remote "$SER" $AUT --torrent "$tid" --remove-and-delete \
-				2>&1 1>&3 3>&- | tologe
-		} \
-			3>&1 1>&2 | tolog
+		xmit --torrent "$tid" --remove-and-delete
 		log "$NME $tid is removed from $SER."
 	fi
-	{
-		transmission-remote "$SER" $AUT --add "$TOR" \
-			2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
+	xmit --add "$TOR"
 	tid=$(tid) || die
 	log "$NME $tid is added to $SER."
 }
@@ -58,6 +48,15 @@ tid() {
 	out="$(printf %s "$out" | awk '{print $1}')" || die Wrong format: "$out"
 	[ -n "$out" ] || die Something wrong with awk: "$out"
 	printf %s "$out"
+}
+
+# Wraps transmission-remote with the standard tologe/tolog plumbing.
+# shellcheck disable=SC2086 # Word splitting required for AUT.
+xmit() {
+	{
+		transmission-remote "$SER" $AUT "$@" 2>&1 1>&3 3>&- | tologe
+	} \
+		3>&1 1>&2 | tolog
 }
 
 # Validates arguments and sets SER, AUT, TOR, and NME.
