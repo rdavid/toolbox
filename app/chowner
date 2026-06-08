@@ -6,7 +6,7 @@
 # Sets the owner and permissions on files and directories under a given path.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 
 # Sets ownership and permissions under DIR.
@@ -26,7 +26,7 @@ process() {
 
 # Validates arguments and sets USR and DIR.
 validate() {
-	[ "$#" -eq 2 ] || die Wrong arguments, try chowner [user] [dir].
+	[ "$#" -eq 2 ] || die chowner: try chowner [user] [dir]
 	beroot
 	readonly \
 		DIR="$2" \
