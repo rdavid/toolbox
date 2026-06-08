@@ -11,7 +11,7 @@
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 
 # Reports download and upload internet speeds in a loop.
@@ -20,8 +20,8 @@ main() {
 	loop
 }
 
-# The index starts with 0, it guarantees title printing from the beginning.
-# Runs the polling loop; prints a title header every 30 iterations.
+# Polls speedtest in a loop. The index starts at 0 so the title prints on
+# the first iteration, then again every 30 iterations.
 loop() {
 	local i=0
 	while :; do
@@ -37,6 +37,11 @@ pause() {
 	sleep 30
 }
 
+# Extracts the second whitespace-delimited token of the line labeled $2.
+field() {
+	printf %s "$1" | grep -E "^$2: " | gawk '{print $2}'
+}
+
 # Prints current download and upload speeds, logging errors and returning early.
 test_speed() {
 	url_exists google.com || {
@@ -48,11 +53,11 @@ test_speed() {
 		loge "$out"
 		return 0
 	}
-	down="$(printf %s "$out" | grep -E '^Download: ' | gawk '{print $2}')" || {
+	down="$(field "$out" Download)" || {
 		loge "$out: $down: down."
 		return 0
 	}
-	up="$(printf %s "$out" | grep -E '^Upload: ' | gawk '{print $2}')" || {
+	up="$(field "$out" Upload)" || {
 		loge "$out: $up: up."
 		return 0
 	}
