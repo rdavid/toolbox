@@ -19,10 +19,10 @@ BASE_APP_USAGE="$(
 	EOM
 )" || {
 	err=$?
-	printf >&2 %s\\n "$BASE_APP_USAGE"
+	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260609
 . base.sh
 
 # Validates the environment and converts the input video.
