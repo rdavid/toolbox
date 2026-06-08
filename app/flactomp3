@@ -8,9 +8,8 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC2039,SC3043 # Uses local variables.
-# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260608
+# shellcheck disable=SC1091,SC2034,SC2039,SC3043
+readonly BASE_APP_VERSION=0.9.20260609
 . base.sh
 
 # Converts SRC from FLAC to MP3 at DST.
