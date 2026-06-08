@@ -10,7 +10,7 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 MAXV=10
 MINV=1
@@ -32,7 +32,7 @@ main() {
 
 # Validates that $1 is a well-formed MAC address.
 is_mac() {
-	printf %s\\n "$1" |
+	printf '%s\n' "$1" |
 		grep -E '^([0-9a-f]{2}:){5}[0-9a-f]{2}$' >/dev/null ||
 		die MAC address "$1" is invalid.
 }
@@ -67,14 +67,12 @@ scan() {
 	line="$($SCAN | grep "$MACA" | head -1)" || :
 	if [ -n "$line" ]; then
 		[ -z "$NAME" ] && NAME="$(printf '%s' "$line" | cut -f1)"
-		[ -z "$ADDR" ] && ADDR="$(printf '%s' "$line" | cut -f3 | xargs -0)"
+		[ -z "$ADDR" ] && ADDR="$(printf '%s' "$line" | cut -f3 | xargs)"
 
 		# Each success has much more value than a failure.
 		CNTR=$MAXV
 	else
-		if [ $CNTR -ne $MINV ]; then
-			CNTR=$((CNTR - 1))
-		fi
+		[ $CNTR -gt $MINV ] && CNTR=$((CNTR - 1))
 	fi
 }
 
