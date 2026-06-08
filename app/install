@@ -9,10 +9,10 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC2039,SC3043 # Uses local variables.
-# shellcheck disable=SC2034 # Variable appears unused.
+# shellcheck disable=SC2034,SC2039,SC3043
+set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20260608 \
+	BASE_APP_VERSION=0.9.20260609 \
 	DST=/usr/local/bin \
 	REL=0.9.20260404 \
 	TGT=/usr/local/bin/base.sh
@@ -88,7 +88,6 @@ shellbase() {
 # Uses functions of shellbase to validate the environment.
 # shellcheck disable=SC1090,SC2015 # File not following, A && B || C.
 validate() {
-	set -- "$@" --quiet
 	[ -r "$TGT" ] && . "$TGT" || shellbase
 	validate_cmd curl tar
 	iswritable "$DST" || die "$DST" is not writable.
