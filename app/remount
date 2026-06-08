@@ -6,7 +6,7 @@
 # Remounts filesystems using the temporary fstab configuration.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 readonly \
 	PRM=/etc/fstab-prm \
@@ -18,17 +18,19 @@ main() {
 	process
 }
 
-# Copies TMP to fstab, mounts all, then restores PRM.
+# Copies TMP to fstab, mounts all, then restores PRM. The PRM restore
+# is unconditional so the system is never left with TMP as fstab.
 process() {
-	cp "$TMP" /etc/fstab && mount -a
-	cp "$PRM" /etc/fstab
+	cp "$TMP" /etc/fstab || die Unable to copy "$TMP" to /etc/fstab.
+	mount -a
+	cp "$PRM" /etc/fstab || die Unable to restore /etc/fstab from "$PRM".
 }
 
 # Validates the environment.
 validate() {
 	beroot
-	[ -f "$TMP" ] || die $TMP not found.
-	[ -f "$PRM" ] || die $PRM not found.
+	[ -f "$TMP" ] || die "$TMP" not found.
+	[ -f "$PRM" ] || die "$PRM" not found.
 }
 
 # Entry point.
