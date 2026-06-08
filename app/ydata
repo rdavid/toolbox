@@ -18,7 +18,7 @@ export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die
@@ -74,48 +74,27 @@ check() {
 convert() {
 	if ! isempty "$VID"; then
 		cd "$RES" || die Unable to change directory to "$RES".
-		{
-			transcode \
-				--act \
-				--dir "$VID" \
-				--out "$RES" \
-				--wid "$WID" \
-				2>&1 1>&3 3>&- | tologe
-		} \
-			3>&1 1>&2 | tolog
+		run transcode --act --dir "$VID" --out "$RES" --wid "$WID"
 		rm -f ./*.log
 		cd - || die Unable to change directory back.
 	fi
 	isempty "$AUD" ||
-		{
-			transcode \
-				--act \
-				--dir "$AUD" \
-				--mp3 \
-				--out "$RES" \
-				--wid "$WID" \
-				2>&1 1>&3 3>&- | tologe
-		} \
-			3>&1 1>&2 | tolog
+		run transcode --act --dir "$AUD" --mp3 --out "$RES" --wid "$WID"
 }
 
 # Downloads YouTube files.
 # shellcheck disable=SC2086 # Word splitting required for CKS_PARAM.
 download() {
-	{
-		yt-dlp \
-			$CKS_PARAM \
-			--add-metadata \
-			--batch-file=$SRC \
-			--download-archive $ARC \
-			--format bestvideo+bestaudio \
-			--js-runtimes deno \
-			--merge-output-format mp4 \
-			--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
-			--playlist-reverse \
-			2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
+	run yt-dlp \
+		$CKS_PARAM \
+		--add-metadata \
+		--batch-file=$SRC \
+		--download-archive $ARC \
+		--format bestvideo+bestaudio \
+		--js-runtimes deno \
+		--merge-output-format mp4 \
+		--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
+		--playlist-reverse
 	isempty "$VID" || return 0
 
 	# Stops if there are no downloaded files.
@@ -154,12 +133,13 @@ main() {
 
 # Renames downloaded files to ASCII lower-case without spaces.
 rename() {
+	run renamr --act --dir "$VID" --wid "$WID"
+}
+
+# Routes the command's stdout to tolog and its stderr to tologe.
+run() {
 	{
-		renamr \
-			--act \
-			--dir "$VID" \
-			--wid "$WID" \
-			2>&1 1>&3 3>&- | tologe
+		"$@" 2>&1 1>&3 3>&- | tologe
 	} \
 		3>&1 1>&2 | tolog
 }
@@ -202,21 +182,13 @@ validate() {
 }
 
 # Uploads the results to the destination.
+# shellcheck disable=SC2086 # Word splitting required for DST.
 upload() {
 	isempty "$RES" && {
 		log "No files to upload from $RES."
 		return 0
 	}
-	{
-		rsync \
-			--compress \
-			--human-readable \
-			--progress \
-			--verbose \
-			"$RES"/* $DST \
-			2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
+	run rsync --compress --human-readable --progress --verbose "$RES"/* $DST
 }
 
 # Entry point.
