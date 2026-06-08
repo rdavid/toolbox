@@ -6,7 +6,7 @@
 # Makes incremental backups from the first parameter to the second.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 
 # Runs the incremental backup from SRC to DST.
@@ -31,7 +31,7 @@ process() {
 
 # Validates arguments and sets SRC and DST.
 validate() {
-	[ "$#" -eq 2 ] || die bak: try bak [source directory] [destination directory]
+	[ "$#" -eq 2 ] || die bak: try bak [src] [dst]
 	readonly \
 		DST="$2" \
 		SRC="$1"
