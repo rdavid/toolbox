@@ -12,7 +12,7 @@
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260605 \
+	BASE_APP_VERSION=0.9.20260608 \
 	DST=/usr/local/bin \
 	REL=0.9.20260404 \
 	TGT=/usr/local/bin/base.sh
@@ -45,9 +45,11 @@ process() {
 		old
 	if file_exists "$TGT"; then
 		old="$(sh "$TGT" --quiet --version 2>&1)" || die "$old"
-		[ "$old" = "$new" ] &&
-			msg="$new is already installed in $DST, continue" ||
+		if [ "$old" = "$new" ]; then
+			msg="$new is already installed in $DST, continue"
+		else
 			msg="$old is installed in $DST, update to $new"
+		fi
 		should_continue "$msg" || cya
 		install
 		printf '%s is updated to %s in %s.\n' "$old" "$new" "$DST"
@@ -63,7 +65,7 @@ shellbase() {
 	for pkg in curl tar; do
 		command -v "$pkg" >/dev/null 2>&1 || {
 			err=$?
-			printf >&2 Install\ %s.\\n "$pkg"
+			printf >&2 'Install %s.\n' "$pkg"
 			exit $err
 		}
 	done
@@ -77,7 +79,7 @@ shellbase() {
 			tar --extract --gzip --to-stdout "shellbase-$REL/lib/base.sh"
 	)"
 	[ -n "${BASE_VERSION+x}" ] || {
-		printf >&2 No\ shellbase.\\n
+		printf >&2 'No shellbase.\n'
 		exit 1
 	}
 	log shellbase "$BASE_VERSION" is installed to the current shell session.
