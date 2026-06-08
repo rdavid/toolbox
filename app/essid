@@ -10,7 +10,7 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260605
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 readonly \
 	CUR="$BASE_WIP"/cur \
@@ -24,20 +24,23 @@ main() {
 
 # Compares current and previous ESSID lists and logs any changes.
 comp() {
-	local changed out
-	out='ESSID list is'
-	changed="$(diff -y --suppress-common-lines "$CUR" "$OLD" | wc -l)"
-	if [ "$changed" -ne '0' ]; then
-		out="$out changed on $changed. Alert!"
+	local changed
+	changed="$(diff -y --suppress-common-lines "$CUR" "$OLD" | wc -l | tr -d ' ')"
+	if [ "$changed" -ne 0 ]; then
+		log "ESSID list changed on $changed. Alert!"
 	else
-		out="$out not changed."
+		log ESSID list not changed.
 	fi
-	log "$out"
 }
 
 # Saves the current ESSID list to OLD.
 copy() {
 	cp -f "$CUR" "$OLD"
+}
+
+# Scans available ESSIDs and writes them to CUR.
+list() {
+	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 >"$CUR"
 }
 
 # Scans and compares ESSID lists continuously.
@@ -49,11 +52,6 @@ loop() {
 		list
 		comp
 	done
-}
-
-# Scans available ESSIDs and writes them to CUR.
-list() {
-	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 >"$CUR"
 }
 
 # Pauses between scans.
