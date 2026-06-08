@@ -10,10 +10,10 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC2039,SC3043 # Uses local variables.
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260606
+readonly BASE_APP_VERSION=0.9.20260608
 . base.sh
 
-# Compiles a TeX file to PDF and opens it.
+# Validates the environment and runs the compile pipeline.
 main() {
 	validate "$@"
 	process
@@ -37,14 +37,13 @@ process() {
 validate() {
 	[ "$#" -eq 1 ] || die tex: try tex [file name]
 	isreadable "$1" || die Unable to read file "$1".
-	validate_cmd dvipdfm sed tex
-	local nme
-	nme=$(basename -- "$1")
-	case "$nme" in
+	validate_cmd dvipdfm tex
+	case "$1" in
 	*.tex) : ;;
 	*) die Source file "$1" should have .tex extension. ;;
 	esac
-	nme="$(printf %s "$nme" | sed 's/\.[^./]*$//')"
+	local nme
+	nme="$(basename -- "$1" .tex)"
 	readonly \
 		DVI="$nme".dvi \
 		LOG="$nme".log \
