@@ -22,14 +22,26 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260606
+	BASE_APP_VERSION=0.9.20260608
 . base.sh
+
+# Rewrites the year in the copyright line of $1, replacing $2 with $3.
+bump_year() {
+	local arg="$1" dst="$3" src="$2"
+	sed -i.bak \
+		"s/^\(.*\)-$src\(.*\)$OWNER/\1-$dst\2$OWNER/g" \
+		"$arg"
+	sed -i.bak \
+		"s/^\(.*\)$src\(.*\)$OWNER/\1$src-$dst\2$OWNER/g" \
+		"$arg"
+	rm "$arg".bak
+}
 
 # Analyzes input files, fixes copyright years if needed.
 fix_outdated() {
 	local arg dst ret=0 src
 	for arg; do
-		dst="$(git log -1 --pretty=format:'%aD' "$arg" | cut -d \  -f 4)"
+		dst="$(git log -1 --pretty=format:%ad --date=format:%Y "$arg")"
 		src="$(
 			grep -E "$PATTERN" <"$arg" |
 				grep -Eo '[0-9]{4}' |
@@ -44,13 +56,7 @@ fix_outdated() {
 			logw "$arg: copyrighted $src, modified $dst."
 			continue
 		}
-		sed -i.bak \
-			"s/^\(.*\)-$src\(.*\)$OWNER/\1-$dst\2$OWNER/g" \
-			"$arg"
-		sed -i.bak \
-			"s/^\(.*\)$src\(.*\)$OWNER/\1$src-$dst\2$OWNER/g" \
-			"$arg"
-		rm "$arg".bak
+		bump_year "$arg" "$src" "$dst"
 		log "$arg: copyrighted $src, modified $dst, fixed."
 	done
 	return $ret
