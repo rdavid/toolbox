@@ -17,12 +17,12 @@ BASE_APP_USAGE="$(
 	EOM
 )" || {
 	err=$?
-	printf >&2 %s\\n "$BASE_APP_USAGE"
+	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260608
+	BASE_APP_VERSION=0.9.20260609
 . base.sh
 
 # Rewrites the year in the copyright line of $1, replacing $2 with $3.
@@ -105,7 +105,7 @@ validate() {
 		esac
 	done
 	var_exists ACTION || ACTION=false
-	var_exists OWNER || OWNER=David\ Rabkin
+	var_exists OWNER || OWNER='David Rabkin'
 	PATTERN='Copyright .* '$OWNER
 	readonly \
 		ACTION \
