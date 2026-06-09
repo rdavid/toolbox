@@ -19,6 +19,12 @@ readonly \
 readonly \
 	SRC=https://github.com/rdavid/shellbase/archive/refs/tags/v$REL.tar.gz
 
+# Installs or updates shellbase.
+main() {
+	validate "$@"
+	process
+}
+
 # Installs shellbase to the destination.
 install() {
 	curl --location --silent "$SRC" |
@@ -29,12 +35,6 @@ install() {
 			--strip-components=2 \
 			"shellbase-$REL/lib/base.sh" ||
 		die Unable to install shellbase to "$DST".
-}
-
-# Installs or updates shellbase.
-main() {
-	validate "$@"
-	process
 }
 
 # Checks the installed version and installs or updates shellbase.

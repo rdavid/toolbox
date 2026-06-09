@@ -34,6 +34,18 @@ readonly \
 	SRC \
 	VID="$BASE_WIP"/vid
 
+# Downloads, renames, converts, uploads.
+main() {
+	validate
+	download
+	calc_wid
+	rename
+	sort
+	convert
+	upload
+	check
+}
+
 # Calculates output table width for renamr and transcode utilities.
 calc_wid() {
 	local cols
@@ -118,18 +130,6 @@ keep_arc() {
 	fi
 }
 
-# Downloads, renames, converts, uploads.
-main() {
-	validate
-	download
-	calc_wid
-	rename
-	sort
-	convert
-	upload
-	check
-}
-
 # Renames downloaded files to ASCII lower-case without spaces.
 rename() {
 	run renamr --act --dir "$VID" --wid "$WID"
@@ -150,6 +150,16 @@ sort() {
 			mv "$VID/$a"* "$AUD"
 		fi
 	done <"$AUT"
+}
+
+# Uploads the results to the destination.
+# shellcheck disable=SC2086 # Word splitting required for DST.
+upload() {
+	isempty "$RES" && {
+		log "No files to upload from $RES."
+		return 0
+	}
+	run rsync --compress --human-readable --progress --verbose "$RES"/* $DST
 }
 
 # Verifies that required software packages are installed on the host.
@@ -178,16 +188,6 @@ validate() {
 		CKS_PARAM=''
 	fi
 	readonly CKS_PARAM
-}
-
-# Uploads the results to the destination.
-# shellcheck disable=SC2086 # Word splitting required for DST.
-upload() {
-	isempty "$RES" && {
-		log "No files to upload from $RES."
-		return 0
-	}
-	run rsync --compress --human-readable --progress --verbose "$RES"/* $DST
 }
 
 # Entry point.

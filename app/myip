@@ -32,11 +32,6 @@ loop() {
 	done
 }
 
-# Pauses between IP checks.
-pause() {
-	sleep 5
-}
-
 # Prints external IP.
 myip() {
 	local dur ip out state
@@ -82,6 +77,11 @@ myip() {
 	dur="$(chrono_get run)" || die
 	ip="$(printf %15s "$ip")"
 	tsout "| $ip |   $state  | $dur"
+}
+
+# Pauses between IP checks.
+pause() {
+	sleep 5
 }
 
 # Picks a colon-prefixed field from whois output and uppercases the value.
