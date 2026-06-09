@@ -24,6 +24,12 @@ readonly \
 	BASE_APP_VERSION=0.9.20260609
 . base.sh
 
+# Searches for Git files and fixes their copyright years.
+main() {
+	validate "$@"
+	process
+}
+
 # Rewrites the year in the copyright line of $1, replacing $2 with $3.
 bump_year() {
 	local arg="$1" dst="$3" src="$2"
@@ -59,12 +65,6 @@ fix_outdated() {
 		log "$arg: copyrighted $src, modified $dst, fixed."
 	done
 	return $ret
-}
-
-# Searches for Git files and fixes their copyright years.
-main() {
-	validate "$@"
-	process
 }
 
 # Finds files matching PATTERN and passes them to fix_outdated.

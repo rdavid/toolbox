@@ -19,6 +19,11 @@ main() {
 	loop
 }
 
+# Extracts the second whitespace-delimited token of the line labeled $2.
+field() {
+	printf %s "$1" | grep -E "^$2: " | gawk '{print $2}'
+}
+
 # Polls speedtest in a loop. The index starts at 0 so the title prints on
 # the first iteration, then again every 30 iterations.
 loop() {
@@ -34,11 +39,6 @@ loop() {
 # Pauses between speed checks.
 pause() {
 	sleep 30
-}
-
-# Extracts the second whitespace-delimited token of the line labeled $2.
-field() {
-	printf %s "$1" | grep -E "^$2: " | gawk '{print $2}'
 }
 
 # Prints current download and upload speeds, logging errors and returning early.
