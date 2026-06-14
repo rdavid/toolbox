@@ -3,6 +3,8 @@
 ---
 name: yamllint
 'on': [pull_request, push]
+permissions:
+  contents: read
 jobs:
   yamllint:
     runs-on: ubuntu-24.04

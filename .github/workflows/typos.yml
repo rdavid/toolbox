@@ -3,6 +3,8 @@
 ---
 name: typos
 'on': [pull_request, push]
+permissions:
+  contents: read
 jobs:
   typos:
     runs-on: ubuntu-24.04
