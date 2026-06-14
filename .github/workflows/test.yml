@@ -3,7 +3,10 @@
 # This workflow has limitations -- Ubuntu lacks a redo package.
 ---
 name: test
-'on': [pull_request, push]
+'on':
+  pull_request:
+  push:
+    branches: [master]
 permissions:
   contents: read
 env:
