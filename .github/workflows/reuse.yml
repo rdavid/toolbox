@@ -3,6 +3,8 @@
 ---
 name: reuse
 'on': [pull_request, push]
+permissions:
+  contents: read
 jobs:
   reuse:
     runs-on: ubuntu-24.04

@@ -3,6 +3,8 @@
 ---
 name: shfmt
 'on': [pull_request, push]
+permissions:
+  contents: read
 jobs:
   shfmt:
     runs-on: ubuntu-24.04
