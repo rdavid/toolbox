@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260609
+readonly BASE_APP_VERSION=0.9.20260617
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -26,18 +26,32 @@ increment() {
 	map_put cnt "$1" $((val + 1))
 }
 
+# Logs the given directory as a header when it differs from the previously
+# seen one, so the per-file lines below only need the basename. State is
+# persisted in the file-backed map under bucket "prv" to survive scan()'s
+# pipe subshell.
+header() {
+	local dir="$1" out prv
+	prv="$(map_get prv dir 2>&1)" || die "$prv"
+	[ "$dir" = "$prv" ] && return
+	out="$(map_put prv dir "$dir" 2>&1)" || die "$out"
+	log "$dir"
+}
+
 # Validates a single image and updates counters. Decodes to a raw pixel sink
 # (rgb:/dev/null) to skip the temporary file write on every image.
 process() {
-	local img out
-	img="$1"
+	local dir img="$1" nme out
+	dir="${img%/*}"
+	nme="${img##*/}"
+	header "$dir"
 	increment all
 	if out="$(magick "$img" rgb:/dev/null 2>&1)"; then
 		increment ok
-		log ok "$img"
+		log ok "$nme"
 	else
 		increment no
-		logw no "$img: $out"
+		logw no "$nme: $out"
 	fi
 }
 
@@ -65,6 +79,7 @@ scan() {
 	map_put cnt all 0
 	map_put cnt no 0
 	map_put cnt ok 0
+	map_put prv dir ''
 	find "$DIR" -type f \
 		\( \
 		-name '*.[bB][mM][pP]' -o \
@@ -82,6 +97,7 @@ scan() {
 		-name '*.[rR][wW]2' -o \
 		-name '*.[tT][iI][fF]' \
 		\) |
+		sort |
 		while read -r img; do
 			process "$img"
 		done
