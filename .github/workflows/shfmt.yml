@@ -4,8 +4,13 @@
 name: shfmt
 'on':
   pull_request:
+    paths: &paths
+      - '**/*.do'
+      - app/**
+      - .github/workflows/shfmt.yml
   push:
     branches: [master]
+    paths: *paths
 permissions:
   contents: read
 concurrency:

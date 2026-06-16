@@ -4,8 +4,13 @@
 name: shellcheck
 'on':
   pull_request:
+    paths: &paths
+      - '**/*.do'
+      - app/**
+      - .github/workflows/shellcheck.yml
   push:
     branches: [master]
+    paths: *paths
 permissions:
   contents: read
 concurrency:
