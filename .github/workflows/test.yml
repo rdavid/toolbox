@@ -5,8 +5,15 @@
 name: test
 'on':
   pull_request:
+    paths: &paths
+      - '**/*.do'
+      - app/**
+      - cfg/**
+      - README.adoc
+      - .github/workflows/test.yml
   push:
     branches: [master]
+    paths: *paths
 permissions:
   contents: read
 concurrency:
@@ -14,7 +21,6 @@ concurrency:
   cancel-in-progress: true
 env:
   BASE_REL: 0.9.20260404
-  BASE_SRC: https://github.com/rdavid/shellbase/archive/refs/tags/v0.9.20260404.tar.gz # yamllint disable-line
 jobs:
   test:
     strategy:
@@ -28,8 +34,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
       - run: |
+          host=https://github.com/rdavid/shellbase
           brew install goredo
-          curl --location --silent "$BASE_SRC" |
+          curl \
+            --location \
+            --silent \
+            "$host/archive/refs/tags/v$BASE_REL.tar.gz" |
             tar \
               --directory /usr/local/bin \
               --extract \
