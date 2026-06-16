@@ -19,8 +19,6 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-env:
-  BASE_REL: 0.9.20260404
 jobs:
   test:
     strategy:
@@ -34,16 +32,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
       - run: |
-          host=https://github.com/rdavid/shellbase
+          ver=0.9.20260404
+          srv=https://github.com/rdavid/shellbase
           brew install goredo
           curl \
             --location \
             --silent \
-            "$host/archive/refs/tags/v$BASE_REL.tar.gz" |
+            "$srv/archive/refs/tags/v$ver.tar.gz" |
             tar \
               --directory /usr/local/bin \
               --extract \
               --gzip \
               --strip-components=2 \
-              shellbase-"$BASE_REL"/lib/base.sh
+              shellbase-"$ver"/lib/base.sh
           redo -xx
