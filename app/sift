@@ -1,0 +1,154 @@
+#!/bin/sh
+# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
+# Copies a random subset of files from the given source directory into a
+# destination directory until a configurable byte budget is reached.
+#
+# Usage: sift [-s|--size=N[K|M|G]] [-o|--output=DIR] SRC
+#
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+# shellcheck disable=SC1091,SC2034,SC2039,SC3043
+BASE_APP_USAGE="$(
+	cat <<-EOM 2>&1
+		  -s, --size        Byte budget with optional K/M/G suffix, e.g. -s 512M
+		                    (default 8G).
+		  -o, --output      Destination directory (default current directory).
+		  SRC               Source directory to copy files from.
+	EOM
+)" || {
+	err=$?
+	printf >&2 '%s\n' "$BASE_APP_USAGE"
+	exit $err
+}
+readonly BASE_APP_VERSION=0.9.20260618
+. base.sh
+
+# Picks files from SRC in random order and copies them into DST until the
+# byte budget is reached. Reports per-file progress and a final summary.
+main() {
+	validate "$@"
+	scan
+	report
+}
+
+# Prints the size of the given file in bytes, trying BSD stat then GNU stat.
+fsize() {
+	stat -f%z "$1" 2>/dev/null || stat -c%s "$1"
+}
+
+# Increments a named counter by one.
+increment() {
+	local val
+	val="$(map_get cnt "$1")"
+	map_put cnt "$1" $((val + 1))
+}
+
+# Parses a size string like "8G", "512M", "10K" into a byte count. A bare
+# number is treated as bytes; the suffix is case-insensitive. Malformed
+# input falls through to an arithmetic error.
+parse_size() {
+	local mul str="$1"
+	case "$str" in
+	*[Kk]) mul=1024 ;;
+	*[Mm]) mul=$((1024 * 1024)) ;;
+	*[Gg]) mul=$((1024 * 1024 * 1024)) ;;
+	*) mul=1 ;;
+	esac
+	printf %s "$((${str%[KkMmGg]} * mul))"
+}
+
+# Copies a single file when it fits in the remaining budget; updates the
+# running total and per-file counters.
+process() {
+	local fle="$1" out sum sze
+	sze="$(fsize "$fle")" || die "$sze"
+	sum="$(map_get sum tot 2>&1)" || die "$sum"
+	[ "$((sum + sze))" -le "$MAX_BYTES" ] || {
+		increment skip
+		return
+	}
+	out="$(cp -p -- "$fle" "$DST"/ 2>&1)" || die "$out"
+	sum=$((sum + sze))
+	out="$(map_put sum tot "$sum" 2>&1)" || die "$out"
+	increment ok
+	log ok "${fle##*/}: $((sum / 1024 / 1024)) MB total."
+}
+
+# Prints a final ok/skip/total summary, or a notice when no files were seen.
+report() {
+	local ok skip sum
+	ok="$(map_get cnt ok)"
+	skip="$(map_get cnt skip)"
+	[ "$ok" -eq 0 ] && [ "$skip" -eq 0 ] && {
+		log No files to copy.
+		return 0
+	}
+	sum="$(map_get sum tot)"
+	log "ok/skip: $ok/$skip, $((sum / 1024 / 1024)) MB."
+}
+
+# Scans SRC for files in random order and feeds each to process().
+scan() {
+	local fle
+	map_put cnt ok 0
+	map_put cnt skip 0
+	map_put sum tot 0
+	find "$SRC" -type f |
+		shuf |
+		while read -r fle; do
+			process "$fle"
+		done
+}
+
+# Prints the usage hint and exits.
+usage() {
+	cya 'sift: usage is sift [-s|--size=N[K|M|G]] [-o|--output=DIR] SRC.'
+}
+
+# Parses CLI arguments, validates the environment, and freezes the globals
+# DST, MAX_BYTES, and SRC used by scan() and process().
+validate() {
+	validate_cmd shuf stat
+	DST=.
+	MAX_BYTES=$((8 * 1024 * 1024 * 1024))
+	SRC=
+	while [ "$#" -gt 0 ]; do
+		case "$1" in
+		-s | --size)
+			[ "$#" -ge 2 ] || usage
+			MAX_BYTES="$(parse_size "$2")"
+			shift 2
+			;;
+		--size=*)
+			MAX_BYTES="$(parse_size "${1#--size=}")"
+			shift
+			;;
+		-o | --output)
+			[ "$#" -ge 2 ] || usage
+			DST="$2"
+			shift 2
+			;;
+		--output=*)
+			DST="${1#--output=}"
+			shift
+			;;
+		-*) usage ;;
+		*)
+			[ -z "$SRC" ] || usage
+			SRC="$1"
+			shift
+			;;
+		esac
+	done
+	[ -n "$SRC" ] || usage
+	readonly DST MAX_BYTES SRC
+	isreadable "$SRC" || die SRC "$SRC" is not readable.
+	iswritable "$DST" || die DST "$DST" is not writable.
+}
+
+# Entry point.
+main "$@"

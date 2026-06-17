@@ -72,6 +72,12 @@ Image Validation.
 media reel with a blurred background using {url-ffmpeg}[`ffmpeg`].
 Accepts `-f` for input file, `-o` for output file, `-s` for start time, and
 `-u` for duration.
+* link:app/sift[`sift`] copies a random subset of files from a source
+directory until the byte budget given by `-s|--size=N[K|M|G]`
+(default `8G`) is reached.
+Takes the source directory as the mandatory positional argument;
+the destination defaults to the current directory and can be set with
+`-o|--output=DIR`.
 * link:app/speed[`speed`] continuously displays download and upload internet
 speeds, uses {url-speed}[`speedtest`].
 * link:app/tru[`tru`] stands for Transmission Remote Updater.
