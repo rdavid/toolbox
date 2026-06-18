@@ -22,6 +22,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
       - uses: ludeeus/action-shellcheck@2.0.0
         with:
           additional_files: ./*.do ./app/*

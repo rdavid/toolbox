@@ -17,4 +17,6 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
       - uses: fsfe/reuse-action@v6.0.0
