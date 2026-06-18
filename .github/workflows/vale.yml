@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
       - run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends --yes asciidoctor

@@ -31,6 +31,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
       - run: |
           ver=0.9.20260404
           srv=https://github.com/rdavid/shellbase
