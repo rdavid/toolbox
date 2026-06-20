@@ -1,5 +1,9 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# Lints the GitHub Actions workflows. The downloader reports the linter path
+# as a step output, which the final step reads through an environment variable
+# rather than expanding inline, so the run block stays free of template
+# injection.
 ---
 name: actionlint
 'on':
@@ -32,4 +36,6 @@ jobs:
             --silent \
             "$srv/v$ver/scripts/download-actionlint.bash" |
             bash -s "$ver"
-      - run: ${{ steps.get.outputs.executable }}
+      - env:
+          EXECUTABLE: ${{ steps.get.outputs.executable }}
+        run: '"$EXECUTABLE"'

@@ -11,7 +11,7 @@ redo-ifchange \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260608 \
+	BASE_APP_VERSION=0.9.20260621 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
 	printf >&2 'Install Shellbase.\n'
@@ -22,6 +22,7 @@ set -- "$@" --quiet
 # shellcheck disable=SC1090 # File not following.
 . "$BSH"
 cmd_exists actionlint && actionlint
+cmd_exists zizmor && zizmor --no-online-audits ./.github/workflows
 find . \
 	-name '*.do' \
 	-or \

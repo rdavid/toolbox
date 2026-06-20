@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+# Configures zizmor. The unpinned-uses audit defaults to demanding commit-hash
+# pins for every action, but this project pins actions to version tags and
+# lets Dependabot keep them current, so the policy requires only a ref pin and
+# still flags actions with no pin at all.
+---
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        '*': ref-pin

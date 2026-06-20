@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+---
+name: zizmor
+'on':
+  pull_request:
+    paths: &paths
+      - .github/workflows/**
+      - .github/zizmor.yml
+  push:
+    branches: [master]
+    paths: *paths
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  zizmor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ver=1.25.2
+          pipx install zizmor=="$ver"
+          zizmor .github/workflows
