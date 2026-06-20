@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260617
+readonly BASE_APP_VERSION=0.9.20260621
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -17,13 +17,6 @@ main() {
 	validate "$@"
 	scan
 	report
-}
-
-# Increments a named counter by one.
-increment() {
-	local val
-	val="$(map_get cnt "$1")"
-	map_put cnt "$1" $((val + 1))
 }
 
 # Logs the given directory as a header when it differs from the previously
@@ -36,6 +29,13 @@ header() {
 	[ "$dir" = "$prv" ] && return
 	out="$(map_put prv dir "$dir" 2>&1)" || die "$out"
 	log "$dir"
+}
+
+# Increments a named counter by one.
+increment() {
+	local val
+	val="$(map_get cnt "$1")"
+	map_put cnt "$1" $((val + 1))
 }
 
 # Validates a single image and updates counters. Decodes to a raw pixel sink
