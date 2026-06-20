@@ -19,23 +19,31 @@ main() {
 	report
 }
 
-# Logs the given directory as a header when it differs from the previously
-# seen one, so the per-file lines below only need the basename. State is
-# persisted in the file-backed map under bucket "prv" to survive scan()'s
-# pipe subshell.
+# Logs the given directory as a header: once when it differs from the
+# previously seen one, then again every 100 files within that same directory
+# as a progress marker for directories holding more than 100 files, so the
+# per-file lines below only need the basename. State is persisted in the
+# file-backed map (bucket "prv" for the last directory, bucket "cnt" key "cur"
+# for the count within it) to survive scan()'s pipe subshell.
 header() {
 	local dir="$1" out prv
 	prv="$(map_get prv dir 2>&1)" || die "$prv"
-	[ "$dir" = "$prv" ] && return
+	if [ "$dir" = "$prv" ]; then
+		[ $(($(increment cur) % 100)) -eq 0 ] && log "$dir"
+		return
+	fi
 	out="$(map_put prv dir "$dir" 2>&1)" || die "$out"
+	map_put cnt cur 0
 	log "$dir"
 }
 
-# Increments a named counter by one.
+# Increments a named counter by one and prints its new value.
 increment() {
-	local val
-	val="$(map_get cnt "$1")"
-	map_put cnt "$1" $((val + 1))
+	local out val
+	val="$(map_get cnt "$1" 2>&1)" || die "$val"
+	val=$((val + 1))
+	out="$(map_put cnt "$1" "$val" 2>&1)" || die "$out"
+	printf '%s\n' "$val"
 }
 
 # Validates a single image and updates counters. Decodes to a raw pixel sink
@@ -73,7 +81,9 @@ report() {
 }
 
 # Scans DIR for image files (BMP, CR2, CRW, DNG, GIF, HEIC, JPEG, JPG, NEF,
-# ORF, PNG, RAF, RW2, TIF) and validates each one.
+# ORF, PNG, RAF, RW2, TIF) and validates each one. Discards the loop's stdout,
+# which carries only the counter values that increment() prints; header()
+# captures the one it needs via command substitution.
 scan() {
 	local img
 	map_put cnt all 0
@@ -100,7 +110,7 @@ scan() {
 		sort |
 		while read -r img; do
 			process "$img"
-		done
+		done >/dev/null
 }
 
 # Validates the environment and sets defaults.
