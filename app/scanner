@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260609
+readonly BASE_APP_VERSION=0.9.20260621
 . base.sh
 MAXV=10
 MINV=1
@@ -59,7 +59,8 @@ report() {
 	fi
 }
 
-# Scans the local network for the target MAC address.
+# Scans the local network for the target MAC address. On a match it resets the
+# counter to the maximum, since a success outweighs a failure.
 # shellcheck disable=SC2086 # Word splitting required for SCAN args.
 scan() {
 	local line
@@ -67,8 +68,6 @@ scan() {
 	if [ -n "$line" ]; then
 		[ -z "$NAME" ] && NAME="$(printf '%s' "$line" | cut -f1)"
 		[ -z "$ADDR" ] && ADDR="$(printf '%s' "$line" | cut -f3 | xargs)"
-
-		# Each success has much more value than a failure.
 		CNTR=$MAXV
 	else
 		[ $CNTR -gt $MINV ] && CNTR=$((CNTR - 1))

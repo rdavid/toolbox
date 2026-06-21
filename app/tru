@@ -11,7 +11,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260609
+readonly BASE_APP_VERSION=0.9.20260621
 . base.sh
 
 # Validates arguments and runs the remove-then-add cycle.
@@ -49,25 +49,21 @@ tid() {
 	printf %s "$out"
 }
 
-# Validates arguments and sets SER, AUT, TOR, and NME.
+# Validates arguments and sets SER, AUT, TOR, and NME. A lone ':' as the second
+# argument means no authentication data. Splits host:port into nc parameters,
+# then validates the torrent file given as the third argument.
 # shellcheck disable=SC2086 # Word splitting required for prm.
 validate() {
 	validate_cmd awk nc tr transmission-remote transmission-show
 	[ "$#" -eq 3 ] || die tru: try tru [host:port user:pass torrent-file]
-
-	# Single ':' means there is no authentication data.
 	[ "$2" != : ] && AUT="--auth $2" || AUT=''
 	readonly \
 		AUT \
 		SER="$1" \
 		TOR="$3"
-
-	# Splits host:port into separate parameters for nc.
 	local out prm
 	prm="$(printf %s "$SER" | tr : \ )"
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
-
-	# Validates the full torrent filename from the third parameter.
 	isreadable "$TOR" || die Unable to read "$TOR".
 	out="$(transmission-show "$TOR")" || die Unable to read "$TOR": "$out"
 	NME="$(printf %s "$out" | grep Name: | head -1 | cut -c 7-)"

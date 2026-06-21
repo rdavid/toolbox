@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260609
+readonly BASE_APP_VERSION=0.9.20260621
 . base.sh
 
 # Converts SRC from FLAC to MP3 at DST.
@@ -46,15 +46,14 @@ process() {
 			--add-id3v2 /dev/stdin "$DST"
 }
 
-# Validates arguments and sets SRC and DST.
+# Validates arguments and sets SRC and DST. DST drops the directory path from
+# SRC and swaps the .flac extension for .mp3.
 validate() {
 	[ "$#" -eq 1 ] || die flactomp3: try flactomp3 [file]
 	validate_cmd flac lame metaflac sed
 	readonly SRC="$1"
 	isreadable "$SRC" || die "$SRC" is not readable.
 	iswritable . || die Current directory is not writable.
-
-	# Strips the directory path and replaces the .flac extension with .mp3.
 	DST="$(basename "$SRC" .flac).mp3"
 	readonly DST
 	file_exists "$DST" && { should_continue "$DST exists, overwrite" || cya; }

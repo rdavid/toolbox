@@ -17,7 +17,7 @@ export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260609
+readonly BASE_APP_VERSION=0.9.20260621
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die
@@ -60,7 +60,8 @@ calc_wid() {
 	readonly WID
 }
 
-# Verifies that every result file was copied to the destination.
+# Verifies that every result file was copied to the destination. Keeps the
+# results when none were copied or the counts differ.
 check() {
 	local ndst=0 nsrc=0 pipe
 	pipe="$BASE_WIP"/pipe
@@ -71,8 +72,6 @@ check() {
 		[ -f "$DST/$name" ] && ndst=$((ndst + 1))
 	done <"$pipe"
 	rm "$pipe"
-
-	# Keeps the results in case of a failure.
 	if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
 		logw "There are $nsrc files in $RES, $ndst in $DST, keeps the results."
 		[ "$BASE_KEEP_WIP" = true ] || keep_arc
@@ -93,7 +92,7 @@ convert() {
 		run transcode --act --dir "$AUD" --mp3 --out "$RES" --wid "$WID"
 }
 
-# Downloads YouTube files.
+# Downloads YouTube files. Stops when no new files were downloaded.
 # shellcheck disable=SC2086 # Word splitting required for CKS_PARAM.
 download() {
 	run yt-dlp \
@@ -107,8 +106,6 @@ download() {
 		--output "$VID/%(uploader)s-%(upload_date)s-%(title)s.%(ext)s" \
 		--playlist-reverse
 	isempty "$VID" || return 0
-
-	# Stops if there are no downloaded files.
 	cya No new videos were downloaded.
 }
 
