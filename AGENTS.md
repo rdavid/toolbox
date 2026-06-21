@@ -36,8 +36,9 @@ A quick syntax check across all apps:
 Write shell as portable `sh` first. Keep Bash-specific features out unless the
 file already depends on them. Use 2-space indentation, no tabs, and an
 approximately 79-character text width. Write comments in third-person
-singular, start every comment with a capital letter, and place a blank line
-before standalone comment lines inside function bodies.
+singular and start every comment with a capital letter. Do not place comments
+inside function bodies; keep all of a function's commentary in the single
+comment block immediately above its name.
 
 Each script opens with a fixed header: the `#!/bin/sh` shebang, the
 `# vi:et lbr noet sw=2 ts=2 tw=79 wrap` modeline, the two SPDX lines, a short
