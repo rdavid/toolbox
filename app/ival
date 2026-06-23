@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260621
+readonly BASE_APP_VERSION=0.9.20260624
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -47,7 +47,9 @@ increment() {
 }
 
 # Validates a single image and updates counters. Decodes to a raw pixel sink
-# (rgb:/dev/null) to skip the temporary file write on every image.
+# (rgb:/dev/null) to skip the temporary file write on every image. Logs the
+# basename on success, but the full path on failure so the offending file is
+# unambiguous regardless of the directory header above it.
 process() {
 	local dir img="$1" nme out
 	dir="${img%/*}"
@@ -59,7 +61,7 @@ process() {
 		log ok "$nme"
 	else
 		increment no
-		logw no "$nme: $out"
+		logw no "$img: $out"
 	fi
 }
 
