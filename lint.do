@@ -11,7 +11,7 @@ redo-ifchange \
 
 # shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260621 \
+	BASE_APP_VERSION=0.9.20260623 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
 	printf >&2 'Install Shellbase.\n'
@@ -30,6 +30,8 @@ find . \
 	while read -r f; do
 		cmd_exists shellcheck && shellcheck "$f"
 		cmd_exists shfmt && shfmt -d "$f"
+		cmd_exists dash && dash -n "$f"
+		cmd_exists mksh && mksh -n "$f"
 
 		# Gracefully handle missing last tool without failing the script.
 		:
