@@ -1,0 +1,84 @@
+#!/bin/sh
+# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
+# Wraps rsync and checks the installed version. If rsync is new enough, it uses
+# append-verify and overall-progress output; otherwise it falls back to a safer
+# option set supported by older rsync. Forwards every argument to rsync, so the
+# last one is the destination.
+#
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
+readonly BASE_APP_VERSION=0.9.20260623
+. base.sh
+
+# Validates arguments and runs the transfer.
+main() {
+	validate "$@"
+	transfer "$@"
+}
+
+# Runs rsync with the given arguments, routing its stdout through tolog and its
+# stderr through tologe.
+run() {
+	{
+		rsync "$@" 2>&1 1>&3 3>&- | tologe
+	} \
+		3>&1 1>&2 | tolog
+}
+
+# Wraps rsync and selects the option set for the installed version. rsync 3.1+
+# gets append-verify and overall-progress output; older rsync and openrsync
+# fall back to a safer set. The version is the first MAJOR.MINOR token printed
+# by rsync --version, which copes with both the GNU rsync and the openrsync
+# banners; an unparsable version degrades to the safe set.
+transfer() {
+	local maj min ver
+	ver="$(rsync --version 2>&1 |
+		awk 'match($0, /[0-9]+\.[0-9]+(\.[0-9]+)?/) {
+			print substr($0, RSTART, RLENGTH)
+			exit
+		}')"
+	maj="${ver%%.*}"
+	min="${ver#*.}"
+	min="${min%%.*}"
+	if [ -n "$ver" ] &&
+		{ [ "$maj" -gt 3 ] || { [ "$maj" -eq 3 ] && [ "$min" -ge 1 ]; }; }; then
+		log rsync version "$ver" is installed.
+		run \
+			--append-verify \
+			--archive \
+			--compress \
+			--human-readable \
+			--info=progress2 \
+			--partial \
+			--timeout=300 \
+			--verbose \
+			"$@"
+	else
+		logw rsync version "${ver:-unknown}" lacks newer options, using safe set.
+		run \
+			--archive \
+			--compress \
+			--human-readable \
+			--partial \
+			--timeout=300 \
+			--verbose \
+			"$@"
+	fi
+}
+
+# Validates the environment and arguments. Drops any rsync alias so the real
+# binary runs regardless of the caller's shell configuration.
+validate() {
+	validate_cmd awk rsync
+	unalias rsync 2>/dev/null || :
+	[ "$#" -ge 2 ] ||
+		die "rsyncx: try rsyncx [rsync-option...] source... destination"
+}
+
+# Entry point.
+main "$@"

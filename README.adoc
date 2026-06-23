@@ -16,6 +16,7 @@
 :url-goredoer: https://github.com/rdavid/goredoer
 :url-rdiff: https://github.com/rdiff-backup/rdiff-backup
 :url-redo: http://cr.yp.to/redo.html
+:url-rsync: https://rsync.samba.org
 :url-releases: https://github.com/rdavid/toolbox/releases
 :url-reuse: https://github.com/fsfe/reuse-action
 :url-shellcheck: https://github.com/koalaman/shellcheck
@@ -72,6 +73,8 @@ Image Validation.
 media reel with a blurred background using {url-ffmpeg}[`ffmpeg`].
 Accepts `-f` for input file, `-o` for output file, `-s` for start time, and
 `-u` for duration.
+* link:app/rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
+set for the installed `rsync` version.
 * link:app/sift[`sift`] copies a random subset of files from a source
 directory until the byte budget given by `-s|--size=N[K|M|G]`
 (default `8G`) is reached.
