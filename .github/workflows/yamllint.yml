@@ -1,11 +1,16 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# The trigger mirrors the lint scope below: only YAML directly under .github
+# and .github/workflows. The vendored Vale rules under .github/styles are not
+# linted here, so a broad .github/**/*.yml pattern would fire the job on style
+# changes it never checks.
 ---
 name: yamllint
 'on':
   pull_request:
     paths: &paths
-      - .github/**/*.yml
+      - .github/*.yml
+      - .github/workflows/*.yml
   push:
     branches: [master]
     paths: *paths
