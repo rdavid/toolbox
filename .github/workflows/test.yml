@@ -38,7 +38,9 @@ jobs:
           srv=https://github.com/rdavid/shellbase
           brew install goredo
           curl \
+            --fail \
             --location \
+            --show-error \
             --silent \
             "$srv/archive/refs/tags/v$ver.tar.gz" |
             tar \

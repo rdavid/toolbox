@@ -1,5 +1,8 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# Runs on every push and pull request with no path filter on purpose: typos
+# checks spelling across the whole tree, so any file added or renamed anywhere
+# must be revalidated.
 ---
 name: typos
 'on':

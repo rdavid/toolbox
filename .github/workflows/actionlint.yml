@@ -33,6 +33,7 @@ jobs:
           curl \
             --fail \
             --location \
+            --show-error \
             --silent \
             "$srv/v$ver/scripts/download-actionlint.bash" |
             bash -s "$ver"
