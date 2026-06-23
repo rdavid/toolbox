@@ -4,7 +4,8 @@
 # analysis only, while dash and mksh parse each script and reject syntax the
 # project's target shells do not accept. The matrix shell name reaches the run
 # block through an environment variable to keep the command free of template
-# injection.
+# injection. dash ships with Ubuntu as /bin/sh, so the install runs only when
+# the matrix shell is missing, sparing the dash leg a needless apt fetch.
 ---
 name: posix
 'on':
@@ -33,12 +34,14 @@ jobs:
         with:
           persist-credentials: false
       - env:
-          SHELL_BIN: ${{ matrix.shell }}
+          SH: ${{ matrix.shell }}
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes "$SHELL_BIN"
+          command -v "$SH" >/dev/null || {
+            sudo apt-get update
+            sudo apt-get install --no-install-recommends --yes "$SH"
+          }
           rc=0
           for f in ./*.do ./app/*; do
-            "$SHELL_BIN" -n "$f" || rc=1
+            "$SH" -n "$f" || rc=1
           done
           exit "$rc"
