@@ -32,18 +32,10 @@ run() {
 
 # Wraps rsync with a common option set and adds append-verify and
 # overall-progress output for rsync 3.1+. Older rsync and openrsync run the
-# base set only. The version is the first MAJOR.MINOR token printed by rsync
-# --version, which copes with both the GNU rsync and the openrsync banners. An
-# unparsable version aborts via die. The 3.1 gate compares MAJOR * 100 + MINOR
-# against 301.
+# base set only. The 3.1 gate compares MAJOR * 100 + MINOR against 301.
 transfer() {
 	local maj min ver
-	ver="$(rsync --version 2>&1 |
-		awk 'match($0, /[0-9]+\.[0-9]+(\.[0-9]+)?/) {
-			print substr($0, RSTART, RLENGTH)
-			exit
-		}')"
-	[ -n "$ver" ] || die Cannot determine rsync version.
+	ver="$(version)"
 	maj="${ver%%.*}"
 	min="${ver#*.}"
 	min="${min%%.*}"
@@ -70,6 +62,20 @@ validate() {
 	unalias rsync 2>/dev/null || :
 	[ "$#" -ge 2 ] ||
 		die "rsyncx: try rsyncx [rsync-option...] source... destination"
+}
+
+# Prints the installed rsync version, the first MAJOR.MINOR(.PATCH) token from
+# rsync --version, which copes with both the GNU rsync and the openrsync
+# banners. Aborts via die when no version token is found.
+version() {
+	local ver
+	ver="$(rsync --version 2>&1 |
+		awk 'match($0, /[0-9]+\.[0-9]+(\.[0-9]+)?/) {
+			print substr($0, RSTART, RLENGTH)
+			exit
+		}')"
+	[ -n "$ver" ] || die Cannot determine rsync version.
+	printf '%s\n' "$ver"
 }
 
 # Entry point.
