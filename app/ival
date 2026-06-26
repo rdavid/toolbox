@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260624
+readonly BASE_APP_VERSION=0.9.20260626
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -82,10 +82,11 @@ report() {
 	fi
 }
 
-# Scans DIR for image files (BMP, CR2, CRW, DNG, GIF, HEIC, JPEG, JPG, NEF,
-# ORF, PNG, RAF, RW2, TIF) and validates each one. Discards the loop's stdout,
-# which carries only the counter values that increment() prints; header()
-# captures the one it needs via command substitution.
+# Scans DIR for image files (ARW, BMP, CR2, CR3, CRW, DNG, GIF, HEIC, HEIF,
+# JPEG, JPG, NEF, ORF, PNG, RAF, RW2, TIF, TIFF, WEBP) and validates each one.
+# Discards the loop's stdout, which carries only the counter values that
+# increment() prints; header() captures the one it needs via command
+# substitution.
 scan() {
 	local img
 	map_put cnt all 0
@@ -94,12 +95,15 @@ scan() {
 	map_put prv dir ''
 	find "$DIR" -type f \
 		\( \
+		-name '*.[aA][rR][wW]' -o \
 		-name '*.[bB][mM][pP]' -o \
 		-name '*.[cC][rR]2' -o \
+		-name '*.[cC][rR]3' -o \
 		-name '*.[cC][rR][wW]' -o \
 		-name '*.[dD][nN][gG]' -o \
 		-name '*.[gG][iI][fF]' -o \
 		-name '*.[hH][eE][iI][cC]' -o \
+		-name '*.[hH][eE][iI][fF]' -o \
 		-name '*.[jJ][pP][eE][gG]' -o \
 		-name '*.[jJ][pP][gG]' -o \
 		-name '*.[nN][eE][fF]' -o \
@@ -107,7 +111,9 @@ scan() {
 		-name '*.[pP][nN][gG]' -o \
 		-name '*.[rR][aA][fF]' -o \
 		-name '*.[rR][wW]2' -o \
-		-name '*.[tT][iI][fF]' \
+		-name '*.[tT][iI][fF]' -o \
+		-name '*.[tT][iI][fF][fF]' -o \
+		-name '*.[wW][eE][bB][pP]' \
 		\) |
 		sort |
 		while read -r img; do
