@@ -62,7 +62,7 @@ validate() {
 	validate_cmd awk rsync
 	unalias rsync 2>/dev/null || :
 	[ "$#" -ge 2 ] ||
-		die "rsyncx: try rsyncx [rsync-option...] source... destination"
+		die rsyncx: try rsyncx rsync-option... source... destination
 }
 
 # Prints the installed rsync version, the first MAJOR.MINOR(.PATCH) token from
