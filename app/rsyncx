@@ -12,7 +12,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260623
+readonly BASE_APP_VERSION=0.9.20260626
 . base.sh
 
 # Validates arguments and runs the transfer.
@@ -30,11 +30,12 @@ run() {
 		3>&1 1>&2 | tolog
 }
 
-# Wraps rsync and selects the option set for the installed version. rsync 3.1+
-# gets append-verify and overall-progress output; older rsync and openrsync
-# fall back to a safer set. The version is the first MAJOR.MINOR token printed
-# by rsync --version, which copes with both the GNU rsync and the openrsync
-# banners; an unparsable version degrades to the safe set.
+# Wraps rsync with a common option set and adds append-verify and
+# overall-progress output for rsync 3.1+. Older rsync and openrsync run the
+# base set only. The version is the first MAJOR.MINOR token printed by rsync
+# --version, which copes with both the GNU rsync and the openrsync banners. An
+# unparsable version aborts via die. The 3.1 gate compares MAJOR * 100 + MINOR
+# against 301.
 transfer() {
 	local maj min ver
 	ver="$(rsync --version 2>&1 |
@@ -42,33 +43,24 @@ transfer() {
 			print substr($0, RSTART, RLENGTH)
 			exit
 		}')"
+	[ -n "$ver" ] || die Cannot determine rsync version.
 	maj="${ver%%.*}"
 	min="${ver#*.}"
 	min="${min%%.*}"
-	if [ -n "$ver" ] &&
-		{ [ "$maj" -gt 3 ] || { [ "$maj" -eq 3 ] && [ "$min" -ge 1 ]; }; }; then
+	if [ "$((maj * 100 + min))" -ge 301 ]; then
 		log rsync version "$ver" is installed.
-		run \
-			--append-verify \
-			--archive \
-			--compress \
-			--human-readable \
-			--info=progress2 \
-			--partial \
-			--timeout=300 \
-			--verbose \
-			"$@"
+		set -- --append-verify --info=progress2 "$@"
 	else
-		logw rsync version "${ver:-unknown}" lacks newer options, using safe set.
-		run \
-			--archive \
-			--compress \
-			--human-readable \
-			--partial \
-			--timeout=300 \
-			--verbose \
-			"$@"
+		logw rsync version "$ver" lacks newer options, using base set.
 	fi
+	run \
+		--archive \
+		--compress \
+		--human-readable \
+		--partial \
+		--timeout=300 \
+		--verbose \
+		"$@"
 }
 
 # Validates the environment and arguments. Drops any rsync alias so the real
