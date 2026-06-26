@@ -21,9 +21,10 @@ main() {
 	transfer "$@"
 }
 
-# Runs rsync with the given arguments, routing its stdout through tolog and its
-# stderr through tologe.
+# Logs the rsync command with its arguments, then runs it, routing its stdout
+# through tolog and its stderr through tologe.
 run() {
+	log rsync "$@"
 	{
 		rsync "$@" 2>&1 1>&3 3>&- | tologe
 	} \
