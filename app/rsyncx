@@ -78,7 +78,7 @@ version() {
 			exit
 		}')" || handle_pipefails $?
 	[ -n "$ver" ] || die Cannot determine rsync version.
-	printf '%s\n' "$ver"
+	printf %s "$ver"
 }
 
 # Entry point.
