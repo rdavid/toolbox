@@ -8,8 +8,8 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260626
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
+readonly BASE_APP_VERSION=0.9.20260627
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -19,17 +19,21 @@ main() {
 	report
 }
 
-# Logs the given directory as a header: once when it differs from the
-# previously seen one, then again every 100 files within that same directory
-# as a progress marker for directories holding more than 100 files, so the
-# per-file lines below only need the basename. State is persisted in the
-# file-backed map (bucket "prv" for the last directory, bucket "cnt" key "cur"
-# for the count within it) to survive scan()'s pipe subshell.
+# Logs the given directory so the per-file lines below need only the basename.
+# It logs once when the directory differs from the previously seen one, then
+# again every hundredth file within that directory as a progress marker for
+# directories holding many files.
+# State outlives scan()'s pipe subshell because it lives in the file-backed
+# map: bucket "prv" key "dir" holds the last directory, and bucket "cnt" key
+# "cur" holds the running count within it.
+# The progress test is negated (-ne with ||) so the line succeeds on either
+# branch. A bare "return" inherits the status of the last command, and under
+# errexit a non-zero one would abort the whole scan.
 header() {
 	local dir="$1" out prv
 	prv="$(map_get prv dir 2>&1)" || die "$prv"
 	if [ "$dir" = "$prv" ]; then
-		[ $(($(increment cur) % 100)) -eq 0 ] && log "$dir"
+		[ $(($(increment cur) % 100)) -ne 0 ] || log "$dir"
 		return
 	fi
 	out="$(map_put prv dir "$dir" 2>&1)" || die "$out"
