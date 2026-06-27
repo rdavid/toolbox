@@ -12,7 +12,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260626
+readonly BASE_APP_VERSION=0.9.20260627
 . base.sh
 
 # Validates arguments and runs the transfer.
@@ -67,14 +67,16 @@ validate() {
 
 # Prints the installed rsync version, the first MAJOR.MINOR(.PATCH) token from
 # rsync --version, which copes with both the GNU rsync and the openrsync
-# banners. Aborts via die when no version token is found.
+# banners. The awk exit closes the pipe early, so rsync may take a SIGPIPE;
+# handle_pipefails swallows the resulting 141 under errexit and pipefail.
+# Aborts via die when no version token is found.
 version() {
 	local ver
 	ver="$(rsync --version 2>&1 |
 		awk 'match($0, /[0-9]+\.[0-9]+(\.[0-9]+)?/) {
 			print substr($0, RSTART, RLENGTH)
 			exit
-		}')"
+		}')" || handle_pipefails $?
 	[ -n "$ver" ] || die Cannot determine rsync version.
 	printf '%s\n' "$ver"
 }
