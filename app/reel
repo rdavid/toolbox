@@ -14,14 +14,14 @@ BASE_APP_USAGE="$(
 		  -f, --file        Input file name (default input.mp4).
 		  -o, --output      Output file name (default output.mp4).
 		  -s, --start       Start time, e.g. -s 00:00:05.00 (default 00:00:00.00).
-		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:12.00).
+		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:20.00).
 	EOM
 )" || {
 	err=$?
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260609
+readonly BASE_APP_VERSION=0.9.20260628
 . base.sh
 
 # Validates the environment and converts the input video.
@@ -75,7 +75,7 @@ process() {
 validate() {
 	validate_cmd ffmpeg
 	parse "$@"
-	var_exists DUR || DUR=00:00:12.00
+	var_exists DUR || DUR=00:00:20.00
 	var_exists FLE || FLE=input.mp4
 	var_exists OUT || OUT=output.mp4
 	var_exists STA || STA=00:00:00.00
