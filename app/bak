@@ -1,12 +1,12 @@
 #!/bin/sh
-# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2016-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
 # Makes incremental backups from the first parameter to the second.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260608
+readonly BASE_APP_VERSION=0.9.20260628
 . base.sh
 
 # Runs the incremental backup from SRC to DST.

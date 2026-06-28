@@ -1,5 +1,5 @@
 #!/bin/sh
-# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2022-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
@@ -21,7 +21,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260609
+	BASE_APP_VERSION=0.9.20260628
 . base.sh
 
 # Searches for Git files and fixes their copyright years.

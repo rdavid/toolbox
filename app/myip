@@ -1,5 +1,5 @@
 #!/bin/sh
-# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2022-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
@@ -10,7 +10,7 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260621
+readonly BASE_APP_VERSION=0.9.20260628
 . base.sh
 
 # Reports external IP and location in a loop.

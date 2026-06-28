@@ -1,5 +1,5 @@
 #!/bin/sh
-# vi:et lbr noet sw=2 ts=2 tw=79 wrap
+# vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
@@ -17,7 +17,7 @@ export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260621
+readonly BASE_APP_VERSION=0.9.20260628
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die

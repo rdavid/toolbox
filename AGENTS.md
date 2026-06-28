@@ -41,7 +41,7 @@ inside function bodies; keep all of a function's commentary in the single
 comment block immediately above its name.
 
 Each script opens with a fixed header: the `#!/bin/sh` shebang, the
-`# vi:et lbr noet sw=2 ts=2 tw=79 wrap` modeline, the two SPDX lines, a short
+`# vi: lbr noet sw=2 ts=2 tw=79 wrap` modeline, the two SPDX lines, a short
 description comment, then `readonly BASE_APP_VERSION=0.9.YYYYMMDD` and
 `. base.sh`. Match this layout when adding a new utility.
 
