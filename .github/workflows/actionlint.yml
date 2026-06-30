@@ -28,8 +28,8 @@ jobs:
           persist-credentials: false
       - id: get
         run: |
-          ver=1.7.12
           srv=https://raw.githubusercontent.com/rhysd/actionlint
+          ver=1.7.12
           curl \
             --fail \
             --location \
