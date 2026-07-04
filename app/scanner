@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260628
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 MAXV=10
 MINV=1
@@ -78,7 +78,7 @@ scan() {
 # shellcheck disable=SC2086 # Word splitting required for SCAN args.
 validate() {
 	beroot
-	validate_cmd arp-scan
+	cmd_exists arp-scan || die
 	[ "$#" -eq 1 ] || die scanner: try scanner [mac address:list]
 	[ "$1" = list ] && {
 		$SCAN

@@ -10,7 +10,7 @@
 #  https://stackoverflow.com/q/18597697
 # shellcheck disable=SC1091,SC2034,SC2039,SC3043
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260628
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 # Reports external IP and location in a loop.
@@ -101,7 +101,7 @@ title() {
 
 # Validates the environment.
 validate() {
-	validate_cmd awk dig whois
+	cmd_exists awk dig whois || die
 }
 
 # Entry point.

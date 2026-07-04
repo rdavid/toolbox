@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260704
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -127,7 +127,7 @@ scan() {
 
 # Validates the environment and sets defaults.
 validate() {
-	validate_cmd magick
+	cmd_exists magick || die
 	[ "$#" -eq 1 ] || cya ival: try ival [user directory]
 	readonly DIR="$1"
 	isreadable "$DIR" || die Directory "$DIR" is not readable.

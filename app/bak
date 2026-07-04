@@ -6,7 +6,7 @@
 # Makes incremental backups from the first parameter to the second.
 #
 # shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260628
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 # Runs the incremental backup from SRC to DST.
@@ -37,7 +37,7 @@ validate() {
 		SRC="$1"
 	isreadable "$SRC" || die "$SRC" is not readable.
 	iswritable "$DST" || die "$DST" is not writable.
-	validate_cmd rdiff-backup
+	cmd_exists rdiff-backup || die
 }
 
 # Entry point.

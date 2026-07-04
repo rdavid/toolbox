@@ -17,7 +17,7 @@ export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260628
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die
@@ -162,7 +162,7 @@ upload() {
 # Verifies that required software packages are installed on the host.
 validate() {
 	local dir
-	validate_cmd \
+	cmd_exists \
 		deno \
 		HandBrakeCLI \
 		mp4track \
@@ -171,7 +171,7 @@ validate() {
 		tput \
 		transcode \
 		transcode-video \
-		yt-dlp
+		yt-dlp || die
 	url_exists http://youtube.com || die Check internet connection.
 	iswritable $DST $ARC || die Some directories are not writable.
 	isreadable "$AUT" "$SRC" || die Some directories are not readable.

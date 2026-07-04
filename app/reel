@@ -23,7 +23,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260704
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 # Validates the environment and converts the input video.
@@ -99,7 +99,7 @@ process() {
 
 # Validates the environment and sets defaults.
 validate() {
-	validate_cmd ffmpeg
+	cmd_exists ffmpeg || die
 	parse "$@"
 	var_exists CRP || CRP=false
 	var_exists DUR || DUR=00:00:20.00

@@ -21,7 +21,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260628
+	BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 # Searches for Git files and fixes their copyright years.
@@ -89,7 +89,7 @@ process() {
 
 # Validates the environment.
 validate() {
-	validate_cmd git
+	cmd_exists git || die
 	local arg
 	for arg; do
 		shift

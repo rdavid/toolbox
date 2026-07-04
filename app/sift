@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260628
+readonly BASE_APP_VERSION=0.9.20260705
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the
@@ -112,7 +112,7 @@ usage() {
 # Parses CLI arguments, validates the environment, and freezes the globals
 # DST, MAX_BYTES, and SRC used by scan() and process().
 validate() {
-	validate_cmd shuf stat
+	cmd_exists shuf stat || die
 	DST=.
 	MAX_BYTES=$((8 * 1024 * 1024 * 1024))
 	SRC=

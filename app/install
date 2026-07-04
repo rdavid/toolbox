@@ -12,7 +12,7 @@
 # shellcheck disable=SC2034,SC2039,SC3043
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20260628 \
+	BASE_APP_VERSION=0.9.20260705 \
 	DST=/usr/local/bin \
 	REL=0.9.20260404 \
 	TGT=/usr/local/bin/base.sh
@@ -89,7 +89,7 @@ shellbase() {
 # shellcheck disable=SC1090,SC2015 # File not following, A && B || C.
 validate() {
 	[ -r "$TGT" ] && . "$TGT" || shellbase
-	validate_cmd curl tar
+	cmd_exists curl tar || die
 	iswritable "$DST" || die "$DST" is not writable.
 	url_exists "$SRC" || die
 }
