@@ -1,5 +1,10 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# Checks the shell sources with shellcheck. The job downloads a pinned
+# shellcheck release and runs it on the scripts directly. The previously used
+# action matched additional files by basename through find -name, so path
+# globs such as ./app/* never reached shellcheck and the job silently checked
+# nothing. The runner image's apt package also trails several releases behind.
 ---
 name: shellcheck
 'on':
@@ -24,6 +29,20 @@ jobs:
       - uses: actions/checkout@v7.0.0
         with:
           persist-credentials: false
-      - uses: ludeeus/action-shellcheck@2.0.0
-        with:
-          additional_files: ./*.do ./app/*
+      - run: |
+          srv=https://github.com/koalaman/shellcheck
+          ver=0.11.0
+          url=$srv/releases/download/v$ver/shellcheck-v$ver.linux.x86_64.tar.xz
+          curl \
+            --fail \
+            --location \
+            --show-error \
+            --silent \
+            "$url" |
+            tar \
+              --extract \
+              --strip-components=1 \
+              --xz \
+              shellcheck-v"$ver"/shellcheck
+          ./shellcheck --version
+          ./shellcheck ./*.do ./app/*

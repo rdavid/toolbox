@@ -29,6 +29,6 @@ jobs:
       - env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          ver=1.25.2
+          ver=1.26.1
           pipx install zizmor=="$ver"
           zizmor .github/workflows
