@@ -7,6 +7,7 @@
 :img-releases: https://img.shields.io/github/v/release/rdavid/toolbox?color=blue&label=%20&logo=semver&logoColor=white&style=flat
 :img-test: https://github.com/rdavid/toolbox/actions/workflows/test.yml/badge.svg
 :url-actionlint: https://github.com/rhysd/actionlint
+:url-arp-scan: https://github.com/royhills/arp-scan
 :url-cv: http://cv.rabkin.co.il
 :url-dig: https://linux.die.net/man/1/dig
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
@@ -63,6 +64,7 @@ and operates within the Unix shell framework {url-shellbase}[`shellbase`]:
 incremental backups.
 * link:app/chowner[`chowner`] changes the owner and permissions on a directory.
 * link:app/copyright[`copyright`] updates years in copyright notices.
+* link:app/essid[`essid`] watches for Wi-Fi ESSID changes and reports them.
 * link:app/flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
 * link:app/ival[`ival`] validates image files. `ival` stands for
 Image Validation.
@@ -70,11 +72,16 @@ Image Validation.
 {url-dig}[`dig`].
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
 * link:app/reel[`reel`] converts a video clip to a vertical (1080×1920) social
-media reel with a blurred background using {url-ffmpeg}[`ffmpeg`].
-Accepts `-f` for input file, `-o` for output file, `-s` for start time, and
-`-u` for duration.
+media reel using {url-ffmpeg}[`ffmpeg`], padding it with a blurred copy of
+itself or, with `-c`, center-cropping it to fill the frame.
+Accepts `-f` for input file, `-o` for output file, `-s` for start time,
+`-u` for duration, and `-g` for a top and bottom gap in crop mode.
+* link:app/remount[`remount`] remounts filesystems using a temporary `fstab`
+configuration, then restores the permanent one.
 * link:app/rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
 set for the installed `rsync` version.
+* link:app/scanner[`scanner`] detects whether a device with a certain MAC
+address is present in the local network, uses {url-arp-scan}[`arp-scan`].
 * link:app/sift[`sift`] copies a random subset of files from a source
 directory until the byte budget given by `-s|--size=N[K|M|G]`
 (default `8G`) is reached.
@@ -83,6 +90,7 @@ the destination defaults to the current directory and can be set with
 `-o|--output=DIR`.
 * link:app/speed[`speed`] continuously displays download and upload internet
 speeds, uses {url-speed}[`speedtest`].
+* link:app/tex[`tex`] compiles a TeX source file to PDF and opens the result.
 * link:app/tru[`tru`] stands for Transmission Remote Updater.
 It removes a torrent and its content, then adds it again.
 It can be run by `cron` to increase a ratio.
