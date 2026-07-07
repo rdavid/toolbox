@@ -37,7 +37,7 @@ jobs:
           persist-credentials: false
       - run: |
           srv=https://github.com/rdavid/shellbase
-          ver=0.9.20260404
+          ver=0.9.20260707
           brew install goredo
           curl \
             --fail \

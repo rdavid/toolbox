@@ -12,9 +12,9 @@
 # shellcheck disable=SC2034,SC2039,SC3043
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20260705 \
+	BASE_APP_VERSION=0.9.20260707 \
 	DST=/usr/local/bin \
-	REL=0.9.20260404 \
+	REL=0.9.20260707 \
 	TGT=/usr/local/bin/base.sh
 readonly \
 	SRC=https://github.com/rdavid/shellbase/archive/refs/tags/v$REL.tar.gz
