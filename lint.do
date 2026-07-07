@@ -2,50 +2,41 @@
 # vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2024-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# File not following, appears unused:
+#  shellcheck disable=SC1090,SC2034
 redo-ifchange \
 	./.github/*.yml \
 	./.github/workflows/*.yml \
 	./*.do \
 	./app/* \
 	./README.adoc
-
-# shellcheck disable=SC2034 # Variable appears unused.
 readonly \
-	BASE_APP_VERSION=0.9.20260628 \
+	BASE_APP_VERSION=0.9.20260707 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
 	printf >&2 'Install Shellbase.\n'
 	exit 1
 }
 set -- "$@" --quiet
-
-# shellcheck disable=SC1090 # File not following.
 . "$BSH"
-cmd_exists actionlint && actionlint
-cmd_exists zizmor && zizmor --no-online-audits ./.github/workflows
+cmd_runif actionlint
+cmd_runif zizmor \
+	--no-online-audits \
+	./.github/workflows
 find . \
 	-name '*.do' \
 	-or \
 	-name '*' -path '*/app/*' |
 	while read -r f; do
-		cmd_exists shellcheck && shellcheck "$f"
-		cmd_exists shfmt && shfmt -d "$f"
-		cmd_exists dash && dash -n "$f"
-		cmd_exists mksh && mksh -n "$f"
-
-		# Gracefully handle missing last tool without failing the script.
-		:
+		cmd_runif shellcheck "$f"
+		cmd_runif shfmt -d "$f"
+		cmd_runif dash -n "$f"
+		cmd_runif mksh -n "$f"
 	done
-cmd_exists reuse && reuse lint
-cmd_exists typos && typos
-cmd_exists vale && {
-	vale sync
-	vale ./README.adoc
-}
-cmd_exists yamllint &&
-	yamllint \
-		./.github/*.yml \
-		./.github/workflows/*.yml
-
-# Gracefully handle missing last tool without failing the script.
-:
+cmd_runif reuse lint
+cmd_runif typos
+cmd_runif vale sync
+cmd_runif vale ./README.adoc
+cmd_runif yamllint \
+	./.github/*.yml \
+	./.github/workflows/*.yml
