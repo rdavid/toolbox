@@ -5,9 +5,10 @@
 #
 # Adds timestamps to the ping command output.
 #
-# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
+# File not following, appears unused:
+#  shellcheck disable=SC1091,SC2034
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260705
+readonly BASE_APP_VERSION=0.9.20260708
 . base.sh
 
 # Validates the environment and runs ping with timestamped output.
@@ -26,7 +27,7 @@ process() {
 # Validates the environment and sets TGT.
 validate() {
 	cmd_exists ping || die
-	[ $# -ge 1 ] || die pingo: try pingo [host]
+	[ $# -ge 1 ] || die Host is not specified, try pingo [host].
 	readonly TGT="$1"
 }
 
