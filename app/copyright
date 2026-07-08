@@ -8,7 +8,7 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC1091,SC2034,SC2039,SC3043
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
 		  -a, --action      Replaces copyright years in files if needed.
@@ -21,7 +21,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260705
+	BASE_APP_VERSION=0.9.20260708
 . base.sh
 
 # Searches for Git files and fixes their copyright years.
@@ -68,7 +68,8 @@ fix_outdated() {
 }
 
 # Finds files matching PATTERN and passes them to fix_outdated.
-# shellcheck disable=SC2086 # Word splitting required for fil.
+# Word splitting required for fil:
+#  shellcheck disable=SC2086
 process() {
 	local fil
 	fil="$(

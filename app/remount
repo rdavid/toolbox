@@ -5,8 +5,9 @@
 #
 # Remounts filesystems using the temporary fstab configuration.
 #
-# shellcheck disable=SC1091,SC2034 # File not following, appears unused.
-readonly BASE_APP_VERSION=0.9.20260628
+# File not following, appears unused:
+#  shellcheck disable=SC1091,SC2034
+readonly BASE_APP_VERSION=0.9.20260708
 . base.sh
 readonly \
 	PRM=/etc/fstab-prm \

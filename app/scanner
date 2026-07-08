@@ -8,8 +8,8 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260705
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
+readonly BASE_APP_VERSION=0.9.20260708
 . base.sh
 MAXV=10
 MINV=1
@@ -61,7 +61,8 @@ report() {
 
 # Scans the local network for the target MAC address. On a match it resets the
 # counter to the maximum, since a success outweighs a failure.
-# shellcheck disable=SC2086 # Word splitting required for SCAN args.
+# Word splitting required for SCAN args:
+#  shellcheck disable=SC2086
 scan() {
 	local line
 	line="$($SCAN | grep "$MACA" | head -1)" || :
@@ -75,7 +76,8 @@ scan() {
 }
 
 # Validates the environment and sets MACA.
-# shellcheck disable=SC2086 # Word splitting required for SCAN args.
+# Word splitting required for SCAN args:
+#  shellcheck disable=SC2086
 validate() {
 	beroot
 	cmd_exists arp-scan || die

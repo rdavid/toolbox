@@ -11,7 +11,7 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC1091,SC2034,SC2039,SC3043
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
 		  -s, --size        Byte budget with optional K/M/G suffix, e.g. -s 512M
@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260705
+readonly BASE_APP_VERSION=0.9.20260708
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the

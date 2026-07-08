@@ -12,12 +12,12 @@
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
-# shellcheck disable=SC1091,SC2034,SC2039,SC3043
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260705
+readonly BASE_APP_VERSION=0.9.20260708
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die
@@ -93,7 +93,8 @@ convert() {
 }
 
 # Downloads YouTube files. Stops when no new files were downloaded.
-# shellcheck disable=SC2086 # Word splitting required for CKS_PARAM.
+# Word splitting required for CKS_PARAM:
+#  shellcheck disable=SC2086
 download() {
 	run yt-dlp \
 		$CKS_PARAM \
@@ -150,7 +151,8 @@ sort() {
 }
 
 # Uploads the results to the destination.
-# shellcheck disable=SC2086 # Word splitting required for DST.
+# Word splitting required for DST:
+#  shellcheck disable=SC2086
 upload() {
 	isempty "$RES" && {
 		log "No files to upload from $RES."
