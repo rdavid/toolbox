@@ -37,24 +37,40 @@ main() {
 # Checks that $1 is non-empty and not a flag, then assigns it to $3.
 need() {
 	case "${1:-}" in
-	'' | -*) cya "$2 requires a non-empty argument." ;;
+	'' | -*) die "$2 requires a non-empty argument." ;;
 	esac
 	eval "${3}=\"\${1}\""
 }
 
-# Parses command-line arguments.
+# Parses command-line arguments, consuming each option's value and dying on
+# anything unrecognized.
 parse() {
-	local arg
-	for arg; do
-		shift
-		case "$arg" in
+	while [ $# -gt 0 ]; do
+		case "$1" in
 		-c | --crop) CRP=true ;;
-		-f | --file) need "${1:-}" --file FLE ;;
-		-g | --gap) need "${1:-}" --gap GAP ;;
-		-o | --output) need "${1:-}" --output OUT ;;
-		-s | --start) need "${1:-}" --start STA ;;
-		-u | --duration) need "${1:-}" --duration DUR ;;
+		-f | --file)
+			need "${2:-}" --file FLE
+			shift
+			;;
+		-g | --gap)
+			need "${2:-}" --gap GAP
+			shift
+			;;
+		-o | --output)
+			need "${2:-}" --output OUT
+			shift
+			;;
+		-s | --start)
+			need "${2:-}" --start STA
+			shift
+			;;
+		-u | --duration)
+			need "${2:-}" --duration DUR
+			shift
+			;;
+		*) die Unknown parameter "$1". ;;
 		esac
+		shift
 	done
 }
 
@@ -112,9 +128,9 @@ validate() {
 		GAP \
 		OUT \
 		STA
-	isnumber "$GAP" || cya --gap requires a non-negative integer.
-	[ "$GAP" -lt 960 ] || cya --gap must be less than 960 pixels.
-	[ "$CRP" = true ] || [ "$GAP" -eq 0 ] || cya --gap requires --crop.
+	isnumber "$GAP" || die --gap requires a non-negative integer.
+	[ "$GAP" -lt 960 ] || die --gap must be less than 960 pixels.
+	[ "$CRP" = true ] || [ "$GAP" -eq 0 ] || die --gap requires --crop.
 	isreadable "$FLE" || die "$FLE" is not readable.
 	iswritable "$(dirname "$OUT")" || die "$OUT" is not writable.
 }
