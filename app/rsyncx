@@ -12,23 +12,15 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260705
+readonly \
+	BASE_APP_VERSION=0.9.20260708 \
+	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
 # Validates arguments and runs the transfer.
 main() {
 	validate "$@"
 	transfer "$@"
-}
-
-# Logs the rsync command with its arguments, then runs it, routing its stdout
-# through tolog and its stderr through tologe.
-run() {
-	log rsync "$@"
-	{
-		rsync "$@" 2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
 }
 
 # Wraps rsync with a common option set and adds append-verify and
@@ -46,7 +38,7 @@ transfer() {
 	else
 		logw rsync version "$ver" lacks newer options, using base set.
 	fi
-	run \
+	cmd_run rsync \
 		--archive \
 		--compress \
 		--human-readable \

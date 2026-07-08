@@ -23,7 +23,9 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260705
+readonly \
+	BASE_APP_VERSION=0.9.20260708 \
+	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
 # Validates the environment and converts the input video.
@@ -83,18 +85,14 @@ process() {
        [blurred][scaled]overlay=(W-w)/2:(H-h)/2 \
        "
 	fi
-	{
-		ffmpeg -y \
-			-ss "$STA" \
-			-i "$FLE" \
-			-c:a aac -b:a 192k \
-			-c:v libx264 -preset fast -crf 23 \
-			-t "$DUR" \
-			-vf "$vfl" \
-			"$OUT" \
-			2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
+	cmd_run ffmpeg -y \
+		-ss "$STA" \
+		-i "$FLE" \
+		-c:a aac -b:a 192k \
+		-c:v libx264 -preset fast -crf 23 \
+		-t "$DUR" \
+		-vf "$vfl" \
+		"$OUT"
 }
 
 # Validates the environment and sets defaults.
