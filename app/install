@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2022-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Uses Unix shell framework shellbase:
+# Installs or updates the Unix shell framework shellbase:
 #  https://github.com/rdavid/shellbase/
 #
 # The script uses local variables which are not POSIX but supported by most
@@ -12,7 +12,7 @@
 #  shellcheck disable=SC2034,SC2039,SC3043
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20260708 \
+	BASE_APP_VERSION=0.9.20260711 \
 	DST=/usr/local/bin \
 	REL=0.9.20260707 \
 	TGT=/usr/local/bin/base.sh
@@ -59,7 +59,8 @@ process() {
 	fi
 }
 
-# Installs shellbase to the current shell session; requires curl and tar.
+# Loads shellbase into the current shell session.
+# Requires curl and tar.
 shellbase() {
 	local err pkg
 	for pkg in curl tar; do
@@ -82,7 +83,7 @@ shellbase() {
 		printf >&2 'No shellbase.\n'
 		exit 1
 	}
-	log shellbase "$BASE_VERSION" is installed to the current shell session.
+	log shellbase "$BASE_VERSION" is loaded into the current shell session.
 }
 
 # Uses functions of shellbase to validate the environment.

@@ -46,7 +46,7 @@ description comment, then `readonly BASE_APP_VERSION=0.9.YYYYMMDD` and
 `. base.sh`. Match this layout when adding a new utility.
 
 For `printf` format strings, stay with backslash-escape form (e.g.
-`printf %s\\n`) only when it takes less source characters than the
+`printf %s\\n`) only when it takes fewer source characters than the
 single-quoted form (e.g. `printf '%s\n'`). When both forms are the same
 length or the quoted form is shorter, prefer the quoted form for
 readability.

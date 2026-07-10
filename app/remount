@@ -3,11 +3,12 @@
 # SPDX-FileCopyrightText: 2016-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Remounts filesystems using the temporary fstab configuration.
+# Remounts filesystems using a temporary fstab, then restores the permanent
+# one.
 #
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 readonly \
 	PRM=/etc/fstab-prm \

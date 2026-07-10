@@ -3,15 +3,14 @@
 # SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# tru stands for Transmission Remote Updater. The script removes a torrent and
-# its content, then adds it again. It is useful to automatically increase a
-# ratio.
+# Removes a torrent and its content, then adds it again to increase the share
+# ratio; the name stands for Transmission Remote Updater.
 #
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
 # Validates arguments and runs the remove-then-add cycle.
@@ -33,7 +32,7 @@ process() {
 	log "$NME $tid is added to $SER."
 }
 
-# Looks for torrent ID by torrent file name.
+# Looks up the torrent ID by the torrent name.
 # Word splitting required for AUT:
 #  shellcheck disable=SC2086
 tid() {
@@ -44,9 +43,9 @@ tid() {
 		log "There is no $NME in $SER."
 		return 0
 	}
-	[ -n "$out" ] || die "Something wrong with grep $NME on $SER."
+	[ -n "$out" ] || die "Unexpected empty match for $NME on $SER."
 	out="$(printf %s "$out" | awk '{print $1}')" || die Wrong format: "$out"
-	[ -n "$out" ] || die Something wrong with awk: "$out"
+	[ -n "$out" ] || die Unable to extract the torrent ID: "$out"
 	printf %s "$out"
 }
 

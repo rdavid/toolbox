@@ -3,17 +3,17 @@
 # SPDX-FileCopyrightText: 2022-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Reports external IP in a loop.
+# Reports the external IP address and its location in a loop.
 #
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
-# Reports external IP and location in a loop.
+# Reports the external IP address and location in a loop.
 main() {
 	validate
 	chrono_sta run || die
@@ -32,8 +32,8 @@ loop() {
 	done
 }
 
-# Prints external IP. Prefers the state/province for location, falling back to
-# country, then to NO.
+# Prints the external IP address. Prefers the state/province for location,
+# falling back to country, then to NO.
 myip() {
 	local dur ip out state
 	ip="$(
@@ -62,7 +62,7 @@ myip() {
 		}
 		ip="$(printf %s "$ip" | awk -F\" '{print $2}')"
 		var_exists ip || {
-			loge OpenDNS and Google DNS failed to resolve my IP.
+			loge OpenDNS and Google DNS failed to resolve the external IP.
 			return 0
 		}
 	}
@@ -90,7 +90,7 @@ pick() {
 		head -1
 }
 
-# Prints top title.
+# Prints the table header.
 title() {
 	cat <<-EOM
 		------------------+-----------------+-------+----------------

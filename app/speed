@@ -10,10 +10,10 @@
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
-# Reports download and upload internet speeds in a loop.
+# Reports internet download and upload speeds in a loop.
 main() {
 	validate
 	loop
@@ -67,7 +67,7 @@ test_speed() {
 	tsout "| $(printf %6s "$down") | $(printf %6s "$up") | $host"
 }
 
-# Prints top title.
+# Prints the table header.
 title() {
 	cat <<-EOM
 		------------------+--------+--------+----------------

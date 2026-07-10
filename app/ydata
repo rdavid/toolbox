@@ -3,11 +3,10 @@
 # SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# The script downloads all new videos from pre-configured accounts in
-# ytda.lst. It updates IDs of downloaded files at done.txt (ytda.dne in GitHub).
-# The script can run as a cron job. Uses: curl, HandBrakeCLI, mp4track,
-# renamr, rsync, transcode, transcode-video, yt-dlp.
-# The script is run by cron, so the environment is strict.
+# Downloads new videos from the accounts listed in ytda.lst and records the
+# IDs of downloaded files in done.txt (ytda.dne on GitHub). It runs under
+# cron, so the environment stays strict. Uses curl, HandBrakeCLI, mp4track,
+# renamr, rsync, transcode, transcode-video, and yt-dlp.
 #
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
@@ -17,7 +16,7 @@ export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die
@@ -34,7 +33,7 @@ readonly \
 	SRC \
 	VID="$BASE_WIP"/vid
 
-# Downloads, renames, converts, uploads.
+# Downloads, renames, converts, and uploads new videos.
 main() {
 	validate
 	download
@@ -46,7 +45,7 @@ main() {
 	check
 }
 
-# Calculates output table width for renamr and transcode utilities.
+# Calculates the output table width for the renamr and transcode utilities.
 calc_wid() {
 	local cols
 	cols="$(tput cols 2>/dev/null || printf %s 79)"
@@ -73,7 +72,7 @@ check() {
 	done <"$pipe"
 	rm "$pipe"
 	if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
-		logw "There are $nsrc files in $RES, $ndst in $DST, keeps the results."
+		logw "There are $nsrc files in $RES, $ndst in $DST, keeping the results."
 		[ "$BASE_KEEP_WIP" = true ] || keep_arc
 	else
 		log "Copied $nsrc files to $DST."
@@ -141,7 +140,7 @@ run() {
 		3>&1 1>&2 | tolog
 }
 
-# Moves audio files by author into the audio folder.
+# Moves files of the authors listed in ytda.aut into the audio folder.
 sort() {
 	while read -r a; do
 		if file_exists "$VID/$a"*; then

@@ -7,7 +7,7 @@
 #
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
 # Sets ownership and permissions under DIR.
@@ -22,7 +22,7 @@ process() {
 	find "$DIR" -name .DS_Store -delete
 	find "$DIR" -type d -exec chmod 755 {} \;
 	find "$DIR" -type f -exec chmod 644 {} \;
-	log The owner of "$DIR" is changed to "$USR".
+	log The owner of "$DIR" is now "$USR".
 }
 
 # Validates arguments and sets USR and DIR.

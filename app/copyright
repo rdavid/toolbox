@@ -21,10 +21,10 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260708
+	BASE_APP_VERSION=0.9.20260711
 . base.sh
 
-# Searches for Git files and fixes their copyright years.
+# Searches for Git-tracked files and fixes their copyright years.
 main() {
 	validate "$@"
 	process
@@ -82,7 +82,7 @@ process() {
 	)" || {
 		local err=$?
 		[ "$fil" = "" ] || die Unable to continue, err=$err, msg="$fil".
-		printf '%s is not found.\n' "$PATTERN"
+		printf 'No file matches %s.\n' "$PATTERN"
 		cya Unable to continue, err=$err.
 	}
 	fix_outdated $fil

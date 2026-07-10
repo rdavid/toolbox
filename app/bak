@@ -3,11 +3,11 @@
 # SPDX-FileCopyrightText: 2016-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Makes incremental backups from the first parameter to the second.
+# Makes an incremental backup from the source directory to the destination.
 #
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
 # Runs the incremental backup from SRC to DST.

@@ -3,13 +3,14 @@
 # SPDX-FileCopyrightText: 2020-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Detects if a device with a certain MAC address is in the local network.
+# Detects whether a device with a given MAC address is present on the local
+# network.
 #
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 MAXV=10
 MINV=1
@@ -81,7 +82,7 @@ scan() {
 validate() {
 	beroot
 	cmd_exists arp-scan || die
-	[ "$#" -eq 1 ] || die scanner: try scanner [mac address:list]
+	[ "$#" -eq 1 ] || die Usage: scanner [mac address or list].
 	[ "$1" = list ] && {
 		$SCAN
 		cya

@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260711
 . base.sh
 
 # Validates the environment and runs the compile pipeline.
@@ -39,7 +39,7 @@ validate() {
 	cmd_exists dvipdfm tex || die
 	case "$1" in
 	*.tex) : ;;
-	*) die Source file "$1" should have .tex extension. ;;
+	*) die Source file "$1" must have the .tex extension. ;;
 	esac
 	local nme
 	nme="$(basename -- "$1" .tex)"
