@@ -2,8 +2,17 @@
 # vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2024-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
-# File not following, appears unused:
-#  shellcheck disable=SC1090,SC2034
+#
+# Lints the project with whichever linters are installed, skipping the
+# missing ones. Command output streams to the console through the shellbase
+# loggers, while the script itself prints only OK to stdout, which redo
+# captures as the target. Dash and mksh check syntax one file per
+# invocation: a POSIX shell reads only its first operand as the script and
+# hands any further operands to it as positional parameters, so files after
+# the first would be silently skipped rather than checked.
+#
+# Variable appears unused and file not following:
+#  shellcheck disable=SC2034,SC1090
 redo-ifchange \
 	./.github/*.yml \
 	./.github/workflows/*.yml \
@@ -11,32 +20,31 @@ redo-ifchange \
 	./app/* \
 	./README.adoc
 readonly \
-	BASE_APP_VERSION=0.9.20260707 \
+	BASE_APP_VERSION=0.9.20260710 \
+	BASE_MIN_VERSION=0.9.20260707 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
 	printf >&2 'Install Shellbase.\n'
 	exit 1
 }
-set -- "$@" --quiet
 . "$BSH"
 cmd_runif actionlint
-cmd_runif zizmor \
-	--no-online-audits \
-	./.github/workflows
-find . \
-	-name '*.do' \
-	-or \
-	-name '*' -path '*/app/*' |
-	while read -r f; do
-		cmd_runif shellcheck "$f"
-		cmd_runif shfmt -d "$f"
-		cmd_runif dash -n "$f"
-		cmd_runif mksh -n "$f"
-	done
+for f in ./*.do ./app/*; do
+	cmd_runif dash -n "$f"
+	cmd_runif mksh -n "$f"
+done
 cmd_runif reuse lint
+cmd_runif shellcheck \
+	./*.do \
+	./app/*
+cmd_runif shfmt -d \
+	./*.do \
+	./app/*
 cmd_runif typos
 cmd_runif vale sync
 cmd_runif vale ./README.adoc
 cmd_runif yamllint \
 	./.github/*.yml \
 	./.github/workflows/*.yml
+cmd_runif zizmor --offline ./.github/
+printf OK
