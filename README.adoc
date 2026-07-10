@@ -29,6 +29,7 @@
 :url-vale: https://vale.sh
 :url-yamllint: https://github.com/adrienverge/yamllint
 :url-yt-dlp: https://github.com/yt-dlp/yt-dlp
+:url-zizmor: https://github.com/zizmorcore/zizmor
 
 = Toolbox
 
@@ -55,10 +56,9 @@ toc::[]
 
 == About
 
-The `toolbox` comprises a collection of Unix shell utilities designed for
-regular use.
-Each utility adheres to POSIX (`Portable Operating System Interface for Unix`)
-and operates within the Unix shell framework {url-shellbase}[`shellbase`]:
+`toolbox` is a collection of Unix shell utilities for everyday use.
+Each utility is a portable POSIX script built on the Unix shell framework
+{url-shellbase}[`shellbase`]:
 
 * link:app/bak[`bak`] wraps {url-rdiff}[`rdiff-backup`] to create
 incremental backups.
@@ -66,9 +66,9 @@ incremental backups.
 * link:app/copyright[`copyright`] updates years in copyright notices.
 * link:app/essid[`essid`] watches for Wi-Fi ESSID changes and reports them.
 * link:app/flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
-* link:app/ival[`ival`] validates image files. `ival` stands for
+* link:app/ival[`ival`] validates image files; the name stands for
 Image Validation.
-* link:app/myip[`myip`] continuously displays the external IP address, uses
+* link:app/myip[`myip`] continuously displays the external IP address using
 {url-dig}[`dig`].
 * link:app/pingo[`pingo`] adds timestamps to the ping command output.
 * link:app/reel[`reel`] converts a video clip to a vertical (1080×1920) social
@@ -80,8 +80,8 @@ Accepts `-f` for input file, `-o` for output file, `-s` for start time,
 configuration, then restores the permanent one.
 * link:app/rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
 set for the installed `rsync` version.
-* link:app/scanner[`scanner`] detects whether a device with a certain MAC
-address is present in the local network, uses {url-arp-scan}[`arp-scan`].
+* link:app/scanner[`scanner`] detects whether a device with a given MAC
+address is present on the local network using {url-arp-scan}[`arp-scan`].
 * link:app/sift[`sift`] copies a random subset of files from a source
 directory until the byte budget given by `-s|--size=N[K|M|G]`
 (default `8G`) is reached.
@@ -89,17 +89,17 @@ Takes the source directory as the mandatory positional argument;
 the destination defaults to the current directory and can be set with
 `-o|--output=DIR`.
 * link:app/speed[`speed`] continuously displays download and upload internet
-speeds, uses {url-speed}[`speedtest`].
+speeds using {url-speed}[`speedtest`].
 * link:app/tex[`tex`] compiles a TeX source file to PDF and opens the result.
-* link:app/tru[`tru`] stands for Transmission Remote Updater.
-It removes a torrent and its content, then adds it again.
-It can be run by `cron` to increase a ratio.
-* link:app/ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: downloads, converts,
-renames, and stores safely. It can be run by `cron`.
+* link:app/tru[`tru`] removes a torrent and its content, then adds it again
+to increase the share ratio; the name stands for Transmission Remote Updater.
+It can run under `cron`.
+* link:app/ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: it downloads,
+converts, renames, and stores media safely. It can run under `cron`.
 
 == Install
 
-Ensure that you have added the directory `/usr/local/bin` to your `PATH`.
+Ensure `/usr/local/bin` is in your `PATH`.
 
 [,sh]
 ----
@@ -111,16 +111,19 @@ git clone git@github.com:rdavid/toolbox.git &&
 
 The project uses Daniel J. Bernstein's build system {url-redo}[`redo`].
 You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
-`redo lint` applies the following linters to the source files:
+`redo lint` runs whichever of the following linters are installed:
 {url-actionlint}[`actionlint`],
 {url-reuse}[`reuse`],
 {url-shellcheck}[`shellcheck`],
 {url-shfmt}[`shfmt`],
 {url-typos}[`typos`],
 {url-vale}[`vale`],
-{url-yamllint}[`yamllint`].
+{url-yamllint}[`yamllint`],
+{url-zizmor}[`zizmor`].
+It also parses every script with `dash -n` and `mksh -n` to catch syntax
+errors and Bash-only constructs.
 
 == License
 
-`toolbox` is copyright {url-cv}[David Rabkin] and available under a
-{url-license}[Zero-Clause BSD license].
+{url-cv}[David Rabkin] holds the copyright to `toolbox` and distributes it
+under the {url-license}[Zero-Clause BSD license].
