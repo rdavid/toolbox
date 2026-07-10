@@ -1,15 +1,16 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
-# Audits the workflows for security issues with zizmor. GH_TOKEN is exported so
-# zizmor can run its online audits, which query the GitHub API for action
-# metadata; the local redo lint skips these through --no-online-audits.
+
+# Audits all of .github for security issues with zizmor, matching the scope
+# of the local redo lint target. GH_TOKEN is exported so zizmor can run its
+# online audits, which query the GitHub API for action metadata; the local
+# redo lint skips these through --offline.
 ---
 name: zizmor
 'on':
   pull_request:
     paths: &paths
-      - .github/workflows/**
-      - .github/zizmor.yml
+      - .github/**
   push:
     branches: [master]
     paths: *paths
@@ -31,4 +32,4 @@ jobs:
         run: |
           ver=1.26.1
           pipx install zizmor=="$ver"
-          zizmor .github/workflows
+          zizmor .github
