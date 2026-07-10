@@ -16,7 +16,9 @@ export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
-readonly BASE_APP_VERSION=0.9.20260711
+readonly \
+	BASE_APP_VERSION=0.9.20260711 \
+	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
 dir="$(realdir "$0")"/../cfg/ || die
@@ -83,19 +85,28 @@ check() {
 convert() {
 	if ! isempty "$VID"; then
 		cd "$RES" || die Unable to change directory to "$RES".
-		run transcode --act --dir "$VID" --out "$RES" --wid "$WID"
+		cmd_run transcode \
+			--act \
+			--dir "$VID" \
+			--out "$RES" \
+			--wid "$WID"
 		rm -f ./*.log
 		cd - || die Unable to change directory back.
 	fi
 	isempty "$AUD" ||
-		run transcode --act --dir "$AUD" --mp3 --out "$RES" --wid "$WID"
+		cmd_run transcode \
+			--act \
+			--dir "$AUD" \
+			--mp3 \
+			--out "$RES" \
+			--wid "$WID"
 }
 
 # Downloads YouTube files. Stops when no new files were downloaded.
 # Word splitting required for CKS_PARAM:
 #  shellcheck disable=SC2086
 download() {
-	run yt-dlp \
+	cmd_run yt-dlp \
 		$CKS_PARAM \
 		--add-metadata \
 		--batch-file=$SRC \
@@ -129,15 +140,10 @@ keep_arc() {
 
 # Renames downloaded files to ASCII lower-case without spaces.
 rename() {
-	run renamr --act --dir "$VID" --wid "$WID"
-}
-
-# Routes the command's stdout to tolog and its stderr to tologe.
-run() {
-	{
-		"$@" 2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
+	cmd_run renamr \
+		--act \
+		--dir "$VID" \
+		--wid "$WID"
 }
 
 # Moves files of the authors listed in ytda.aut into the audio folder.
@@ -157,7 +163,12 @@ upload() {
 		log "No files to upload from $RES."
 		return 0
 	}
-	run rsync --compress --human-readable --progress --verbose "$RES"/* $DST
+	cmd_run rsync \
+		--compress \
+		--human-readable \
+		--progress \
+		--verbose \
+		"$RES"/* $DST
 }
 
 # Verifies that required software packages are installed on the host.

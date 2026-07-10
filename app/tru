@@ -10,7 +10,9 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260711
+readonly \
+	BASE_APP_VERSION=0.9.20260711 \
+	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
 # Validates arguments and runs the remove-then-add cycle.
@@ -72,14 +74,11 @@ validate() {
 	[ -n "$NME" ] || die Unable to extract name from "$TOR": "$out"
 }
 
-# Wraps transmission-remote with the standard tologe/tolog plumbing.
+# Wraps transmission-remote with cmd_run.
 # Word splitting required for AUT:
 #  shellcheck disable=SC2086
 xmit() {
-	{
-		transmission-remote "$SER" $AUT "$@" 2>&1 1>&3 3>&- | tologe
-	} \
-		3>&1 1>&2 | tolog
+	cmd_run transmission-remote "$SER" $AUT "$@"
 }
 
 # Entry point.
