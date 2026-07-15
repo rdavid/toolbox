@@ -3,31 +3,33 @@
 # SPDX-FileCopyrightText: 2019-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Sets the owner and permissions on files and directories under a given path.
+# Recursively sets the owner and permissions under a given directory.
 #
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
-readonly BASE_APP_VERSION=0.9.20260711
+readonly \
+	BASE_APP_VERSION=0.9.20260715 \
+	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
-# Sets ownership and permissions under DIR.
+# Validates arguments and applies ownership and permissions under DIR.
 main() {
 	validate "$@"
 	process
 }
 
-# Changes owner and resets permissions on all files and directories under DIR.
+# Applies ownership and permissions under DIR via cmd_run.
 process() {
-	chown -R "$USR" "$DIR"
-	find "$DIR" -name .DS_Store -delete
-	find "$DIR" -type d -exec chmod 755 {} \;
-	find "$DIR" -type f -exec chmod 644 {} \;
+	cmd_run chown -R "$USR" "$DIR"
+	cmd_run find "$DIR" -name .DS_Store -delete
+	cmd_run find "$DIR" -type d -exec chmod 755 {} \;
+	cmd_run find "$DIR" -type f -exec chmod 644 {} \;
 	log The owner of "$DIR" is now "$USR".
 }
 
 # Validates arguments and sets USR and DIR.
 validate() {
-	[ "$#" -eq 2 ] || die chowner: try chowner [user] [dir]
+	[ "$#" -eq 2 ] || die Usage: chowner [user] [dir].
 	beroot
 	readonly \
 		DIR="$2" \
