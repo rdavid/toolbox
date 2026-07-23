@@ -13,7 +13,7 @@
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20260708 \
+	BASE_APP_VERSION=0.9.20260723 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -49,9 +49,10 @@ transfer() {
 }
 
 # Validates the environment and arguments. Drops any rsync alias so the real
-# binary runs regardless of the caller's shell configuration.
+# binary runs regardless of the caller's shell configuration. Also uses the
+# awk command, available on any Unix-like system.
 validate() {
-	cmd_exists awk rsync || die
+	cmd_exists rsync || die
 	unalias rsync 2>/dev/null || :
 	[ "$#" -ge 2 ] ||
 		die rsyncx: try rsyncx rsync-option... source... destination

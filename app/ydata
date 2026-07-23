@@ -17,7 +17,7 @@ export \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
 readonly \
-	BASE_APP_VERSION=0.9.20260711 \
+	BASE_APP_VERSION=0.9.20260723 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -171,7 +171,8 @@ upload() {
 		"$RES"/* $DST
 }
 
-# Verifies that required software packages are installed on the host.
+# Verifies that required software packages are installed on the host. Also
+# uses the tput command, available on any Unix-like system.
 validate() {
 	local dir
 	cmd_exists \
@@ -180,7 +181,6 @@ validate() {
 		mp4track \
 		renamr \
 		rsync \
-		tput \
 		transcode \
 		transcode-video \
 		yt-dlp || die
