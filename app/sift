@@ -35,11 +35,6 @@ main() {
 	report
 }
 
-# Prints the size of the given file in bytes, trying BSD stat then GNU stat.
-fsize() {
-	stat -f%z "$1" 2>/dev/null || stat -c%s "$1"
-}
-
 # Increments a named counter by one.
 increment() {
 	local val
@@ -65,7 +60,7 @@ parse_size() {
 # running total and per-file counters.
 process() {
 	local fle="$1" out sum sze
-	sze="$(fsize "$fle")" || die "$sze"
+	sze="$(wc -c <"$fle" 2>&1)" || die "$sze"
 	sum="$(map_get sum tot 2>&1)" || die "$sum"
 	[ "$((sum + sze))" -le "$MAX_BYTES" ] || {
 		increment skp
@@ -112,7 +107,7 @@ usage() {
 # Parses CLI arguments, validates the environment, and freezes the globals
 # DST, MAX_BYTES, and SRC used by scan() and process().
 validate() {
-	cmd_exists shuf stat || die
+	cmd_exists shuf || die
 	DST=.
 	MAX_BYTES=$((8 * 1024 * 1024 * 1024))
 	SRC=
