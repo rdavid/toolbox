@@ -60,35 +60,46 @@ parse_size() {
 # running total and per-file counters.
 process() {
 	local fle="$1" out sum sze
-	sze="$(wc -c <"$fle" 2>&1)" || die "$sze"
+	sze="$(wc -c <"$fle" 2>&1)" || {
+		increment no
+		logw no "$fle: $sze"
+		return
+	}
 	sum="$(map_get sum tot 2>&1)" || die "$sum"
 	[ "$((sum + sze))" -le "$MAX_BYTES" ] || {
 		increment skp
+		log skp "$fle"
 		return
 	}
-	out="$(cp -p -- "$fle" "$DST"/ 2>&1)" || die "$out"
+	out="$(cp -p -- "$fle" "$DST"/ 2>&1)" || {
+		increment no
+		logw no "$fle: $out"
+		return
+	}
 	sum=$((sum + sze))
 	out="$(map_put sum tot "$sum" 2>&1)" || die "$out"
 	increment ok
 	log ok "${fle##*/}: $((sum / 1024 / 1024)) MB total."
 }
 
-# Prints a final ok/skip/total summary, or a notice when no files were seen.
+# Prints a final ok/no/skp summary, or a notice when no files were seen.
 report() {
-	local ok skp sum
+	local no ok skp sum
+	no="$(map_get cnt no)"
 	ok="$(map_get cnt ok)"
 	skp="$(map_get cnt skp)"
-	[ "$ok" -eq 0 ] && [ "$skp" -eq 0 ] && {
-		log No files to copy.
+	[ "$no" -eq 0 ] && [ "$ok" -eq 0 ] && [ "$skp" -eq 0 ] && {
+		log No files to sift.
 		return 0
 	}
 	sum="$(map_get sum tot)"
-	log "ok/skip: $ok/$skp, $((sum / 1024 / 1024)) MB."
+	log "ok/no/skp: $ok/$no/$skp, $((sum / 1024 / 1024)) MB."
 }
 
 # Scans SRC for files in random order and feeds each to process().
 scan() {
 	local fle
+	map_put cnt no 0
 	map_put cnt ok 0
 	map_put cnt skp 0
 	map_put sum tot 0
