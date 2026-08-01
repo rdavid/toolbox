@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260726
+readonly BASE_APP_VERSION=0.9.20260801
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the
@@ -66,7 +66,7 @@ process() {
 		return
 	}
 	sum="$(map_get sum tot 2>&1)" || die "$sum"
-	[ "$((sum + sze))" -le "$MAX_BYTES" ] || {
+	[ "$((sum + sze))" -le "$MAX" ] || {
 		increment skp
 		log skp "$fle"
 		return
@@ -116,21 +116,21 @@ usage() {
 }
 
 # Parses CLI arguments, validates the environment, and freezes the globals
-# DST, MAX_BYTES, and SRC used by scan() and process().
+# DST, MAX, and SRC used by scan() and process().
 validate() {
 	cmd_exists shuf || die
 	DST=.
-	MAX_BYTES=$((8 * 1024 * 1024 * 1024))
+	MAX=$((8 * 1024 * 1024 * 1024))
 	SRC=
 	while [ "$#" -gt 0 ]; do
 		case "$1" in
 		-s | --size)
 			[ "$#" -ge 2 ] || usage
-			MAX_BYTES="$(parse_size "$2")"
+			MAX="$(parse_size "$2")"
 			shift 2
 			;;
 		--size=*)
-			MAX_BYTES="$(parse_size "${1#--size=}")"
+			MAX="$(parse_size "${1#--size=}")"
 			shift
 			;;
 		-o | --output)
@@ -151,7 +151,7 @@ validate() {
 		esac
 	done
 	[ -n "$SRC" ] || usage
-	readonly DST MAX_BYTES SRC
+	readonly DST MAX SRC
 	isreadable "$SRC" || die SRC "$SRC" is not readable.
 	iswritable "$DST" || die DST "$DST" is not writable.
 }
