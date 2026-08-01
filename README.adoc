@@ -103,7 +103,7 @@ Ensure `/usr/local/bin` is in your `PATH`.
 
 [,sh]
 ----
-git clone git@github.com:rdavid/toolbox.git &&
+git clone https://github.com/rdavid/toolbox.git &&
   ./toolbox/app/install
 ----
 
