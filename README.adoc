@@ -47,10 +47,15 @@
             "888" `Y8bod8P' `Y8bod8P' o888o  `Y8bod8P' `Y8bod8P' o88'   888o 
 ----
 
-image:{img-test}[test,link={url-test}]
-image:{img-hoc}[hits of code,link={url-hoc}]
-image:{img-releases}[release,link={url-releases}]
-image:{img-license}[license,link={url-license}]
+[subs=attributes+]
+++++
+<div align="right">
+<a href="{url-test}"><img src="{img-test}" alt="test"></a>
+<a href="{url-hoc}"><img src="{img-hoc}" alt="hits of code"></a>
+<a href="{url-releases}"><img src="{img-releases}" alt="release"></a>
+<a href="{url-license}"><img src="{img-license}" alt="license"></a>
+</div>
+++++
 
 toc::[]
 
