@@ -7,6 +7,7 @@
 :img-releases: https://img.shields.io/github/v/release/rdavid/toolbox?color=blue&label=%20&logo=semver&logoColor=white&style=flat
 :img-test: https://github.com/rdavid/toolbox/actions/workflows/test.yml/badge.svg
 :url-actionlint: https://github.com/rhysd/actionlint
+:url-app: https://github.com/rdavid/toolbox/blob/master/app/
 :url-arp-scan: https://github.com/royhills/arp-scan
 :url-cv: http://cv.rabkin.co.il
 :url-dig: https://linux.die.net/man/1/dig
@@ -59,47 +60,59 @@
 
 toc::[]
 
+ifdef::pages-build[]
+++++
+<div id="repo-link">
+  <a href="https://github.com/rdavid/toolbox" aria-label="GitHub repository" target="_blank" rel="noopener">
+    <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+    </svg>
+  </a>
+</div>
+++++
+endif::[]
+
 == About
 
 `toolbox` is a collection of Unix shell utilities for everyday use.
 Each utility is a portable POSIX script built on the Unix shell framework
 {url-shellbase}[`shellbase`]:
 
-* link:app/bak[`bak`] wraps {url-rdiff}[`rdiff-backup`] to create
+* {url-app}bak[`bak`] wraps {url-rdiff}[`rdiff-backup`] to create
 incremental backups.
-* link:app/chowner[`chowner`] changes the owner and permissions on a directory.
-* link:app/copyright[`copyright`] updates years in copyright notices.
-* link:app/essid[`essid`] watches for Wi-Fi ESSID changes and reports them.
-* link:app/flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
-* link:app/ival[`ival`] validates image files; the name stands for
+* {url-app}chowner[`chowner`] changes the owner and permissions on a directory.
+* {url-app}copyright[`copyright`] updates years in copyright notices.
+* {url-app}essid[`essid`] watches for Wi-Fi ESSID changes and reports them.
+* {url-app}flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
+* {url-app}ival[`ival`] validates image files; the name stands for
 Image Validation.
-* link:app/myip[`myip`] continuously displays the external IP address using
+* {url-app}myip[`myip`] continuously displays the external IP address using
 {url-dig}[`dig`].
-* link:app/pingo[`pingo`] adds timestamps to the ping command output.
-* link:app/reel[`reel`] converts a video clip to a vertical (1080×1920) social
+* {url-app}pingo[`pingo`] adds timestamps to the ping command output.
+* {url-app}reel[`reel`] converts a video clip to a vertical (1080×1920) social
 media reel using {url-ffmpeg}[`ffmpeg`], padding it with a blurred copy of
 itself or, with `-c`, center-cropping it to fill the frame.
 Accepts `-f` for input file, `-o` for output file, `-s` for start time,
 `-u` for duration, and `-g` for a top and bottom gap in crop mode.
-* link:app/remount[`remount`] remounts filesystems using a temporary `fstab`
+* {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
-* link:app/rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
+* {url-app}rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
 set for the installed `rsync` version.
-* link:app/scanner[`scanner`] detects whether a device with a given MAC
+* {url-app}scanner[`scanner`] detects whether a device with a given MAC
 address is present on the local network using {url-arp-scan}[`arp-scan`].
-* link:app/sift[`sift`] copies a random subset of files from a source
+* {url-app}sift[`sift`] copies a random subset of files from a source
 directory until the byte budget given by `-s|--size=N[K|M|G]`
 (default `8G`) is reached.
 Takes the source directory as the mandatory positional argument;
 the destination defaults to the current directory and can be set with
 `-o|--output=DIR`.
-* link:app/speed[`speed`] continuously displays download and upload internet
+* {url-app}speed[`speed`] continuously displays download and upload internet
 speeds using {url-speed}[`speedtest`].
-* link:app/tex[`tex`] compiles a TeX source file to PDF and opens the result.
-* link:app/tru[`tru`] removes a torrent and its content, then adds it again
+* {url-app}tex[`tex`] compiles a TeX source file to PDF and opens the result.
+* {url-app}tru[`tru`] removes a torrent and its content, then adds it again
 to increase the share ratio; the name stands for Transmission Remote Updater.
 It can run under `cron`.
-* link:app/ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: it downloads,
+* {url-app}ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: it downloads,
 converts, renames, and stores media safely. It can run under `cron`.
 
 == Install
@@ -128,7 +141,113 @@ You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
 It also parses every script with `dash -n` and `mksh -n` to catch syntax
 errors and Bash-only constructs.
 
+ifndef::pages-build[]
+[,sh]
+----
+$ redo lint
+20260803-14:02:01 » dash -n ./lint.do
+20260803-14:02:01 » mksh -n ./lint.do
+20260803-14:02:02 » shellcheck ./*.do ./app/*
+# actionlint, reuse - not installed, nothing logged
+20260803-14:02:04 shfmt failed, err=1.
+20260803-14:02:05 » yamllint ./.github/*.yml ./.github/workflows/*.yml
+OK
+----
+endif::[]
+
+ifdef::pages-build[]
+++++
+<div id="term-demo">
+  <div class="window">
+    <div class="titlebar">
+      <div class="dots">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="tab">lint.do &mdash; redo lint</span>
+    </div>
+    <div class="term-body">
+      <div class="row">
+        <span class="gutter"><span class="badge">1</span></span>
+        <span class="prompt"><span class="sym">$</span> redo lint</span>
+      </div>
+      <div class="row">
+        <span class="gutter"><span class="badge">2</span></span>
+        <span class="info"><span class="ts">20260803-14:02:01</span> &raquo; dash -n ./lint.do</span>
+      </div>
+      <div class="row">
+        <span class="gutter"></span>
+        <span class="info"><span class="ts">20260803-14:02:01</span> &raquo; mksh -n ./lint.do</span>
+      </div>
+      <div class="row">
+        <span class="gutter"></span>
+        <span class="info"><span class="ts">20260803-14:02:02</span> &raquo; shellcheck ./*.do ./app/*</span>
+      </div>
+      <div class="row silence-row">
+        <span class="gutter"><span class="badge">3</span></span>
+        <span class="silence">actionlint, reuse &mdash; not installed, nothing logged</span>
+      </div>
+      <div class="row">
+        <span class="gutter"><span class="badge">4</span></span>
+        <span class="err"><span class="ts">20260803-14:02:04</span> shfmt failed, err=1.</span>
+      </div>
+      <div class="row">
+        <span class="gutter"></span>
+        <span class="info"><span class="ts">20260803-14:02:05</span> &raquo; yamllint ./.github/*.yml ./.github/workflows/*.yml</span>
+      </div>
+      <div class="row">
+        <span class="gutter"><span class="badge">5</span></span>
+        <span class="ok">OK</span>
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <h3>What the numbers point at</h3>
+    <ol>
+      <li>
+        <span class="num">1</span>
+        <p>No custom CLI to learn &mdash; <code>redo lint</code> is a plain redo target running a POSIX <code>lint.do</code> script.</p>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <p><code>cmd_run</code> echoes the exact command it's about to run, in the same green as every other info-level <code>log</code> line, before any output appears.</p>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <p><code>cmd_runif</code> skips missing tools without a warning. Silence is the signal that a linter isn't installed, not a yellow line asking you to fix it.</p>
+      </li>
+      <li>
+        <span class="num">4</span>
+        <p>A genuine failure, printed in red by <code>loge</code>. One bad linter doesn't stop the rest &mdash; <code>lint.do</code> keeps going.</p>
+      </li>
+      <li>
+        <span class="num">5</span>
+        <p>The only line on stdout. redo reads it as the target's content; every line above it went to stderr.</p>
+      </li>
+    </ol>
+  </div>
+</div>
+++++
+endif::[]
+
 == License
 
 {url-cv}[David Rabkin] holds the copyright to `toolbox` and distributes it
 under the {url-license}[Zero-Clause BSD license].
+
+ifdef::pages-build[]
+++++
+<footer id="site-footer">
+  <div class="footer-left">
+    <img src="favicon.svg" alt="" width="20" height="20">
+    <span>toolbox by <a href="http://cv.rabkin.co.il" target="_blank" rel="noopener">David Rabkin</a></span>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/rdavid/toolbox" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://github.com/rdavid/toolbox/releases" target="_blank" rel="noopener">Releases</a>
+    <a href="https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt" target="_blank" rel="noopener">0BSD License</a>
+  </div>
+</footer>
+++++
+endif::[]
