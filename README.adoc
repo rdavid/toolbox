@@ -84,16 +84,17 @@ incremental backups.
 * {url-app}copyright[`copyright`] updates years in copyright notices.
 * {url-app}essid[`essid`] watches for Wi-Fi ESSID changes and reports them.
 * {url-app}flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
-* {url-app}ival[`ival`] validates image files; the name stands for
-Image Validation.
+* {url-app}ival[`ival`] validates image files.
+The name stands for Image Validation.
 * {url-app}myip[`myip`] continuously displays the external IP address using
 {url-dig}[`dig`].
 * {url-app}pingo[`pingo`] adds timestamps to the ping command output.
 * {url-app}reel[`reel`] converts a video clip to a vertical (1080×1920) social
 media reel using {url-ffmpeg}[`ffmpeg`], padding it with a blurred copy of
-itself or, with `-c`, center-cropping it to fill the frame.
-Accepts `-f` for input file, `-o` for output file, `-s` for start time,
-`-u` for duration, and `-g` for a top and bottom gap in crop mode.
+itself.
+Accepts `-c` to center-crop and fill the frame instead of padding, `-f` for
+input file, `-o` for output file, `-s` for start time, `-u` for duration,
+and `-g` for a top and bottom gap in crop mode.
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
 * {url-app}rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
@@ -101,19 +102,21 @@ set for the installed `rsync` version.
 * {url-app}scanner[`scanner`] detects whether a device with a given MAC
 address is present on the local network using {url-arp-scan}[`arp-scan`].
 * {url-app}sift[`sift`] copies a random subset of files from a source
-directory until the byte budget given by `-s|--size=N[K|M|G]`
-(default `8G`) is reached.
-Takes the source directory as the mandatory positional argument;
-the destination defaults to the current directory and can be set with
-`-o|--output=DIR`.
+directory into a destination directory until a byte budget is reached.
+Accepts `-s` for the byte budget (a number with an optional `K`, `M`, or
+`G` suffix, default `8G`) and `-o` for the destination directory (default
+the current directory).
+Takes the source directory as the mandatory positional argument.
 * {url-app}speed[`speed`] continuously displays download and upload internet
 speeds using {url-speed}[`speedtest`].
 * {url-app}tex[`tex`] compiles a TeX source file to PDF and opens the result.
 * {url-app}tru[`tru`] removes a torrent and its content, then adds it again
-to increase the share ratio; the name stands for Transmission Remote Updater.
+to increase the share ratio.
+The name stands for Transmission Remote Updater.
 It can run under `cron`.
 * {url-app}ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: it downloads,
-converts, renames, and stores media safely. It can run under `cron`.
+converts, renames, and stores media safely.
+It can run under `cron`.
 
 == Install
 
@@ -215,15 +218,27 @@ ifdef::pages-build[]
       </li>
       <li>
         <span class="num">3</span>
-        <p><code>cmd_runif</code> skips missing tools without a warning. Silence is the signal that a linter isn't installed, not a yellow line asking you to fix it.</p>
+        <p>
+          <code>cmd_runif</code> skips missing tools without a warning.
+          Silence is the signal that a linter isn't installed, not a yellow
+          line asking you to fix it.
+        </p>
       </li>
       <li>
         <span class="num">4</span>
-        <p>A genuine failure, printed in red by <code>loge</code>. One bad linter doesn't stop the rest &mdash; <code>lint.do</code> keeps going.</p>
+        <p>
+          A genuine failure, printed in red by <code>loge</code>.
+          One bad linter doesn't stop the rest &mdash; <code>lint.do</code>
+          keeps going.
+        </p>
       </li>
       <li>
         <span class="num">5</span>
-        <p>The only line on stdout. redo reads it as the target's content; every line above it went to stderr.</p>
+        <p>
+          The only line on stdout.
+          redo reads it as the target's content.
+          Every line above it went to stderr.
+        </p>
       </li>
     </ol>
   </div>
