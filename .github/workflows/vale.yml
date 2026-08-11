@@ -18,6 +18,7 @@ name: vale
   workflow_dispatch:
 permissions:
   contents: read
+  checks: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -32,6 +33,7 @@ jobs:
       - run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends --yes asciidoctor
-      - uses: errata-ai/vale-action@2.1.2
+      - uses: errata-ai/vale-action@v3.0.0
         with:
+          reporter: github-check
           fail_on_error: true
