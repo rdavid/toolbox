@@ -34,6 +34,7 @@ jobs:
           curl \
             --fail \
             --location \
+            --retry 3 \
             --show-error \
             --silent \
             "$srv/v$ver/scripts/download-actionlint.bash" |

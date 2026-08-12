@@ -37,6 +37,7 @@ jobs:
           curl \
             --fail \
             --location \
+            --retry 3 \
             --show-error \
             --silent \
             "$url" |

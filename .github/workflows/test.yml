@@ -43,6 +43,7 @@ jobs:
           curl \
             --fail \
             --location \
+            --retry 3 \
             --show-error \
             --silent \
             "$srv/archive/refs/tags/v$ver.tar.gz" |
