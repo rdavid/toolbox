@@ -82,27 +82,28 @@ Each utility is a portable POSIX script built on the Unix shell framework
 incremental backups.
 * {url-app}chowner[`chowner`] changes the owner and permissions on a directory.
 * {url-app}copyright[`copyright`] updates years in copyright notices.
-* {url-app}essid[`essid`] watches for Wi-Fi ESSID changes and reports them.
+* {url-app}essid[`essid`] watches for changes to the connected Wi-Fi
+network's ESSID and reports them.
 * {url-app}flactomp3[`flactomp3`] converts audio files to `mp3` with tags.
 * {url-app}ival[`ival`] validates image files.
 The name stands for Image Validation.
 * {url-app}myip[`myip`] continuously displays the external IP address using
 {url-dig}[`dig`].
 * {url-app}pingo[`pingo`] adds timestamps to the ping command output.
-* {url-app}reel[`reel`] converts a video clip to a vertical (1080×1920) social
+* {url-app}reel[`reel`] converts a video clip to a vertical 1080×1920 social
 media reel using {url-ffmpeg}[`ffmpeg`], padding it with a blurred copy of
 itself.
 Accepts `-c` to center-crop and fill the frame instead of padding, `-f` for
 input file, `-o` for output file, `-s` for start time, `-u` for duration,
-and `-z` for a horizontal crop shift in pixels, which may be negative.
+and `-z` for a horizontal crop shift in pixels, accepting negative values.
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
 * {url-app}rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
 set for the installed `rsync` version.
 * {url-app}scanner[`scanner`] detects whether a device with a given MAC
-address is present on the local network using {url-arp-scan}[`arp-scan`].
+address appears on the local network using {url-arp-scan}[`arp-scan`].
 * {url-app}sift[`sift`] copies a random subset of files from a source
-directory into a destination directory until a byte budget is reached.
+directory into a destination directory until it reaches a byte budget.
 Accepts `-s` for the byte budget (a number with an optional `K`, `M`, or
 `G` suffix, default `8G`) and `-o` for the destination directory (default
 the current directory).
@@ -115,7 +116,7 @@ to increase the share ratio.
 The name stands for Transmission Remote Updater.
 It can run under `cron`.
 * {url-app}ydata[`ydata`] wraps {url-yt-dlp}[`yt-dlp`]: it downloads,
-converts, renames, and stores media safely.
+converts, renames, and stores media, skipping videos it already downloaded.
 It can run under `cron`.
 
 == Install
@@ -132,7 +133,7 @@ git clone https://github.com/rdavid/toolbox.git &&
 
 The project uses Daniel J. Bernstein's build system {url-redo}[`redo`].
 You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
-`redo lint` runs whichever of the following linters are installed:
+`redo lint` runs whichever of the following linters you have installed:
 {url-actionlint}[`actionlint`],
 {url-reuse}[`reuse`],
 {url-shellcheck}[`shellcheck`],
@@ -235,7 +236,7 @@ ifdef::pages-build[]
       <li>
         <span class="num">5</span>
         <p>
-          The only line on stdout.
+          The single line on stdout.
           redo reads it as the target's content.
           Every line above it went to stderr.
         </p>
