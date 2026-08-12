@@ -13,10 +13,11 @@ BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
 		  -c, --crop        Crop the center to fill the frame, no blurred copy.
 		  -f, --file        Input file name (default input.mp4).
-		  -g, --gap         Top and bottom gap in pixels with --crop (default 0).
 		  -o, --output      Output file name (default output.mp4).
 		  -s, --start       Start time, e.g. -s 00:00:05.00 (default 00:00:00.00).
 		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:20.00).
+		  -z, --shift       Horizontal crop shift in pixels with --crop, may be
+		                    negative (default 0).
 	EOM
 )" || {
 	err=$?
@@ -24,7 +25,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20260708 \
+	BASE_APP_VERSION=0.9.20260812 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -34,10 +35,12 @@ main() {
 	process
 }
 
-# Checks that $1 is non-empty and not a flag, then assigns it to $3.
+# Checks that $1 is non-empty and not a flag, then assigns it to $3. A
+# leading minus followed by a digit is accepted as a negative number rather
+# than rejected as a flag.
 need() {
 	case "${1:-}" in
-	'' | -*) die "$2 requires a non-empty argument." ;;
+	'' | - | -[!0-9]*) die "$2 requires a non-empty argument." ;;
 	esac
 	eval "${3}=\"\${1}\""
 }
@@ -52,10 +55,6 @@ parse() {
 			need "${2:-}" --file FLE
 			shift
 			;;
-		-g | --gap)
-			need "${2:-}" --gap GAP
-			shift
-			;;
 		-o | --output)
 			need "${2:-}" --output OUT
 			shift
@@ -68,6 +67,10 @@ parse() {
 			need "${2:-}" --duration DUR
 			shift
 			;;
+		-z | --shift)
+			need "${2:-}" --shift SHF
+			shift
+			;;
 		*) die Unknown parameter "$1". ;;
 		esac
 		shift
@@ -75,21 +78,19 @@ parse() {
 }
 
 # Converts the input video to a vertical reel. With --crop the center of the
-# video fills the frame, keeping a --gap sized black bar at the top and the
-# bottom; otherwise the scaled video overlays its blurred copy. The ffmpeg
-# options are sorted alphabetically, except -ss stays before -i for fast
-# input seeking and the output file stays last.
+# video fills the frame. Otherwise the scaled video overlays its blurred
+# copy. The ffmpeg options are sorted alphabetically, except -ss stays before
+# -i for fast input seeking and the output file stays last.
 process() {
-	local hgt vfl
-	hgt=$((1920 - 2 * GAP))
+	local vfl
 	if [ "$CRP" = true ]; then
 		vfl="\
-       crop='min(iw,ih*1080/$hgt)': \
-       'min(ih,iw*$hgt/1080)', \
-       scale=1080:$hgt, \
-       setsar=1, \
-       pad=1080:1920:0: \
-       $GAP \
+       crop='min(iw,ih*1080/1920)': \
+       'min(ih,iw*1920/1080)': \
+       '(iw-ow)/2+$SHF': \
+       '(ih-oh)/2', \
+       scale=1080:1920, \
+       setsar=1 \
        "
 	else
 		vfl="\
@@ -118,19 +119,18 @@ validate() {
 	var_exists CRP || CRP=false
 	var_exists DUR || DUR=00:00:20.00
 	var_exists FLE || FLE=input.mp4
-	var_exists GAP || GAP=0
 	var_exists OUT || OUT=output.mp4
+	var_exists SHF || SHF=0
 	var_exists STA || STA=00:00:00.00
 	readonly \
 		CRP \
 		DUR \
 		FLE \
-		GAP \
 		OUT \
+		SHF \
 		STA
-	isnumber "$GAP" || die --gap requires a non-negative integer.
-	[ "$GAP" -lt 960 ] || die --gap must be less than 960 pixels.
-	[ "$CRP" = true ] || [ "$GAP" -eq 0 ] || die --gap requires --crop.
+	isnumber "${SHF#-}" || die --shift requires an integer.
+	[ "$CRP" = true ] || [ "$SHF" -eq 0 ] || die --shift requires --crop.
 	isreadable "$FLE" || die "$FLE" is not readable.
 	iswritable "$(dirname "$OUT")" || die "$OUT" is not writable.
 }

@@ -94,7 +94,7 @@ media reel using {url-ffmpeg}[`ffmpeg`], padding it with a blurred copy of
 itself.
 Accepts `-c` to center-crop and fill the frame instead of padding, `-f` for
 input file, `-o` for output file, `-s` for start time, `-u` for duration,
-and `-g` for a top and bottom gap in crop mode.
+and `-z` for a horizontal crop shift in pixels, which may be negative.
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
 * {url-app}rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
