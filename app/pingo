@@ -8,7 +8,7 @@
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260708
+readonly BASE_APP_VERSION=0.9.20260816
 . base.sh
 
 # Validates the environment and runs ping with timestamped output.
@@ -17,14 +17,17 @@ main() {
 	process
 }
 
-# Runs ping with timestamped output.
+# Runs ping with timestamped output. cmd_run is not used here because it
+# routes a command's stdout and stderr through tolog/tologe, which would
+# lose the per-line tsout timestamp that is this script's whole purpose.
 process() {
 	{
 		ping "$TGT" 2>&1 1>&3 3>&- | tologe
 	} 3>&1 1>&2 | totsout
 }
 
-# Validates the environment and sets TGT.
+# Validates the environment and sets TGT. ping is not POSIX, so its presence
+# and flags are not guaranteed and must be checked before use.
 validate() {
 	cmd_exists ping || die
 	[ $# -ge 1 ] || die Host is not specified, try pingo [host].
