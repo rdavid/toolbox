@@ -36,6 +36,7 @@ for f in ./*.do ./app/*; do
 	cmd_runif dash -n "$f"
 	cmd_runif mksh -n "$f"
 done
+cmd_runif gitleaks detect --no-banner --redact
 cmd_runif reuse lint
 cmd_runif shellcheck \
 	./*.do \

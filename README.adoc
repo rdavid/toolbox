@@ -15,6 +15,7 @@
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
 :url-ffmpeg: https://ffmpeg.org
+:url-gitleaks: https://github.com/gitleaks/gitleaks
 :url-goredo: http://www.goredo.stargrave.org/INSTALL.html
 :url-goredoer: https://github.com/rdavid/goredoer
 :url-rdiff: https://github.com/rdiff-backup/rdiff-backup
@@ -137,6 +138,7 @@ You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
 `redo lint` runs whichever of the following linters you have installed:
 {url-actionlint}[`actionlint`],
 {url-checkbashisms}[`checkbashisms`],
+{url-gitleaks}[`gitleaks`],
 {url-reuse}[`reuse`],
 {url-shellcheck}[`shellcheck`],
 {url-shfmt}[`shfmt`],
@@ -154,7 +156,7 @@ $ redo lint
 20260803-14:02:01 » dash -n ./lint.do
 20260803-14:02:01 » mksh -n ./lint.do
 20260803-14:02:02 » shellcheck ./*.do ./app/*
-# actionlint, checkbashisms, reuse - not installed, nothing logged
+# actionlint, checkbashisms, gitleaks, reuse - not installed, nothing logged
 20260803-14:02:04 shfmt failed, err=1.
 20260803-14:02:05 » yamllint ./.github/*.yml ./.github/workflows/*.yml
 OK
@@ -192,7 +194,7 @@ ifdef::pages-build[]
       </div>
       <div class="row silence-row">
         <span class="gutter"><span class="badge">3</span></span>
-        <span class="silence">actionlint, checkbashisms, reuse &mdash; not installed, nothing logged</span>
+        <span class="silence">actionlint, checkbashisms, gitleaks, reuse &mdash; not installed, nothing logged</span>
       </div>
       <div class="row">
         <span class="gutter"><span class="badge">4</span></span>

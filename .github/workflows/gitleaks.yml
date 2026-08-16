@@ -1,0 +1,43 @@
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+
+# Scans the full commit history for leaked secrets. actions/checkout defaults
+# to a shallow clone, so fetch-depth is set to 0 here to give gitleaks every
+# commit to scan. Runs on every push and pull request with no path filter on
+# purpose: a leak can land in any file or any commit, so any change anywhere
+# must be revalidated.
+---
+name: gitleaks
+'on':
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  gitleaks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: |
+          srv=https://github.com/gitleaks/gitleaks
+          ver=8.30.1
+          url=$srv/releases/download/v$ver/gitleaks_${ver}_linux_x64.tar.gz
+          curl \
+            --fail \
+            --location \
+            --retry 3 \
+            --show-error \
+            --silent \
+            "$url" |
+            tar --extract --gzip gitleaks
+          ./gitleaks version
+          ./gitleaks detect --no-banner --redact
