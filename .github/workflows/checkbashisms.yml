@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+
+# Flags bashisms in the POSIX sh sources. shellcheck's shell=sh mode catches
+# some non-portable constructs but not all of them, so checkbashisms runs
+# alongside it as a second, purpose-built pass. The package ships in Debian
+# and Ubuntu's devscripts, not as a standalone apt package.
+---
+name: checkbashisms
+'on':
+  pull_request:
+    paths: &paths
+      - '**/*.do'
+      - app/**
+      - .github/workflows/checkbashisms.yml
+  push:
+    branches: [master]
+    paths: *paths
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  checkbashisms:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes devscripts
+          checkbashisms ./*.do ./app/*

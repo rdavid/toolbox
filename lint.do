@@ -20,7 +20,7 @@ redo-ifchange \
 	./app/* \
 	./README.adoc
 readonly \
-	BASE_APP_VERSION=0.9.20260710 \
+	BASE_APP_VERSION=0.9.20260816 \
 	BASE_MIN_VERSION=0.9.20260707 \
 	BSH=/usr/local/bin/base.sh
 [ -r "$BSH" ] || {
@@ -29,6 +29,9 @@ readonly \
 }
 . "$BSH"
 cmd_runif actionlint
+cmd_runif checkbashisms \
+	./*.do \
+	./app/*
 for f in ./*.do ./app/*; do
 	cmd_runif dash -n "$f"
 	cmd_runif mksh -n "$f"

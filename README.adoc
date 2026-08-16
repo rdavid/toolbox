@@ -9,6 +9,7 @@
 :url-actionlint: https://github.com/rhysd/actionlint
 :url-app: https://github.com/rdavid/toolbox/blob/master/app/
 :url-arp-scan: https://github.com/royhills/arp-scan
+:url-checkbashisms: https://manpages.debian.org/unstable/devscripts/checkbashisms.1.en.html
 :url-cv: http://cv.rabkin.co.il
 :url-dig: https://linux.die.net/man/1/dig
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
@@ -135,6 +136,7 @@ The project uses Daniel J. Bernstein's build system {url-redo}[`redo`].
 You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
 `redo lint` runs whichever of the following linters you have installed:
 {url-actionlint}[`actionlint`],
+{url-checkbashisms}[`checkbashisms`],
 {url-reuse}[`reuse`],
 {url-shellcheck}[`shellcheck`],
 {url-shfmt}[`shfmt`],
@@ -152,7 +154,7 @@ $ redo lint
 20260803-14:02:01 » dash -n ./lint.do
 20260803-14:02:01 » mksh -n ./lint.do
 20260803-14:02:02 » shellcheck ./*.do ./app/*
-# actionlint, reuse - not installed, nothing logged
+# actionlint, checkbashisms, reuse - not installed, nothing logged
 20260803-14:02:04 shfmt failed, err=1.
 20260803-14:02:05 » yamllint ./.github/*.yml ./.github/workflows/*.yml
 OK
@@ -190,7 +192,7 @@ ifdef::pages-build[]
       </div>
       <div class="row silence-row">
         <span class="gutter"><span class="badge">3</span></span>
-        <span class="silence">actionlint, reuse &mdash; not installed, nothing logged</span>
+        <span class="silence">actionlint, checkbashisms, reuse &mdash; not installed, nothing logged</span>
       </div>
       <div class="row">
         <span class="gutter"><span class="badge">4</span></span>
