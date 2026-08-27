@@ -8,7 +8,7 @@
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
 readonly \
-	BASE_APP_VERSION=0.9.20260711 \
+	BASE_APP_VERSION=0.9.20260827 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -20,7 +20,7 @@ main() {
 		--preserve-numerical-ids \
 		--print-statistics \
 		--terminal-verbosity 4 \
-		"$SRC" "$DST"
+		-- "$SRC" "$DST"
 }
 
 # Validates arguments and sets SRC and DST.
