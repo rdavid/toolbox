@@ -6,7 +6,7 @@
 :img-license: https://img.shields.io/github/license/rdavid/toolbox?color=dcdccc&labelColor=555&logo=freebsd&logoColor=dcdccc&style=flat
 :img-releases: https://img.shields.io/github/v/release/rdavid/toolbox?color=8cd0d3&label=%20&logo=semver&logoColor=dcdccc&labelColor=555&style=flat
 :img-test: https://img.shields.io/github/actions/workflow/status/rdavid/toolbox/test.yml?branch=master&label=test&labelColor=555&color=7f9f7f&style=flat
-:url-actionlint: https://github.com/rhysd/actionlint
+:url-actionlint: https://rhysd.github.io/actionlint/
 :url-app: https://github.com/rdavid/toolbox/blob/master/app/
 :url-arp-scan: https://github.com/royhills/arp-scan
 :url-checkbashisms: https://manpages.debian.org/unstable/devscripts/checkbashisms.1.en.html
@@ -16,24 +16,24 @@
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
 :url-ffmpeg: https://ffmpeg.org
-:url-gitleaks: https://github.com/gitleaks/gitleaks
+:url-gitleaks: https://gitleaks.io
 :url-goredo: http://www.goredo.stargrave.org/INSTALL.html
-:url-goredoer: https://github.com/rdavid/goredoer
-:url-rdiff: https://github.com/rdiff-backup/rdiff-backup
+:url-goredoer: https://rdavid.github.io/goredoer/
+:url-rdiff: https://rdiff-backup.net/
 :url-redo: http://cr.yp.to/redo.html
 :url-rsync: https://rsync.samba.org
 :url-releases: https://github.com/rdavid/toolbox/releases
-:url-reuse: https://github.com/fsfe/reuse-action
-:url-shellcheck: https://github.com/koalaman/shellcheck
-:url-shellbase: https://github.com/rdavid/shellbase
-:url-shfmt: https://github.com/mvdan/sh
+:url-reuse: https://reuse.software
+:url-shellcheck: https://www.shellcheck.net
+:url-shellbase: https://rdavid.github.io/shellbase/
+:url-shfmt: https://pkg.go.dev/mvdan.cc/sh/v3
 :url-speed: https://github.com/sivel/speedtest-cli
 :url-test: https://github.com/rdavid/toolbox/actions/workflows/test.yml
 :url-typos: https://github.com/crate-ci/typos
 :url-vale: https://vale.sh
-:url-yamllint: https://github.com/adrienverge/yamllint
+:url-yamllint: https://yamllint.readthedocs.io
 :url-yt-dlp: https://github.com/yt-dlp/yt-dlp
-:url-zizmor: https://github.com/zizmorcore/zizmor
+:url-zizmor: https://docs.zizmor.sh/
 
 = Toolbox
 
