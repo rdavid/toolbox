@@ -5,7 +5,7 @@
 :img-hoc: https://hitsofcode.com/github/rdavid/toolbox?branch=master&label=hits%20of%20code
 :img-license: https://img.shields.io/github/license/rdavid/toolbox?color=dcdccc&labelColor=555&logo=freebsd&logoColor=dcdccc&style=flat
 :img-releases: https://img.shields.io/github/v/release/rdavid/toolbox?color=8cd0d3&label=%20&logo=semver&logoColor=dcdccc&labelColor=555&style=flat
-:img-test: https://img.shields.io/github/actions/workflow/status/rdavid/toolbox/test.yml?branch=master&label=test&labelColor=555&color=7f9f7f&style=flat
+:img-test: https://img.shields.io/github/actions/workflow/status/rdavid/toolbox/test.yml?branch=master&label=test&labelColor=555&color=7f9f7f&logo=github&logoColor=dcdccc&style=flat
 :url-actionlint: https://rhysd.github.io/actionlint/
 :url-app: https://github.com/rdavid/toolbox/blob/master/app/
 :url-arp-scan: https://github.com/royhills/arp-scan
