@@ -4,11 +4,14 @@
 # Enforces the Conventional Commits format required by AGENTS.md. On a pull
 # request every commit ahead of the base branch is checked; conform's
 # --base-branch flag needs the base ref present locally, which fetch-depth 0
-# guarantees. On a direct push to master only the landed commit is checked,
-# since GITHUB_EVENT_NAME and GITHUB_BASE_REF are plain runner environment
-# variables here, not template-expanded strings, the branching stays free of
-# template injection. conform has no stable release yet, so the pin below
-# tracks the latest alpha.
+# guarantees. The checkout pins ref to the pull request head commit rather
+# than the default merge ref, since the merge ref's synthetic "Merge X into
+# Y" commit is not a real commit on the branch and always fails conform's
+# format checks. On a direct push to master only the landed commit is
+# checked, since GITHUB_EVENT_NAME and GITHUB_BASE_REF are plain runner
+# environment variables here, not template-expanded strings, the branching
+# stays free of template injection. conform has no stable release yet, so
+# the pin below tracks the latest alpha.
 ---
 name: conform
 'on':
@@ -33,6 +36,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+          ref: >-
+            ${{
+              github.event_name == 'pull_request' &&
+              github.event.pull_request.head.sha ||
+              github.sha
+            }}
       - run: |
           srv=https://github.com/siderolabs/conform
           ver=0.1.0-alpha.31
