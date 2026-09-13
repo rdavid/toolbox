@@ -8,7 +8,7 @@
 # File not following, appears unused:
 #  shellcheck disable=SC1091,SC2034
 readonly \
-	BASE_APP_VERSION=0.9.20260715 \
+	BASE_APP_VERSION=0.9.20260913 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -20,10 +20,12 @@ main() {
 
 # Applies ownership and permissions under DIR via cmd_run.
 process() {
-	cmd_run chown -R "$USR" "$DIR"
 	cmd_run find "$DIR" -name .DS_Store -delete
-	cmd_run find "$DIR" -type d -exec chmod 755 {} \;
-	cmd_run find "$DIR" -type f -exec chmod 644 {} \;
+	cmd_run find "$DIR" \
+		-type d -exec chmod 755 {} + \
+		-o \
+		-type f -exec chmod 644 {} +
+	cmd_run chown -R "$USR" "$DIR"
 	log The owner of "$DIR" is now "$USR".
 }
 
