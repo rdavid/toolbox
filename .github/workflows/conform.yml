@@ -11,7 +11,9 @@
 # checked, since GITHUB_EVENT_NAME and GITHUB_BASE_REF are plain runner
 # environment variables here, not template-expanded strings, the branching
 # stays free of template injection. conform has no stable release yet, so
-# the pin below tracks the latest alpha.
+# the pin below tracks the latest alpha. The binary is verified against the
+# upstream checksums file so a tampered or corrupted download fails the job
+# instead of running.
 ---
 name: conform
 'on':
@@ -45,15 +47,18 @@ jobs:
       - run: |
           srv=https://github.com/siderolabs/conform
           ver=0.1.0-alpha.31
-          url=$srv/releases/download/v$ver/conform-linux-amd64
+          bin=conform-linux-amd64
           curl \
             --fail \
             --location \
-            --output conform \
+            --remote-name-all \
             --retry 3 \
             --show-error \
             --silent \
-            "$url"
+            "$srv/releases/download/v$ver/$bin" \
+            "$srv/releases/download/v$ver/sha256sum.txt"
+          grep "$bin\$" sha256sum.txt | sha256sum --check
+          mv "$bin" conform
           chmod +x conform
           if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
             ./conform enforce --base-branch "origin/$GITHUB_BASE_REF"

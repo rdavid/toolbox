@@ -5,7 +5,9 @@
 # to a shallow clone, so fetch-depth is set to 0 here to give gitleaks every
 # commit to scan. Runs on every push and pull request with no path filter on
 # purpose: a leak can land in any file or any commit, so any change anywhere
-# must be revalidated.
+# must be revalidated. The release archive is verified against the upstream
+# checksums file so a tampered or corrupted download fails the job instead of
+# running.
 ---
 name: gitleaks
 'on':
@@ -30,14 +32,17 @@ jobs:
       - run: |
           srv=https://github.com/gitleaks/gitleaks
           ver=8.30.1
-          url=$srv/releases/download/v$ver/gitleaks_${ver}_linux_x64.tar.gz
+          tgz=gitleaks_${ver}_linux_x64.tar.gz
           curl \
             --fail \
             --location \
+            --remote-name-all \
             --retry 3 \
             --show-error \
             --silent \
-            "$url" |
-            tar --extract --gzip gitleaks
+            "$srv/releases/download/v$ver/$tgz" \
+            "$srv/releases/download/v$ver/gitleaks_${ver}_checksums.txt"
+          grep "$tgz\$" gitleaks_"$ver"_checksums.txt | sha256sum --check
+          tar --extract --file "$tgz" --gzip gitleaks
           ./gitleaks version
           ./gitleaks detect --no-banner --redact
