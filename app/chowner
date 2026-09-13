@@ -5,22 +5,53 @@
 #
 # Recursively sets the owner and permissions under a given directory.
 #
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+#
 # File not following, appears unused:
-#  shellcheck disable=SC1091,SC2034
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20260913 \
+	BASE_APP_VERSION=0.9.20260914 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
 # Validates arguments and applies ownership and permissions under DIR.
 main() {
 	validate "$@"
+	clean
 	process
+}
+
+# Deletes macOS metadata files (.DS_Store, ._*) under DIR after
+# confirmation. Mirrors aud_only in base.sh. The confirmation message is
+# deliberately not indented: leading tabs would appear verbatim in the
+# prompt.
+clean() {
+	local cnt lst msg
+	lst=$(
+		find "$DIR" \
+			\( \
+			-name .DS_Store -o \
+			-name '._*' \
+			\) 2>&1
+	) || die "$lst"
+	[ -z "$lst" ] && return 0
+	cnt="$(printf %s\\n "$lst" | wc -l | xargs)" || die Something went wrong.
+	msg="Remove the following files:
+$lst
+Total $cnt files"
+	should_continue "$msg" || return 0
+	log Removing "$cnt" files.
+	cmd_run find "$DIR" \
+		\( \
+		-name .DS_Store -o \
+		-name '._*' \
+		\) -delete
 }
 
 # Applies ownership and permissions under DIR via cmd_run.
 process() {
-	cmd_run find "$DIR" -name .DS_Store -delete
 	cmd_run find "$DIR" \
 		-type d -exec chmod 755 {} + \
 		-o \
