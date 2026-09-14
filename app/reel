@@ -13,7 +13,9 @@ BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
 		  -c, --crop        Crop the center to fill the frame, no blurred copy.
 		  -f, --file        Input file name (default input.mp4).
-		  -o, --output      Output file name (default output.mp4).
+		  -o, --output      Output file name (default is the input file
+		                    base name plus an incrementing number, e.g.
+		                    input-1.mp4).
 		  -s, --start       Start time, e.g. -s 00:00:05.00 (default 00:00:00.00).
 		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:20.00).
 		  -z, --shift       Horizontal crop shift in pixels with --crop, may be
@@ -25,7 +27,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20260812 \
+	BASE_APP_VERSION=0.9.20260915 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -43,6 +45,20 @@ need() {
 	'' | - | -[!0-9]*) die "$2 requires a non-empty argument." ;;
 	esac
 	eval "${3}=\"\${1}\""
+}
+
+# Builds a default output file name from the input file's base name plus an
+# incrementing number, skipping any name that already exists.
+outname() {
+	local bas num=1 try
+	bas="$(basename -- "$FLE" 2>&1)" || die "$bas"
+	bas="${bas%.*}"
+	try="$bas-$num.mp4"
+	while file_exists "$try"; do
+		num=$((num + 1))
+		try="$bas-$num.mp4"
+	done
+	printf %s "$try"
 }
 
 # Parses command-line arguments, consuming each option's value and dying on
@@ -119,7 +135,7 @@ validate() {
 	var_exists CRP || CRP=false
 	var_exists DUR || DUR=00:00:20.00
 	var_exists FLE || FLE=input.mp4
-	var_exists OUT || OUT=output.mp4
+	var_exists OUT || OUT="$(outname)"
 	var_exists SHF || SHF=0
 	var_exists STA || STA=00:00:00.00
 	readonly \
