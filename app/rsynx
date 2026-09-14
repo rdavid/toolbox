@@ -13,7 +13,7 @@
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20260827 \
+	BASE_APP_VERSION=0.9.20260915 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -55,7 +55,7 @@ validate() {
 	unalias rsync 2>/dev/null || :
 	cmd_exists rsync || die
 	[ "$#" -ge 2 ] ||
-		die rsyncx: try rsyncx rsync-option... source... destination
+		die rsynx: try rsynx rsync-option... source... destination
 }
 
 # Prints the installed rsync version, the first MAJOR.MINOR(.PATCH) token from

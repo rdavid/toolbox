@@ -101,7 +101,7 @@ input file, `-o` for output file, `-s` for start time, `-u` for duration,
 and `-z` for a horizontal crop shift in pixels, accepting negative values.
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
-* {url-app}rsyncx[`rsyncx`] wraps {url-rsync}[`rsync`] and picks a safe option
+* {url-app}rsynx[`rsynx`] wraps {url-rsync}[`rsync`] and picks a safe option
 set for the installed `rsync` version.
 * {url-app}scanner[`scanner`] detects whether a device with a given MAC
 address appears on the local network using {url-arp-scan}[`arp-scan`].
