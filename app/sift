@@ -24,13 +24,17 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260801
+readonly BASE_APP_VERSION=0.9.20260915
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the
 # byte budget is reached. Reports per-file progress and a final summary.
 main() {
-	validate "$@"
+	DST=.
+	MAX=$((8 * 1024 * 1024 * 1024))
+	parse "$@"
+	readonly DST MAX SRC
+	validate
 	scan
 	report
 }
@@ -40,6 +44,39 @@ increment() {
 	local val
 	val="$(map_get cnt "$1")"
 	map_put cnt "$1" $((val + 1))
+}
+
+# Parses CLI arguments into the globals DST, MAX, and SRC. Dies via usage()
+# on a second positional argument, since SRC accepts exactly one.
+parse() {
+	while [ "$#" -gt 0 ]; do
+		case "$1" in
+		-s | --size)
+			[ "$#" -ge 2 ] || usage
+			MAX="$(parse_size "$2")"
+			shift 2
+			;;
+		--size=*)
+			MAX="$(parse_size "${1#--size=}")"
+			shift
+			;;
+		-o | --output)
+			[ "$#" -ge 2 ] || usage
+			DST="$2"
+			shift 2
+			;;
+		--output=*)
+			DST="${1#--output=}"
+			shift
+			;;
+		-*) usage ;;
+		*)
+			[ -z "${SRC:-}" ] || usage
+			SRC="$1"
+			shift
+			;;
+		esac
+	done
 }
 
 # Parses a size string like "8G", "512M", "10K" into a byte count. A bare
@@ -115,43 +152,11 @@ usage() {
 	cya 'sift: usage is sift [-s|--size=N[K|M|G]] [-o|--output=DIR] SRC.'
 }
 
-# Parses CLI arguments, validates the environment, and freezes the globals
-# DST, MAX, and SRC used by scan() and process().
+# Validates the environment and the parsed arguments used by scan() and
+# process().
 validate() {
 	cmd_exists shuf || die
-	DST=.
-	MAX=$((8 * 1024 * 1024 * 1024))
-	SRC=
-	while [ "$#" -gt 0 ]; do
-		case "$1" in
-		-s | --size)
-			[ "$#" -ge 2 ] || usage
-			MAX="$(parse_size "$2")"
-			shift 2
-			;;
-		--size=*)
-			MAX="$(parse_size "${1#--size=}")"
-			shift
-			;;
-		-o | --output)
-			[ "$#" -ge 2 ] || usage
-			DST="$2"
-			shift 2
-			;;
-		--output=*)
-			DST="${1#--output=}"
-			shift
-			;;
-		-*) usage ;;
-		*)
-			[ -z "$SRC" ] || usage
-			SRC="$1"
-			shift
-			;;
-		esac
-	done
-	[ -n "$SRC" ] || usage
-	readonly DST MAX SRC
+	[ -n "${SRC:-}" ] || usage
 	isreadable "$SRC" || die SRC "$SRC" is not readable.
 	iswritable "$DST" || die DST "$DST" is not writable.
 }
