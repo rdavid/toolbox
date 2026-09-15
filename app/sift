@@ -111,11 +111,11 @@ process() {
 
 # Prints a final ok/no summary, or a notice when no files were seen.
 report() {
-	[ "$NO" -eq 0 ] && [ "$OK" -eq 0 ] && {
+	if [ "$((NO + OK))" -ne 0 ]; then
+		log "ok/no: $OK/$NO, $((SUM / 1024 / 1024)) MB."
+	else
 		log No files to sift.
-		return 0
-	}
-	log "ok/no: $OK/$NO, $((SUM / 1024 / 1024)) MB."
+	fi
 }
 
 # Scans SRC for files in random order and feeds each to process() until the
