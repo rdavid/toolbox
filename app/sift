@@ -37,7 +37,6 @@ main() {
 	validate
 	NO=0
 	OK=0
-	SKP=0
 	SUM=0
 	scan
 	report
@@ -99,11 +98,7 @@ process() {
 		logw no "$fle: $sze"
 		return
 	}
-	[ "$((SUM + sze))" -le "$MAX" ] || {
-		SKP=$((SKP + 1))
-		log skp "$fle"
-		return
-	}
+	[ "$((SUM + sze))" -le "$MAX" ] || return 1
 	out="$(cp -p -- "$fle" "$DST"/ 2>&1)" || {
 		NO=$((NO + 1))
 		logw no "$fle: $out"
@@ -114,24 +109,24 @@ process() {
 	log ok "${fle##*/}: $((SUM / 1024 / 1024)) MB total."
 }
 
-# Prints a final ok/no/skp summary, or a notice when no files were seen.
+# Prints a final ok/no summary, or a notice when no files were seen.
 report() {
-	[ "$NO" -eq 0 ] && [ "$OK" -eq 0 ] && [ "$SKP" -eq 0 ] && {
+	[ "$NO" -eq 0 ] && [ "$OK" -eq 0 ] && {
 		log No files to sift.
 		return 0
 	}
-	log "ok/no/skp: $OK/$NO/$SKP, $((SUM / 1024 / 1024)) MB."
+	log "ok/no: $OK/$NO, $((SUM / 1024 / 1024)) MB."
 }
 
-# Scans SRC for files in random order and feeds each to process(). The list
-# is staged in a file rather than piped, so the read loop runs in the
-# current shell and its updates to NO/OK/SKP/SUM are not lost to a
-# subshell.
+# Scans SRC for files in random order and feeds each to process() until the
+# budget is full. The list is staged in a file rather than piped, so the
+# read loop runs in the current shell and its updates to NO/OK/SUM are not
+# lost to a subshell.
 scan() {
 	local fle lst="$BASE_WIP"/list
 	find "$SRC" -type f | shuf >"$lst"
 	while read -r fle; do
-		process "$fle"
+		process "$fle" || break
 	done <"$lst"
 }
 
