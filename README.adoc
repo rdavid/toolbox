@@ -20,6 +20,7 @@
 :url-gitleaks: https://gitleaks.io
 :url-goredo: http://www.goredo.stargrave.org/INSTALL.html
 :url-goredoer: https://rdavid.github.io/goredoer/
+:url-pages: https://rdavid.github.io/toolbox/
 :url-rdiff: https://rdiff-backup.net/
 :url-redo: http://cr.yp.to/redo.html
 :url-rsync: https://rsync.samba.org
@@ -80,6 +81,9 @@ endif::[]
 == About
 
 `toolbox` is a collection of Unix shell utilities for everyday use.
+ifndef::pages-build[]
+The collection also has a {url-pages}[website].
+endif::[]
 Each utility is a portable POSIX script built on the Unix shell framework
 {url-shellbase}[`shellbase`]:
 
