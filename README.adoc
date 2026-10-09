@@ -14,6 +14,7 @@
 :url-cv: http://cv.rabkin.co.il
 :url-dig: https://linux.die.net/man/1/dig
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
+:url-homebrew: https://brew.sh
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
 :url-ffmpeg: https://ffmpeg.org
 :url-gitleaks: https://gitleaks.io
@@ -28,6 +29,7 @@
 :url-shellbase: https://rdavid.github.io/shellbase/
 :url-shfmt: https://pkg.go.dev/mvdan.cc/sh/v3
 :url-speed: https://github.com/sivel/speedtest-cli
+:url-tap: https://rdavid.github.io/homebrew-tap/
 :url-test: https://github.com/rdavid/toolbox/actions/workflows/test.yml
 :url-typos: https://github.com/crate-ci/typos
 :url-vale: https://vale.sh
@@ -130,6 +132,14 @@ Ensure `/usr/local/bin` is in your `PATH`.
 ----
 git clone https://github.com/rdavid/toolbox.git &&
   ./toolbox/app/install
+----
+
+Or install a selection of the utilities with {url-homebrew}[Homebrew] from the
+{url-tap}[tap]:
+
+[,sh]
+----
+brew install rdavid/tap/toolbox
 ----
 
 == Test
