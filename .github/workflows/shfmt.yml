@@ -1,5 +1,7 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# Checks that the shell sources match the shfmt formatting. The -d flag prints
+# a diff and fails the job when any file would change.
 ---
 name: shfmt
 'on':

@@ -1,11 +1,18 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+# Publishes README.adoc as the project website. The build job renders the page
+# with asciidoctor and the pages-build attribute, which enables the web-only
+# blocks in the source. The deploy job holds the elevated permissions, so the
+# build job runs with read access only.
 ---
 name: pages
 'on':
   push:
     branches: [master]
-    paths: [README.adoc, .github/pages/**]
+    paths:
+      - README.adoc
+      - .github/pages/**
+      - .github/workflows/pages.yml
   workflow_dispatch:
 permissions:
   contents: read
