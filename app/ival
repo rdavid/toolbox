@@ -9,7 +9,7 @@
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20260711
+readonly BASE_APP_VERSION=0.9.20261010
 . base.sh
 
 # Validates images in DIR and reports results.
@@ -89,8 +89,8 @@ report() {
 # Scans DIR for image files (ARW, BMP, CR2, CR3, CRW, DNG, GIF, HEIC, HEIF,
 # JPEG, JPG, NEF, ORF, PNG, RAF, RW2, TIF, TIFF, WEBP) and validates each one.
 # Discards the loop's stdout, which carries only the counter values that
-# increment() prints; header() captures the one it needs via command
-# substitution.
+# increment() prints. The header() function captures the one it needs via
+# command substitution.
 scan() {
 	local img
 	map_put cnt all 0

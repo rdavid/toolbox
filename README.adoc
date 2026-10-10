@@ -82,7 +82,7 @@ endif::[]
 
 `toolbox` is a collection of Unix shell utilities for everyday use.
 ifndef::pages-build[]
-The collection also has a {url-pages}[website].
+It also has a {url-pages}[website].
 endif::[]
 Each utility is a portable POSIX script built on the Unix shell framework
 {url-shellbase}[`shellbase`]:
@@ -102,9 +102,9 @@ The name stands for Image Validation.
 * {url-app}reel[`reel`] converts a video clip to a vertical 1080×1920 social
 media reel using {url-ffmpeg}[`ffmpeg`], padding it with a blurred copy of
 itself.
-Accepts `-c` to center-crop and fill the frame instead of padding, `-f` for
-input file, `-o` for output file, `-s` for start time, `-u` for duration,
-and `-z` for a horizontal crop shift in pixels, accepting negative values.
+Options: `-c` center-crops to fill the frame instead of padding, `-f` sets the
+input file, `-o` the output file, `-s` the start time, `-u` the duration,
+and `-z` the horizontal crop shift in pixels (negative values allowed).
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
 * {url-app}rsynx[`rsynx`] wraps {url-rsync}[`rsync`] and picks a safe option
@@ -113,10 +113,10 @@ set for the installed `rsync` version.
 address appears on the local network using {url-arp-scan}[`arp-scan`].
 * {url-app}sift[`sift`] copies a random subset of files from a source
 directory into a destination directory until it reaches a byte budget.
-Accepts `-s` for the byte budget (a number with an optional `K`, `M`, or
-`G` suffix, default `8G`) and `-o` for the destination directory (default
-the current directory).
-Takes the source directory as the mandatory positional argument.
+Options: `-s` sets the byte budget (a number with an optional `K`, `M`, or
+`G` suffix, default `8G`) and `-o` the destination directory (default: the
+current directory).
+The source directory is a required positional argument.
 * {url-app}speed[`speed`] continuously displays download and upload internet
 speeds using {url-speed}[`speedtest`].
 * {url-app}tex[`tex`] compiles a TeX source file to PDF and opens the result.
@@ -149,7 +149,7 @@ brew install rdavid/tap/toolbox
 == Test
 
 The project uses Daniel J. Bernstein's build system {url-redo}[`redo`].
-You can install Sergey Matveev's {url-goredo}[`goredo`] implementation.
+You can also use Sergey Matveev's {url-goredo}[`goredo`] implementation.
 `redo lint` runs whichever of the following linters you have installed:
 {url-actionlint}[`actionlint`],
 {url-checkbashisms}[`checkbashisms`],

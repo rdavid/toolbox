@@ -4,16 +4,16 @@
 # SPDX-License-Identifier: 0BSD
 #
 # Wraps rsync and checks the installed version. If rsync is new enough, it uses
-# append-verify and overall-progress output; otherwise it falls back to a safer
-# option set supported by older rsync. Forwards every argument to rsync, so the
-# last one is the destination.
+# append-verify and overall-progress output. Otherwise, it falls back to a
+# safer option set supported by older rsync. Forwards every argument to rsync,
+# so the last one is the destination.
 #
 # The script uses local variables which are not POSIX but supported by most
 # shells. See:
 #  https://stackoverflow.com/q/18597697
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20260915 \
+	BASE_APP_VERSION=0.9.20261010 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -60,8 +60,9 @@ validate() {
 
 # Prints the installed rsync version, the first MAJOR.MINOR(.PATCH) token from
 # rsync --version, which copes with both the GNU rsync and the openrsync
-# banners. The awk exit closes the pipe early, so rsync may take a SIGPIPE;
-# handle_pipefails swallows the resulting 141 under errexit and pipefail.
+# banners. The awk exit closes the pipe early, so rsync may take a SIGPIPE.
+# The handle_pipefails function swallows the resulting 141 under errexit and
+# pipefail.
 # Aborts via die when no version token is found.
 version() {
 	local ver

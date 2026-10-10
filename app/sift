@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20260916
+readonly BASE_APP_VERSION=0.9.20261010
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the
@@ -76,7 +76,7 @@ parse() {
 }
 
 # Parses a size string like "8G", "512M", "10K" into a byte count. A bare
-# number is treated as bytes; the suffix is case-insensitive. Malformed
+# number is treated as bytes. The suffix is case-insensitive. Malformed
 # input falls through to an arithmetic error.
 parse_size() {
 	local mul str="$1"
@@ -89,7 +89,7 @@ parse_size() {
 	printf %s "$((${str%[KkMmGg]} * mul))"
 }
 
-# Copies a single file when it fits in the remaining budget; updates the
+# Copies a single file when it fits in the remaining budget. Updates the
 # running total and per-file counters.
 process() {
 	local fle="$1" out sze
