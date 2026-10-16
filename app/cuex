@@ -1,0 +1,187 @@
+#!/bin/sh
+# vi: lbr noet sw=2 ts=2 tw=79 wrap
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
+# Cue extract. Splits a CD image (FLAC, APE, WAV, WavPack) into tagged FLAC
+# tracks using its cue sheet. Requires shntool, cuetools, and flac:
+#  brew install shntool cuetools flac
+#
+# Usage: cuex [-e|--encoding ENC] [-o|--output DIR] [-p|--pregap] CUE [IMG]
+#
+# The script uses local variables which are not POSIX but supported by most
+# shells. See:
+#  https://stackoverflow.com/q/18597697
+#  shellcheck disable=SC1091,SC2034,SC2039,SC3043
+BASE_APP_USAGE="$(
+	cat <<-EOM 2>&1
+		  -e, --encoding    Cue sheet encoding, e.g. -e cp1251 (Russian) or
+		                    -e cp1255 (Hebrew). Default is UTF-8.
+		  -o, --output      Output directory (default is the directory
+		                    of the cue sheet).
+		  -p, --pregap      Keep the 00 pregap track if shnsplit creates one.
+		  CUE               Cue sheet to split by.
+		  IMG               Audio image (default is the FILE entry of the cue
+		                    sheet, or a file named like the cue sheet with
+		                    a known extension).
+	EOM
+)" || {
+	err=$?
+	printf >&2 '%s\n' "$BASE_APP_USAGE"
+	exit $err
+}
+readonly BASE_APP_VERSION=0.9.20261016
+. base.sh
+
+# Splits the audio image and tags the tracks from the cue sheet.
+main() {
+	ENC=
+	IMG=
+	OUT=
+	PRE=false
+	parse "$@"
+	readonly ENC PRE
+	validate
+	normalize
+	locate
+	split
+	tag
+}
+
+# Finds the audio image when it is not given. Prefers the FILE entry of the
+# cue sheet, relative to the cue sheet's directory. Falls back to a file named
+# like the cue sheet with a known extension.
+locate() {
+	local bas dir ext img="$IMG"
+	[ -z "$img" ] || return 0
+	dir="$(dirname -- "$CUE" 2>&1)" || die "$dir"
+	img="$(
+		LC_ALL=C sed -n \
+			's/^[[:space:]]*FILE[[:space:]]*"\(.*\)".*/\1/p' "$CUE_UTF" |
+			head -n 1
+	)"
+	[ -z "$img" ] || img="$dir/$img"
+	if [ -z "$img" ] || ! file_exists -q "$img"; then
+		img=
+		bas="${CUE%.*}"
+		for ext in flac ape wav wv; do
+			if file_exists -q "$bas.$ext"; then
+				img="$bas.$ext"
+				break
+			fi
+		done
+	fi
+	[ -n "$img" ] || die "$CUE": No matching audio image found.
+	isreadable "$img" || die "$img" is not readable.
+	IMG="$img"
+}
+
+# Checks that $1 is non-empty and not a flag, then assigns it to $3.
+need() {
+	case "${1:-}" in
+	'' | -*) die "$2" requires a non-empty argument. ;;
+	esac
+	eval "${3}=\"\${1}\""
+}
+
+# Writes a copy of the cue sheet to CUE_UTF in UTF-8, without a byte order
+# mark and with Unix line endings. Warns when a cue sheet with no declared
+# encoding is not valid UTF-8.
+normalize() {
+	local bom out
+	readonly CUE_UTF="$BASE_WIP/cue.cue"
+	if [ -n "$ENC" ]; then
+		out="$(iconv -f "$ENC" -t UTF-8 "$CUE" 2>&1 >"$CUE_UTF")" ||
+			die "$CUE": Unable to convert from "$ENC": "$out"
+	else
+		cp -- "$CUE" "$CUE_UTF"
+		iconv -f UTF-8 -t UTF-8 "$CUE_UTF" >/dev/null 2>&1 ||
+			logw "$CUE": Not UTF-8, titles may be garbled, try -e cp1251.
+	fi
+	bom="$(printf '\357\273\277')"
+	LC_ALL=C sed -e "1s/^$bom//" -e 's/\r$//' "$CUE_UTF" >"$CUE_UTF.n" &&
+		mv -- "$CUE_UTF.n" "$CUE_UTF"
+}
+
+# Parses command-line arguments into ENC, OUT, PRE, CUE and IMG. Dies on
+# anything unrecognized or on a third positional argument.
+parse() {
+	CUE=
+	while [ $# -gt 0 ]; do
+		case "$1" in
+		-e | --encoding)
+			need "${2:-}" --encoding ENC
+			shift
+			;;
+		-o | --output)
+			need "${2:-}" --output OUT
+			shift
+			;;
+		-p | --pregap) PRE=true ;;
+		-*) die Unknown parameter "$1". ;;
+		*)
+			if [ -z "$CUE" ]; then
+				CUE="$1"
+			elif [ -z "$IMG" ]; then
+				IMG="$1"
+			else
+				die Unexpected argument "$1".
+			fi
+			;;
+		esac
+		shift
+	done
+	[ -n "$CUE" ] || die "Usage: cuex [options] file.cue [image]."
+	readonly CUE
+}
+
+# Splits the image into FLAC tracks in the work directory. Slashes and colons
+# in titles would break file names. Drops the 00 pregap track unless asked
+# to keep it.
+split() {
+	local out
+	readonly TRK="$BASE_WIP/trk"
+	mkdir -- "$TRK"
+	log Splitting "$IMG".
+	out="$(
+		shnsplit -f "$CUE_UTF" -o flac -t '%n - %t' -m '/-:-' -d "$TRK" \
+			"$IMG" 2>&1
+	)" || die "$out"
+	[ "$PRE" = true ] || rm -f -- "$TRK"/00*pregap.flac
+}
+
+# Tags the tracks from the cue sheet in track order, then moves them to the
+# output directory. Refuses to overwrite existing files.
+tag() {
+	local cnt=0 fle out
+	set -- "$TRK"/[0-9][0-9]*.flac
+	file_exists -q "$1" || die No tracks were created.
+	out="$(cuetag.sh "$CUE_UTF" "$@" 2>&1)" || die "$out"
+	for fle; do
+		file_exists -q "$OUT/${fle##*/}" && die "$OUT/${fle##*/}" exists.
+	done
+	for fle; do
+		mv -- "$fle" "$OUT/" || die
+		cnt=$((cnt + 1))
+	done
+	log "$cnt" tracks written to "$OUT".
+}
+
+# Validates the environment and the cue sheet. Defaults OUT to the cue
+# sheet's directory and creates it when missing.
+validate() {
+	local dir
+	cmd_exists -q shnsplit cuetag.sh iconv flac metaflac ||
+		die Install shntool, cuetools, and flac.
+	file_exists "$CUE" || die "$CUE": No such file.
+	isreadable "$CUE" || die "$CUE" is not readable.
+	if [ -z "$OUT" ]; then
+		dir="$(dirname -- "$CUE" 2>&1)" || die "$dir"
+		OUT="$dir"
+	fi
+	mkdir -p -- "$OUT" || die
+	iswritable "$OUT" || die "$OUT" is not writable.
+}
+
+# Entry point.
+main "$@"
