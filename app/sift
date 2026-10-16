@@ -16,7 +16,7 @@ BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
 		  -s, --size        Byte budget with optional K/M/G suffix, e.g. -s 512M
 		                    (default 8G).
-		  -o, --output      Destination directory (default current directory).
+		  -o, --output      Destination directory (default is the current directory).
 		  SRC               Source directory to copy files from.
 	EOM
 )" || {
@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20261010
+readonly BASE_APP_VERSION=0.9.20261016
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the

@@ -5,10 +5,11 @@
 #
 # Makes an incremental backup from the source directory to the destination.
 #
-# File not following, appears unused:
+# Shellcheck cannot follow the sourced file and flags its variables as
+# unused:
 #  shellcheck disable=SC1091,SC2034
 readonly \
-	BASE_APP_VERSION=0.9.20260827 \
+	BASE_APP_VERSION=0.9.20261016 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 

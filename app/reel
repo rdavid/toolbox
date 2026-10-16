@@ -11,7 +11,7 @@
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
-		  -c, --crop        Crop the center to fill the frame, no blurred copy.
+		  -c, --crop        Crop the center to fill the frame instead of padding.
 		  -f, --file        Input file name (default input.mp4).
 		  -o, --output      Output file name (default is the input file
 		                    base name plus an incrementing number, e.g.
@@ -27,7 +27,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20260915 \
+	BASE_APP_VERSION=0.9.20261016 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 

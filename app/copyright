@@ -12,7 +12,7 @@
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
 		  -a, --action      Replaces copyright years in files if needed.
-		  -o, --owner       A string for an owner, e.g. -o 'David Rabkin'.
+		  -o, --owner       Copyright owner name, e.g. -o 'David Rabkin'.
 	EOM
 )" || {
 	err=$?
@@ -21,7 +21,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20260711
+	BASE_APP_VERSION=0.9.20261016
 . base.sh
 
 # Searches for Git-tracked files and fixes their copyright years.

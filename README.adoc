@@ -82,7 +82,7 @@ endif::[]
 
 `toolbox` is a collection of Unix shell utilities for everyday use.
 ifndef::pages-build[]
-It also has a {url-pages}[website].
+A {url-pages}[website] is available.
 endif::[]
 Each utility is a portable POSIX script built on the Unix shell framework
 {url-shellbase}[`shellbase`]:

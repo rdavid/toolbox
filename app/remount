@@ -6,9 +6,10 @@
 # Remounts filesystems using a temporary fstab, then restores the permanent
 # one.
 #
-# File not following, appears unused:
+# Shellcheck cannot follow the sourced file and flags its variables as
+# unused:
 #  shellcheck disable=SC1091,SC2034
-readonly BASE_APP_VERSION=0.9.20260711
+readonly BASE_APP_VERSION=0.9.20261016
 . base.sh
 readonly \
 	PRM=/etc/fstab-prm \

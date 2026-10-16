@@ -19,8 +19,8 @@ BASE_APP_USAGE="$(
 		                    -e cp1255 (Hebrew). Default is UTF-8.
 		  -o, --output      Output directory (default is the directory
 		                    of the cue sheet).
-		  -p, --pregap      Keep the 00 pregap track if shnsplit creates one.
-		  CUE               Cue sheet to split by.
+		  -p, --pregap      Keep the pregap track (00) if shnsplit creates one.
+		  CUE               Cue sheet that defines the tracks.
 		  IMG               Audio image (default is the FILE entry of the cue
 		                    sheet, or a file named like the cue sheet with
 		                    a known extension).

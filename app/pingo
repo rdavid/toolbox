@@ -5,10 +5,11 @@
 #
 # Adds timestamps to the ping command output.
 #
-# File not following, appears unused:
+# Shellcheck cannot follow the sourced file and flags its variables as
+# unused:
 #  shellcheck disable=SC1091,SC2034
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20260816
+readonly BASE_APP_VERSION=0.9.20261016
 . base.sh
 
 # Validates the environment and runs ping with timestamped output.
