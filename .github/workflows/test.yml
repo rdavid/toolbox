@@ -40,7 +40,7 @@ jobs:
       - run: |
           srv=https://github.com/rdavid/shellbase
           ver=0.9.20261010
-          brew install goredo
+          brew install rdavid/tap/goredo
           curl \
             --fail \
             --location \
