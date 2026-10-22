@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+
 # Parses the utilities under strict POSIX shells. shellcheck performs static
 # analysis only, while dash and mksh parse each script and reject syntax the
 # project's target shells do not accept. The matrix shell name reaches the run

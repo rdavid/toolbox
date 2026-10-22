@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+
 # Checks the shell sources with shellcheck. The job downloads a pinned
 # shellcheck release and runs it on the scripts directly. The previously used
 # action matched additional files by basename through find -name, so path
