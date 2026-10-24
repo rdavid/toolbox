@@ -9,7 +9,7 @@
 # unused:
 #  shellcheck disable=SC1091,SC2034
 readonly \
-	BASE_APP_VERSION=0.9.20261016 \
+	BASE_APP_VERSION=0.9.20261024 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -26,13 +26,13 @@ main() {
 
 # Validates arguments and sets SRC and DST.
 validate() {
+	cmd_exists rdiff-backup || die
 	[ "$#" -eq 2 ] || die Usage: bak [src] [dst].
 	readonly \
 		DST="$2" \
 		SRC="$1"
 	isreadable "$SRC" || die "$SRC" is not readable.
 	iswritable "$DST" || die "$DST" is not writable.
-	cmd_exists rdiff-backup || die
 }
 
 # Entry point.
