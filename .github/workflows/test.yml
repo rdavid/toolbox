@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: 0BSD
 
 # Runs redo on the macOS runners only. Ubuntu lacks a redo package, so the
-# Linux legs are covered by the dedicated lint workflows instead.
+# Linux legs are covered by the dedicated lint workflows instead. The matrix
+# does not fail fast, so one failing runner never hides the results of the
+# others.
 ---
 name: test
 'on':
@@ -25,6 +27,7 @@ concurrency:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-14

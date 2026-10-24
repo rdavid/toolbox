@@ -6,7 +6,8 @@
 # project's target shells do not accept. The matrix shell name reaches the run
 # block through an environment variable to keep the command free of template
 # injection. dash ships with Ubuntu as /bin/sh, so the install runs only when
-# the matrix shell is missing, sparing the dash leg a needless apt fetch.
+# the matrix shell is missing, sparing the dash leg a needless apt fetch. The
+# matrix does not fail fast, so a failure in one shell never hides the other.
 ---
 name: posix
 'on':
@@ -29,6 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         shell: [dash, mksh]
     steps:
