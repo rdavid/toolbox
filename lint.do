@@ -11,8 +11,8 @@
 # hands any further operands to it as positional parameters, so files after
 # the first would be silently skipped rather than checked.
 #
-# Variable appears unused and file not following:
-#  shellcheck disable=SC2034,SC1090
+# Shellcheck cannot follow the sourced file or see variables it reads:
+#  shellcheck disable=SC1091,SC2034
 redo-ifchange \
 	./.conform.yaml \
 	./.github/*.yml \
@@ -21,14 +21,9 @@ redo-ifchange \
 	./app/* \
 	./README.adoc
 readonly \
-	BASE_APP_VERSION=0.9.20260816 \
-	BASE_MIN_VERSION=0.9.20260707 \
-	BSH=/usr/local/bin/base.sh
-[ -r "$BSH" ] || {
-	printf >&2 'Install Shellbase.\n'
-	exit 1
-}
-. "$BSH"
+	BASE_APP_VERSION=0.9.20261024 \
+	BASE_MIN_VERSION=0.9.20260707
+. base.sh
 cmd_runif actionlint
 cmd_runif checkbashisms \
 	./*.do \
