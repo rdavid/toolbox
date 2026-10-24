@@ -16,8 +16,8 @@ by those scripts. `*.do` files (`all.do`, `clean.do`, `lint.do`) are the
 `redo` build/lint tasks. `README.adoc` is the user-facing documentation. CI
 and lint configuration lives in `.github/workflows/` and `.github/styles/`.
 Treat `.redo/` as build metadata for the `redo` workflow, not hand-edited
-source. The scripts expect Shellbase's `base.sh` on `PATH`, typically at
-`/usr/local/bin/base.sh`.
+source. The scripts expect Shellbase's `base.sh` on `PATH`. Install it with
+`brew install rdavid/tap/shellbase`.
 
 ## Build, Test, and Development Commands
 
