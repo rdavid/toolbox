@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
-
+#
 # Scans the full commit history for leaked secrets. actions/checkout defaults
 # to a shallow clone, so fetch-depth is set to 0 here to give gitleaks every
 # commit to scan. Runs on every push and pull request with no path filter on

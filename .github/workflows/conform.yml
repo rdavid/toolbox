@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
-
+#
 # Enforces the Conventional Commits format required by AGENTS.md. On a pull
 # request every commit ahead of the base branch is checked. conform's
 # --base-branch flag needs the base ref present locally, which fetch-depth 0
