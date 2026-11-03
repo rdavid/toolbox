@@ -9,7 +9,7 @@
 # Shellcheck cannot follow the sourced file and flags its variables as
 # unused:
 #  shellcheck disable=SC1091,SC2034
-readonly BASE_APP_VERSION=0.9.20261016
+readonly BASE_APP_VERSION=0.9.20261104
 . base.sh
 readonly \
 	PRM=/etc/fstab-prm \
@@ -24,9 +24,9 @@ main() {
 # Copies TMP to fstab, mounts all, then restores PRM. The PRM restore
 # is unconditional so the system is never left with TMP as fstab.
 process() {
-	cp "$TMP" /etc/fstab || die Unable to copy "$TMP" to /etc/fstab.
-	mount -a
-	cp "$PRM" /etc/fstab || die Unable to restore /etc/fstab from "$PRM".
+	cmd_run cp "$TMP" /etc/fstab || die
+	cmd_run mount -a || die
+	cmd_run cp "$PRM" /etc/fstab || die
 }
 
 # Validates the environment.
