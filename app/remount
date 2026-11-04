@@ -21,8 +21,8 @@ main() {
 	process
 }
 
-# Copies TMP to fstab, mounts all, then restores PRM. The PRM restore
-# is unconditional so the system is never left with TMP as fstab.
+# Copies TMP to fstab, mounts all, then restores PRM. Dies on the first
+# failure, so a failed mount leaves TMP in place as fstab.
 process() {
 	cmd_run cp "$TMP" /etc/fstab || die
 	cmd_run mount -a || die
