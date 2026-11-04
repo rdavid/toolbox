@@ -81,7 +81,8 @@ endif::[]
 
 == About
 
-`toolbox` is a collection of Unix shell utilities for everyday use.
+`toolbox` is a collection of Unix shell utilities for backups, media,
+networking, and everyday tasks.
 ifndef::pages-build[]
 A {url-pages}[website] is available.
 endif::[]
@@ -99,7 +100,8 @@ Options: `-e` sets the cue sheet encoding (for example `cp1251`), `-o` the
 output directory, and `-p` keeps the silent gap before track one.
 * {url-app}essid[`essid`] watches the ESSID of the connected Wi-Fi
 network and reports changes.
-* {url-app}flactomp3[`flactomp3`] converts audio files to `mp3` and keeps their tags.
+* {url-app}flactomp3[`flactomp3`] converts audio files to `mp3` and keeps
+their tags.
 * {url-app}ival[`ival`] validates image files.
 The name stands for Image Validation.
 * {url-app}myip[`myip`] continuously displays your external IP address using
@@ -113,14 +115,14 @@ input file, `-o` the output file, `-s` the start time, `-u` the duration,
 and `-z` the horizontal crop shift in pixels (negative values allowed).
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
-* {url-app}rsynx[`rsynx`] wraps {url-rsync}[`rsync`] and picks a safe option
-set for the installed `rsync` version.
+* {url-app}rsynx[`rsynx`] wraps {url-rsync}[`rsync`] and picks safe options
+for the installed `rsync` version.
 * {url-app}scanner[`scanner`] detects whether a device with a given MAC
 address is on the local network using {url-arp-scan}[`arp-scan`].
-* {url-app}sift[`sift`] copies random files from a source
-directory to a destination directory until it reaches a byte budget.
+* {url-app}sift[`sift`] copies random files from a source directory to
+a destination directory until their total size reaches a byte budget.
 Options: `-s` sets the byte budget (a number with an optional `K`, `M`, or
-`G` suffix, default `8G`) and `-o` the destination directory (default: the
+`G` suffix, default `8G`) and `-o` the destination directory (default the
 current directory).
 The source directory is a required positional argument.
 * {url-app}speed[`speed`] continuously displays internet download and
@@ -144,8 +146,8 @@ git clone https://github.com/rdavid/toolbox.git &&
   ./toolbox/app/install
 ----
 
-Or install a selection of the utilities with {url-homebrew}[Homebrew] from the
-{url-tap}[tap]:
+To install a subset of the utilities instead, use {url-homebrew}[Homebrew] and
+the {url-tap}[tap]:
 
 [,sh]
 ----
@@ -242,7 +244,7 @@ ifdef::pages-build[]
       </li>
       <li>
         <span class="num">2</span>
-        <p><code>cmd_run</code> echoes the exact command it's about to run, in the same green as every other info-level <code>log</code> line, before any output appears.</p>
+        <p><code>cmd_run</code> prints each command before it runs, in the same green as every other info-level <code>log</code> line.</p>
       </li>
       <li>
         <span class="num">3</span>
