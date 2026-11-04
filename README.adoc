@@ -7,6 +7,7 @@
 :img-releases: https://img.shields.io/github/v/release/rdavid/toolbox?color=8cd0d3&label=%20&logo=semver&logoColor=dcdccc&labelColor=555&style=flat
 :img-test: https://img.shields.io/github/actions/workflow/status/rdavid/toolbox/test.yml?branch=master&label=test&labelColor=555&color=7f9f7f&logo=github&logoColor=dcdccc&style=flat
 :url-actionlint: https://rhysd.github.io/actionlint/
+:url-agent-rules-lint: https://pypi.org/project/agent-rules-lint/
 :url-app: https://github.com/rdavid/toolbox/blob/master/app/
 :url-arp-scan: https://github.com/royhills/arp-scan
 :url-checkbashisms: https://manpages.debian.org/unstable/devscripts/checkbashisms.1.en.html
@@ -157,6 +158,7 @@ The project builds with Daniel J. Bernstein's {url-redo}[`redo`].
 You can use Sergey Matveev's {url-goredo}[`goredo`] implementation.
 `redo lint` runs whichever of the following linters you have installed:
 {url-actionlint}[`actionlint`],
+{url-agent-rules-lint}[`agent-rules-lint`],
 {url-checkbashisms}[`checkbashisms`],
 {url-conform}[`conform`],
 {url-gitleaks}[`gitleaks`],

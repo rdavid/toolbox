@@ -18,13 +18,15 @@ redo-ifchange \
 	./.github/*.yml \
 	./.github/workflows/*.yml \
 	./*.do \
+	./AGENTS.md \
 	./app/* \
 	./README.adoc
 readonly \
-	BASE_APP_VERSION=0.9.20261024 \
+	BASE_APP_VERSION=0.9.20261104 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 cmd_runif actionlint
+cmd_runif agent-rules-lint --warnings-as-errors .
 cmd_runif checkbashisms \
 	./*.do \
 	./app/*
