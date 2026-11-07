@@ -16,6 +16,8 @@ BASE_APP_USAGE="$(
 		  -o, --output      Output file name (default is the input file
 		                    base name plus an incrementing number, e.g.
 		                    input-1.mp4).
+		  -r, --transcribe  Burn subtitles transcribed by whisper-cli with the
+		                    model at ~/ggml.bin.
 		  -s, --start       Start time, e.g. -s 00:00:05.00 (default 00:00:00.00).
 		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:20.00).
 		  -z, --shift       Horizontal crop shift in pixels with --crop, may be
@@ -27,7 +29,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20261016 \
+	BASE_APP_VERSION=0.9.20261107 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -75,6 +77,7 @@ parse() {
 			need "${2:-}" --output OUT
 			shift
 			;;
+		-r | --transcribe) TRN=true ;;
 		-s | --start)
 			need "${2:-}" --start STA
 			shift
@@ -95,7 +98,8 @@ parse() {
 
 # Converts the input video to a vertical reel. With --crop the center of the
 # video fills the frame. Otherwise the scaled video overlays its blurred
-# copy. The ffmpeg options are sorted alphabetically, except -ss stays before
+# copy. With --transcribe the subtitles are burned in near the bottom. The
+# ffmpeg options are sorted alphabetically, except -ss stays before
 # -i for fast input seeking and the output file stays last.
 process() {
 	local vfl
@@ -118,6 +122,18 @@ process() {
        [blurred][scaled]overlay=(W-w)/2:(H-h)/2 \
        "
 	fi
+	[ "$TRN" = false ] || {
+		transcribe
+		vfl="$vfl, subtitles=\
+filename='$BASE_WIP/audio.srt':\
+force_style='\
+Alignment=2,\
+BorderStyle=1,\
+FontSize=14,\
+MarginV=15,\
+Outline=1':\
+wrap_unicode=0"
+	}
 	cmd_run ffmpeg -y \
 		-ss "$STA" \
 		-i "$FLE" \
@@ -126,6 +142,32 @@ process() {
 		-t "$DUR" \
 		-vf "$vfl" \
 		"$OUT"
+}
+
+# Extracts the clip's audio as 16 kHz mono WAV, which whisper-cli expects,
+# and transcribes it into $BASE_WIP/audio.srt. Each cue holds at most 48
+# characters split on words, which keeps about two lines on screen for a
+# few seconds. A wider beam search than the default of five trades a little
+# speed for accuracy.
+transcribe() {
+	cmd_run ffmpeg -y \
+		-ss "$STA" \
+		-i "$FLE" \
+		-ac 1 -ar 16000 -c:a pcm_s16le \
+		-t "$DUR" \
+		-vn \
+		"$BASE_WIP"/audio.wav
+	cmd_run whisper-cli \
+		--beam-size 8 \
+		--best-of 8 \
+		--file "$BASE_WIP"/audio.wav \
+		--language auto \
+		--max-len 48 \
+		--model "$MDL" \
+		--no-prints \
+		--output-file "$BASE_WIP"/audio \
+		--output-srt \
+		--split-on-word
 }
 
 # Validates the environment and sets defaults.
@@ -138,17 +180,31 @@ validate() {
 	var_exists OUT || OUT="$(outname)"
 	var_exists SHF || SHF=0
 	var_exists STA || STA=00:00:00.00
+	var_exists TRN || TRN=false
 	readonly \
 		CRP \
 		DUR \
 		FLE \
+		MDL="$HOME"/ggml.bin \
 		OUT \
 		SHF \
-		STA
+		STA \
+		TRN
 	isnumber "${SHF#-}" || die --shift requires an integer.
 	[ "$CRP" = true ] || [ "$SHF" -eq 0 ] || die --shift requires --crop.
 	isreadable "$FLE" || die "$FLE" is not readable.
 	iswritable "$(dirname "$OUT")" || die "$OUT" is not writable.
+	[ "$TRN" = false ] || {
+		cmd_exists whisper-cli || die
+		cmd_run sh -c 'ffmpeg -hide_banner -filters | grep subtitles' ||
+			die ffmpeg lacks the subtitles filter, which requires libass.
+		isreadable "$MDL" ||
+			die Whisper model "$MDL" is not readable. \
+				Download it with: curl \
+				--location \
+				--output "$MDL" \
+				https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin
+	}
 }
 
 # Entry point.
