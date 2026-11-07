@@ -5,12 +5,15 @@
 #
 # Reports internet download and upload speeds in a loop.
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck cannot follow the sourced file, flags its variables as unused,
+# and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20261104
+readonly BASE_APP_VERSION=0.9.20261107
 . base.sh
 
 # Reports internet download and upload speeds in a loop.
@@ -41,8 +44,8 @@ pause() {
 	sleep 30
 }
 
-# Prints the current download and upload speeds. Logs errors and returns
-# early.
+# Prints the current download and upload speeds. Logs any failure and
+# returns 0, so the polling loop keeps going.
 test_speed() {
 	url_exists google.com || {
 		loge Check internet connection.

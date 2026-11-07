@@ -6,13 +6,15 @@
 # Installs or updates the Unix shell framework shellbase:
 #  https://github.com/rdavid/shellbase/
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck flags variables as unused and warns about local:
 #  shellcheck disable=SC2034,SC2039,SC3043
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20261104 \
+	BASE_APP_VERSION=0.9.20261107 \
 	DST=/usr/local/bin \
 	REL=0.9.20261010 \
 	TGT=/usr/local/bin/base.sh

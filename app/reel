@@ -5,9 +5,12 @@
 #
 # Converts a video file to a vertical short-form reel.
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck cannot follow the sourced file, flags its variables as unused,
+# and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
@@ -99,8 +102,8 @@ parse() {
 # Converts the input video to a vertical reel. With --crop the center of the
 # video fills the frame. Otherwise the scaled video overlays its blurred
 # copy. With --transcribe the subtitles are burned in near the bottom. The
-# ffmpeg options are sorted alphabetically, except -ss stays before
-# -i for fast input seeking and the output file stays last.
+# ffmpeg options are sorted alphabetically, except -ss stays before -i for
+# fast input seeking and the output file stays last.
 process() {
 	local vfl
 	if [ "$CRP" = true ]; then

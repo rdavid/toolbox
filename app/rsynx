@@ -8,12 +8,15 @@
 # safer option set supported by older rsync. Forwards every argument to rsync,
 # so the last one is the destination.
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck cannot follow the sourced file, flags its variables as unused,
+# and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20261104 \
+	BASE_APP_VERSION=0.9.20261107 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 

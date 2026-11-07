@@ -5,11 +5,14 @@
 #
 # Compiles a TeX source file to PDF and opens the result.
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck cannot follow the sourced file, flags its variables as unused,
+# and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261104
+readonly BASE_APP_VERSION=0.9.20261107
 . base.sh
 
 # Validates the environment and runs the compile pipeline.
@@ -19,7 +22,7 @@ main() {
 }
 
 # Compiles TEX to DVI, converts to PDF, and opens it.
-# The system removes BASE_WIP on exit, so no explicit cleanup is needed.
+# Shellbase removes BASE_WIP on exit, so no explicit cleanup is needed.
 process() {
 	cmd_run cp "$SRC" "$BASE_WIP" || die
 	cd "$BASE_WIP" || die

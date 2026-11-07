@@ -8,9 +8,12 @@
 #
 # Usage: sift [-s|--size=N[K|M|G]] [-o|--output=DIR] SRC
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck cannot follow the sourced file, flags its variables as unused,
+# and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 BASE_APP_USAGE="$(
 	cat <<-EOM 2>&1
@@ -24,7 +27,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20261016
+readonly BASE_APP_VERSION=0.9.20261107
 . base.sh
 
 # Picks files from SRC in random order and copies them into DST until the

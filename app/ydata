@@ -5,19 +5,22 @@
 #
 # Downloads new videos from the accounts listed in ytda.lst and records the
 # IDs of downloaded files in done.txt (ytda.dne on GitHub). It runs under
-# cron, so the environment stays strict. Uses curl, HandBrakeCLI, mp4track,
-# renamr, rsync, transcode, transcode-video, and yt-dlp.
+# cron, so it sets the locale and PATH itself. Uses deno, HandBrakeCLI,
+# mp4track, renamr, rsync, transcode, transcode-video, and yt-dlp.
 #
-# The script uses local variables which are not POSIX but supported by most
-# shells. See:
+# The script uses local variables, which POSIX does not define but most
+# shells support. See:
 #  https://stackoverflow.com/q/18597697
+#
+# Shellcheck cannot follow the sourced file, flags its variables as unused,
+# and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 export \
 	LANG=en_US.UTF-8 \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
 readonly \
-	BASE_APP_VERSION=0.9.20260723 \
+	BASE_APP_VERSION=0.9.20261107 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -138,7 +141,7 @@ keep_arc() {
 	fi
 }
 
-# Renames downloaded files to ASCII lower-case without spaces.
+# Renames downloaded files to lowercase ASCII without spaces.
 rename() {
 	cmd_run renamr \
 		--act \
