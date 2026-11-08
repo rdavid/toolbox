@@ -32,7 +32,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20261107 \
+	BASE_APP_VERSION=0.9.20261108 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -40,6 +40,41 @@ readonly \
 main() {
 	validate "$@"
 	process
+}
+
+# Prints the ffmpeg video filter. With --crop the center of the video fills
+# the frame. Otherwise the scaled video overlays its blurred copy. With
+# --transcribe the subtitles are burned in near the bottom.
+filter() {
+	local sty vfl
+	if [ "$CRP" = true ]; then
+		vfl="\
+       crop='min(iw,ih*1080/1920)': \
+       'min(ih,iw*1920/1080)': \
+       '(iw-ow)/2+$SHF': \
+       '(ih-oh)/2', \
+       scale=1080:1920, \
+       setsar=1 \
+       "
+	else
+		vfl="\
+       [0:v]split=2[bg][fg]; \
+       [bg]scale=1080:1920, \
+       setsar=1, \
+       boxblur=20[blurred]; \
+       [fg]scale=1080:-2[scaled]; \
+       [blurred][scaled]overlay=(W-w)/2:(H-h)/2 \
+       "
+	fi
+	if [ "$TRN" = true ]; then
+		sty=Alignment=2,BorderStyle=1,FontSize=14,MarginV=15,Outline=1
+		vfl="$vfl, \
+       subtitles=filename='$BASE_WIP/audio.srt': \
+       force_style='$sty': \
+       wrap_unicode=0 \
+       "
+	fi
+	printf %s "$vfl"
 }
 
 # Checks that $1 is non-empty and not a flag, then assigns it to $3. A
@@ -99,51 +134,18 @@ parse() {
 	done
 }
 
-# Converts the input video to a vertical reel. With --crop the center of the
-# video fills the frame. Otherwise the scaled video overlays its blurred
-# copy. With --transcribe the subtitles are burned in near the bottom. The
-# ffmpeg options are sorted alphabetically, except -ss stays before -i for
-# fast input seeking and the output file stays last.
+# Converts the input video to a vertical reel. The ffmpeg options are sorted
+# alphabetically, except -ss stays before -i for fast input seeking and the
+# output file stays last.
 process() {
-	local vfl
-	if [ "$CRP" = true ]; then
-		vfl="\
-       crop='min(iw,ih*1080/1920)': \
-       'min(ih,iw*1920/1080)': \
-       '(iw-ow)/2+$SHF': \
-       '(ih-oh)/2', \
-       scale=1080:1920, \
-       setsar=1 \
-       "
-	else
-		vfl="\
-       [0:v]split=2[bg][fg]; \
-       [bg]scale=1080:1920, \
-       setsar=1, \
-       boxblur=20[blurred]; \
-       [fg]scale=1080:-2[scaled]; \
-       [blurred][scaled]overlay=(W-w)/2:(H-h)/2 \
-       "
-	fi
-	[ "$TRN" = false ] || {
-		transcribe
-		vfl="$vfl, subtitles=\
-filename='$BASE_WIP/audio.srt':\
-force_style='\
-Alignment=2,\
-BorderStyle=1,\
-FontSize=14,\
-MarginV=15,\
-Outline=1':\
-wrap_unicode=0"
-	}
+	[ "$TRN" = false ] || transcribe
 	cmd_run ffmpeg -y \
 		-ss "$STA" \
 		-i "$FLE" \
 		-c:a aac -b:a 192k \
 		-c:v libx264 -preset fast -crf 23 \
 		-t "$DUR" \
-		-vf "$vfl" \
+		-vf "$(filter)" \
 		"$OUT"
 }
 
