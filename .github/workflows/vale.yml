@@ -3,7 +3,8 @@
 #
 # Lints README.adoc prose with Vale. asciidoctor is installed first because
 # Vale shells out to it to render AsciiDoc before applying its style rules.
-# Without it on PATH the .adoc source cannot be parsed.
+# Without it on PATH the .adoc source cannot be parsed. The checks write
+# permission is granted to the job alone, which posts the Vale annotations.
 ---
 name: vale
 'on':
@@ -19,7 +20,6 @@ name: vale
   workflow_dispatch:
 permissions:
   contents: read
-  checks: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -28,6 +28,9 @@ defaults:
     shell: sh
 jobs:
   vale:
+    permissions:
+      checks: write
+      contents: read
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:

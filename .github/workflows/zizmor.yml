@@ -4,7 +4,9 @@
 # Audits all of .github for security issues with zizmor, matching the scope
 # of the local redo lint target. GH_TOKEN is exported so zizmor can run its
 # online audits, which query the GitHub API for action metadata. The local
-# redo lint skips these through --offline.
+# redo lint skips these through --offline. The wheel is installed into a
+# throwaway virtual environment with hash checking, since the package has no
+# Python dependencies and ships one Linux x86_64 wheel.
 ---
 name: zizmor
 'on':
@@ -34,6 +36,14 @@ jobs:
       - env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          sum=9c08a7c34b33ed6f9a3a3d28fcf8c64e3e078c53c51bc9ce05c32ec3ba7feae9
           ver=1.30.0
-          pipx install zizmor=="$ver"
-          zizmor .github
+          python3 -m venv "$RUNNER_TEMP/venv"
+          printf 'zizmor==%s --hash=sha256:%s\n' "$ver" "$sum" \
+            >"$RUNNER_TEMP/requirements.txt"
+          "$RUNNER_TEMP/venv/bin/pip" install \
+            --only-binary :all: \
+            --quiet \
+            --require-hashes \
+            --requirement "$RUNNER_TEMP/requirements.txt"
+          "$RUNNER_TEMP/venv/bin/zizmor" .github

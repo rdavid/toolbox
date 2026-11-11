@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Lints the GitHub Actions workflows. The downloader reports the linter path
-# as a step output, which the final step reads through an environment variable
-# rather than expanding inline, so the run block stays free of template
-# injection.
+# Lints the GitHub Actions workflows. The release archive is verified against
+# the upstream checksums file so a tampered or corrupted download fails the
+# job instead of running. This replaces piping the upstream installer script
+# into bash, which executed unverified code.
 ---
 name: actionlint
 'on':
@@ -31,18 +31,20 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - id: get
-        run: |
-          srv=https://raw.githubusercontent.com/rhysd/actionlint
+      - run: |
+          srv=https://github.com/rhysd/actionlint
           ver=1.7.12
+          tgz=actionlint_${ver}_linux_amd64.tar.gz
           curl \
             --fail \
             --location \
+            --remote-name-all \
             --retry 3 \
             --show-error \
             --silent \
-            "$srv/v$ver/scripts/download-actionlint.bash" |
-            bash -s "$ver"
-      - env:
-          EXECUTABLE: ${{ steps.get.outputs.executable }}
-        run: '"$EXECUTABLE"'
+            "$srv/releases/download/v$ver/$tgz" \
+            "$srv/releases/download/v$ver/actionlint_${ver}_checksums.txt"
+          grep "$tgz\$" actionlint_"$ver"_checksums.txt | sha256sum --check
+          tar --extract --file "$tgz" --gzip actionlint
+          ./actionlint -version
+          ./actionlint

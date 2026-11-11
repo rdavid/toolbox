@@ -6,6 +6,8 @@
 # action matched additional files by basename through find -name, so path
 # globs such as ./app/* never reached shellcheck and the job silently checked
 # nothing. The runner image's apt package also trails several releases behind.
+# Upstream publishes no checksums file, so the archive is verified against a
+# pinned hash and a tampered or corrupted download fails the job.
 ---
 name: shellcheck
 'on':
@@ -36,19 +38,23 @@ jobs:
           persist-credentials: false
       - run: |
           srv=https://github.com/koalaman/shellcheck
+          sum=8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198
           ver=0.11.0
-          url=$srv/releases/download/v$ver/shellcheck-v$ver.linux.x86_64.tar.xz
+          txz=shellcheck-v$ver.linux.x86_64.tar.xz
           curl \
             --fail \
             --location \
+            --remote-name \
             --retry 3 \
             --show-error \
             --silent \
-            "$url" |
-            tar \
-              --extract \
-              --strip-components=1 \
-              --xz \
-              shellcheck-v"$ver"/shellcheck
+            "$srv/releases/download/v$ver/$txz"
+          printf '%s  %s\n' "$sum" "$txz" | sha256sum --check
+          tar \
+            --extract \
+            --file "$txz" \
+            --strip-components=1 \
+            --xz \
+            shellcheck-v"$ver"/shellcheck
           ./shellcheck --version
           ./shellcheck ./*.do ./app/*
