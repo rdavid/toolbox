@@ -99,6 +99,7 @@ tagged `flac` tracks using its cue sheet.
 The name stands for Cue Extract.
 Options: `-e` sets the cue sheet encoding (for example `cp1251`), `-o` the
 output directory, and `-p` keeps the silent gap before track one.
+It then offers to remove the cue sheet and the image.
 * {url-app}essid[`essid`] watches the ESSID of the connected Wi-Fi
 network and reports changes.
 * {url-app}flactomp3[`flactomp3`] converts audio files to `mp3` and keeps

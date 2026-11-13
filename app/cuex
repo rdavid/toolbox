@@ -37,7 +37,8 @@ BASE_APP_USAGE="$(
 readonly BASE_APP_VERSION=0.9.20261113
 . base.sh
 
-# Splits the audio image and tags the tracks from the cue sheet.
+# Splits the audio image and tags the tracks from the cue sheet. Offers
+# to remove the sources afterward.
 main() {
 	CUE=
 	ENC=
@@ -57,6 +58,14 @@ main() {
 	locate
 	split
 	tag
+	clean
+}
+
+# Asks whether to remove the sources and removes the cue sheet and the audio
+# image on a yes.
+clean() {
+	should_continue "Remove $CUE and $IMG" || return 0
+	cmd_run rm -f -- "$CUE" "$IMG"
 }
 
 # Finds the audio image when it is not given. Prefers the FILE entry of the
