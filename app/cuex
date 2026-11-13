@@ -34,18 +34,25 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20261107
+readonly BASE_APP_VERSION=0.9.20261113
 . base.sh
 
 # Splits the audio image and tags the tracks from the cue sheet.
 main() {
+	CUE=
 	ENC=
 	IMG=
 	OUT=
 	PRE=false
 	parse "$@"
-	readonly ENC PRE
 	validate
+	readonly \
+		CUE \
+		ENC \
+		OUT \
+		PRE \
+		TRK="$BASE_WIP"/trk \
+		UTF="$BASE_WIP"/utf
 	normalize
 	locate
 	split
@@ -61,7 +68,7 @@ locate() {
 	dir="$(dirname -- "$CUE" 2>&1)" || die "$dir"
 	img="$(
 		LC_ALL=C sed -n \
-			's/^[[:space:]]*FILE[[:space:]]*"\(.*\)".*/\1/p' "$CUE_UTF" |
+			's/^[[:space:]]*FILE[[:space:]]*"\(.*\)".*/\1/p' "$UTF" |
 			head -n 1
 	)"
 	[ -z "$img" ] || img="$dir/$img"
@@ -88,29 +95,27 @@ need() {
 	eval "${3}=\"\${1}\""
 }
 
-# Writes a copy of the cue sheet to CUE_UTF in UTF-8, without a byte order
+# Writes a copy of the cue sheet to UTF in UTF-8, without a byte order
 # mark and with Unix line endings. Warns when a cue sheet with no declared
 # encoding is not valid UTF-8.
 normalize() {
 	local bom out
-	readonly CUE_UTF="$BASE_WIP/cue.cue"
 	if [ -n "$ENC" ]; then
-		out="$(iconv -f "$ENC" -t UTF-8 "$CUE" 2>&1 >"$CUE_UTF")" ||
+		out="$(iconv -f "$ENC" -t UTF-8 "$CUE" 2>&1 >"$UTF")" ||
 			die "$CUE": Unable to convert from "$ENC": "$out"
 	else
-		cp -- "$CUE" "$CUE_UTF"
-		iconv -f UTF-8 -t UTF-8 "$CUE_UTF" >/dev/null 2>&1 ||
+		cp -- "$CUE" "$UTF"
+		iconv -f UTF-8 -t UTF-8 "$UTF" >/dev/null 2>&1 ||
 			logw "$CUE": Not UTF-8, titles may be garbled, try -e cp1251.
 	fi
 	bom="$(printf '\357\273\277')"
-	LC_ALL=C sed -e "1s/^$bom//" -e 's/\r$//' "$CUE_UTF" >"$CUE_UTF.n" &&
-		mv -- "$CUE_UTF.n" "$CUE_UTF"
+	LC_ALL=C sed -e "1s/^$bom//" -e 's/\r$//' "$UTF" >"$UTF.n" &&
+		mv -- "$UTF.n" "$UTF"
 }
 
 # Parses command-line arguments into ENC, OUT, PRE, CUE and IMG. Dies on
 # anything unrecognized or on a third positional argument.
 parse() {
-	CUE=
 	while [ $# -gt 0 ]; do
 		case "$1" in
 		-e | --encoding)
@@ -136,7 +141,6 @@ parse() {
 		shift
 	done
 	[ -n "$CUE" ] || die "Usage: cuex [options] file.cue [image]."
-	readonly CUE
 }
 
 # Splits the image into FLAC tracks in the work directory. Slashes and colons
@@ -144,11 +148,10 @@ parse() {
 # to keep it.
 split() {
 	local out
-	readonly TRK="$BASE_WIP/trk"
 	mkdir -- "$TRK"
 	log Splitting "$IMG".
 	out="$(
-		shnsplit -f "$CUE_UTF" -o flac -t '%n - %t' -m '/-:-' -d "$TRK" \
+		shnsplit -f "$UTF" -o flac -t '%n - %t' -m '/-:-' -d "$TRK" \
 			"$IMG" 2>&1
 	)" || die "$out"
 	[ "$PRE" = true ] || rm -f -- "$TRK"/00*pregap.flac
@@ -160,7 +163,7 @@ tag() {
 	local cnt=0 fle out
 	set -- "$TRK"/[0-9][0-9]*.flac
 	file_exists -q "$1" || die No tracks were created.
-	out="$(cuetag.sh "$CUE_UTF" "$@" 2>&1)" || die "$out"
+	out="$(cuetag.sh "$UTF" "$@" 2>&1)" || die "$out"
 	for fle; do
 		file_exists -q "$OUT/${fle##*/}" && die "$OUT/${fle##*/}" exists.
 	done
