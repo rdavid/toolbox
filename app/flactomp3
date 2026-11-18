@@ -37,7 +37,7 @@ process() {
 	)"
 	printf '%s\n' "$tag"
 	eval "$tag"
-	flac -cd "$SRC" |
+	flac --decode --stdout "$SRC" |
 		lame \
 			--add-id3v2 \
 			-b 320 \

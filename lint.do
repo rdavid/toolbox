@@ -22,7 +22,7 @@ redo-ifchange \
 	./app/* \
 	./README.adoc
 readonly \
-	BASE_APP_VERSION=0.9.20261104 \
+	BASE_APP_VERSION=0.9.20261118 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 cmd_runif actionlint
@@ -40,7 +40,7 @@ cmd_runif reuse lint
 cmd_runif shellcheck \
 	./*.do \
 	./app/*
-cmd_runif shfmt -d \
+cmd_runif shfmt --diff \
 	./*.do \
 	./app/*
 cmd_runif typos
