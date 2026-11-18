@@ -36,6 +36,15 @@ for f in ./*.do ./app/*; do
 	cmd_runif mksh -n "$f"
 done
 cmd_runif gitleaks detect --no-banner --redact
+cmd_runif lychee \
+	--max-retries 3 \
+	--no-progress \
+	'./*.do' \
+	'./.github/**/*.yml' \
+	'./.github/pages/*.html' \
+	./AGENTS.md \
+	'./app/*' \
+	./README.adoc
 cmd_runif reuse lint
 cmd_runif shellcheck \
 	./*.do \

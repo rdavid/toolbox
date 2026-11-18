@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
+# Checks the links in the scripts, configuration, and documentation with
+# lychee, which reads its exclusions from lychee.toml. Runs on every push and
+# pull request with no path filter on purpose: a link can appear in any file.
+# The weekly schedule reports a dead link even when the repository is quiet.
+---
+name: lychee
+'on':
+  pull_request:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+defaults:
+  run:
+    shell: sh
+jobs:
+  lychee:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: lycheeverse/lychee-action@v2.9.0
+        with:
+          args: >-
+            --max-retries 3
+            --no-progress
+            '*.do'
+            '.github/**/*.yml'
+            '.github/pages/*.html'
+            AGENTS.md
+            'app/*'
+            README.adoc
+          fail: true

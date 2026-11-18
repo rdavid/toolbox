@@ -17,6 +17,7 @@
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
 :url-homebrew: https://brew.sh
 :url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
+:url-lychee: https://lychee.cli.rs/
 :url-ffmpeg: https://ffmpeg.org
 :url-gitleaks: https://gitleaks.io
 :url-goredo: http://www.goredo.stargrave.org/INSTALL.html
@@ -167,6 +168,7 @@ You can use Sergey Matveev's {url-goredo}[`goredo`] implementation.
 {url-checkbashisms}[`checkbashisms`],
 {url-conform}[`conform`],
 {url-gitleaks}[`gitleaks`],
+{url-lychee}[`lychee`],
 {url-reuse}[`reuse`],
 {url-shellcheck}[`shellcheck`],
 {url-shfmt}[`shfmt`],

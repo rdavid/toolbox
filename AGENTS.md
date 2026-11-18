@@ -31,8 +31,8 @@ This project uses `redo` (or `goredo`) as its task runner.
 - `redo all`: run the default target, which runs `lint`.
 - `redo lint`: run every installed linter and skip the missing ones.
   The set includes `actionlint`, `agent-rules-lint`, `checkbashisms`,
-  `conform`, `dash`, `gitleaks`, `mksh`, `reuse`, `shellcheck`, `shfmt`,
-  `typos`, `vale`, `yamllint`, and `zizmor`.
+  `conform`, `dash`, `gitleaks`, `lychee`, `mksh`, `reuse`, `shellcheck`,
+  `shfmt`, `typos`, `vale`, `yamllint`, and `zizmor`.
 - `redo clean`: remove generated files.
 
 Check the syntax of every app quickly with
