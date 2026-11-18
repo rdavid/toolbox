@@ -34,7 +34,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20261113
+readonly BASE_APP_VERSION=0.9.20261118
 . base.sh
 
 # Splits the audio image and tags the tracks from the cue sheet. Offers
@@ -160,7 +160,12 @@ split() {
 	mkdir -- "$TRK"
 	log Splitting "$IMG".
 	out="$(
-		shnsplit -f "$UTF" -o flac -t '%n - %t' -m '/-:-' -d "$TRK" \
+		shnsplit \
+			-d "$TRK" \
+			-f "$UTF" \
+			-m '/-:-' \
+			-o flac \
+			-t '%n - %t' \
 			"$IMG" 2>&1
 	)" || die "$out"
 	[ "$PRE" = true ] || rm -f -- "$TRK"/00*pregap.flac

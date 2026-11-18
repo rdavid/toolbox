@@ -12,7 +12,7 @@
 # Shellcheck cannot follow the sourced file, flags its variables as unused,
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261107
+readonly BASE_APP_VERSION=0.9.20261118
 . base.sh
 
 # Converts SRC from FLAC to MP3 at DST.
@@ -37,8 +37,9 @@ process() {
 	)"
 	printf '%s\n' "$tag"
 	eval "$tag"
-	flac -dc "$SRC" |
+	flac -cd "$SRC" |
 		lame \
+			--add-id3v2 \
 			-b 320 \
 			-h \
 			--ta "${ARTIST}" \
@@ -47,7 +48,7 @@ process() {
 			--tn "${TRACKNUMBER}" \
 			--tt "${TITLE}" \
 			--ty "${DATE}" \
-			--add-id3v2 /dev/stdin "$DST"
+			/dev/stdin "$DST"
 }
 
 # Validates arguments and sets SRC and DST. DST drops the directory path from

@@ -13,7 +13,7 @@
 # Shellcheck cannot follow the sourced file, flags its variables as unused,
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261107
+readonly BASE_APP_VERSION=0.9.20261118
 . base.sh
 MAXV=10
 MINV=1
@@ -22,7 +22,7 @@ readonly \
 	MAXV \
 	MIDL \
 	MINV \
-	SCAN=arp-scan\ --localnet\ --interface=wlan0
+	SCAN=arp-scan\ --interface=wlan0\ --localnet
 CNTR=$MIDL
 NAME=''
 ADDR=''

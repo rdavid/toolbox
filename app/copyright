@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20261107
+	BASE_APP_VERSION=0.9.20261118
 . base.sh
 
 # Searches for Git-tracked files and fixes their copyright years.
@@ -49,7 +49,7 @@ bump_year() {
 fix_outdated() {
 	local arg dst ret=0 src
 	for arg; do
-		dst="$(git log -1 --pretty=format:%ad --date=format:%Y "$arg")"
+		dst="$(git log -1 --date=format:%Y --pretty=format:%ad "$arg")"
 		src="$(
 			grep -E "$PATTERN" <"$arg" |
 				grep -Eo '[0-9]{4}' |

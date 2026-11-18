@@ -32,7 +32,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20261108 \
+	BASE_APP_VERSION=0.9.20261118 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -142,8 +142,8 @@ process() {
 	cmd_run ffmpeg -y \
 		-ss "$STA" \
 		-i "$FLE" \
-		-c:a aac -b:a 192k \
-		-c:v libx264 -preset fast -crf 23 \
+		-b:a 192k -c:a aac \
+		-c:v libx264 -crf 23 -preset fast \
 		-t "$DUR" \
 		-vf "$(filter)" \
 		"$OUT"
@@ -201,7 +201,7 @@ validate() {
 	iswritable "$(dirname "$OUT")" || die "$OUT" is not writable.
 	[ "$TRN" = false ] || {
 		cmd_exists whisper-cli || die
-		cmd_run sh -c 'ffmpeg -hide_banner -filters | grep subtitles' ||
+		cmd_run sh -c 'ffmpeg -filters -hide_banner | grep subtitles' ||
 			die ffmpeg lacks the subtitles filter, which requires libass.
 		isreadable "$MDL" ||
 			die Whisper model "$MDL" is not readable. \
