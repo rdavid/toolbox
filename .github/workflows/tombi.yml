@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 David Rabkin
+# SPDX-License-Identifier: 0BSD
+#
+# Lints the TOML files at the repository root.
+---
+name: tombi
+'on':
+  pull_request:
+    paths: &paths
+      - '*.toml'
+      - .github/workflows/tombi.yml
+  push:
+    branches: [master]
+    paths: *paths
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  tombi:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: tombi-toml/setup-tombi@v1.11.3
+        with:
+          enable-cache: false
+          version: 1.11.3
+      - run: |
+          tombi lint --error-on-warnings \
+            ./*.toml

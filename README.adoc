@@ -34,6 +34,7 @@
 :url-speed: https://github.com/sivel/speedtest-cli
 :url-tap: https://rdavid.github.io/homebrew-tap/
 :url-test: https://github.com/rdavid/toolbox/actions/workflows/test.yml
+:url-tombi: https://tombi-toml.github.io/tombi/
 :url-typos: https://github.com/crate-ci/typos
 :url-vale: https://vale.sh
 :url-whisper: https://github.com/ggml-org/whisper.cpp
@@ -173,6 +174,7 @@ You can use Sergey Matveev's {url-goredo}[`goredo`] implementation.
 {url-reuse}[`reuse`],
 {url-shellcheck}[`shellcheck`],
 {url-shfmt}[`shfmt`],
+{url-tombi}[`tombi`],
 {url-typos}[`typos`],
 {url-vale}[`vale`],
 {url-yamllint}[`yamllint`],

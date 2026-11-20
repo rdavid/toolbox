@@ -18,11 +18,12 @@ redo-ifchange \
 	./.github/*.yml \
 	./.github/workflows/*.yml \
 	./*.do \
+	./*.toml \
 	./AGENTS.md \
 	./app/* \
 	./README.adoc
 readonly \
-	BASE_APP_VERSION=0.9.20261118 \
+	BASE_APP_VERSION=0.9.20261120 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 cmd_runif actionlint
@@ -52,6 +53,8 @@ cmd_runif shellcheck \
 cmd_runif shfmt --diff \
 	./*.do \
 	./app/*
+cmd_runif tombi lint --error-on-warnings \
+	./*.toml
 cmd_runif typos
 cmd_runif vale sync
 cmd_runif vale ./README.adoc
