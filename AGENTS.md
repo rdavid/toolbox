@@ -35,15 +35,10 @@ This project uses `redo` (or `goredo`) as its task runner.
   `shfmt`, `tombi`, `typos`, `vale`, `yamllint`, and `zizmor`.
 - `redo clean`: remove generated files.
 
-Check the syntax of every app quickly with
-`for f in app/*; do sh -n "$f"; done`.
-
 ## Style
 
-Each script starts with the shared header and a description comment.
-It then declares `readonly BASE_APP_VERSION=0.9.YYYYMMDD` and runs
-`. base.sh`.
-Indent with tabs, as the existing apps do.
+After its header each script declares
+`readonly BASE_APP_VERSION=0.9.YYYYMMDD` and runs `. base.sh`.
 Declare function variables with `local`.
 POSIX does not define it, but `dash`, `mksh`, and Bash support it.
 Keep local variable names to three letters, for example `fle`, `sze`, or
@@ -53,11 +48,7 @@ Run external commands through `cmd_run`, which logs each command and its
 failures.
 Call a command directly only where `cmd_run` cannot fit, such as in pipes
 and command substitutions.
-Silence shellcheck warnings the way the existing apps do.
-Match the layout of a similar app when adding a new utility.
 
 ## Testing
 
 The project has no test suite, so `redo lint` is the verification step.
-Run it and the syntax check above after every change to an app, before
-committing.
