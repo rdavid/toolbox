@@ -20,7 +20,7 @@ BASE_APP_USAGE="$(
 		                    base name plus an incrementing number, e.g.
 		                    input-1.mp4).
 		  -r, --transcribe  Burn subtitles transcribed by whisper-cli with the
-		                    model at ~/ggml.bin.
+		                    model at ~/ggml.bin and log the text at the end.
 		  -s, --start       Start time, e.g. -s 00:00:05.00 (default 00:00:00.00).
 		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:20.00).
 		  -z, --shift       Horizontal crop shift in pixels with --crop, may be
@@ -32,7 +32,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20261118 \
+	BASE_APP_VERSION=0.9.20261120 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -136,7 +136,8 @@ parse() {
 
 # Converts the input video to a vertical reel. The ffmpeg options are sorted
 # alphabetically, except -ss stays before -i for fast input seeking and the
-# output file stays last.
+# output file stays last. With --transcribe the subtitle text is logged at
+# the end, one cue per line.
 process() {
 	[ "$TRN" = false ] || transcribe
 	cmd_run ffmpeg -y \
@@ -147,6 +148,13 @@ process() {
 		-t "$DUR" \
 		-vf "$(filter)" \
 		"$OUT"
+	[ "$TRN" = false ] ||
+		sed \
+			-e '/^[0-9]*$/d' \
+			-e '/-->/d' \
+			-e 's/^ *//' \
+			"$BASE_WIP"/audio.srt |
+		tolog
 }
 
 # Extracts the clip's audio as 16 kHz mono WAV, which whisper-cli expects,

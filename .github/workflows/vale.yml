@@ -5,6 +5,8 @@
 # Vale shells out to it to render AsciiDoc before applying its style rules.
 # Without it on PATH the .adoc source cannot be parsed. The checks write
 # permission is granted to the job alone, which posts the Vale annotations.
+# Vale stays at 3.27.0 because 3.28.0 reads AsciiDoc in process and flags
+# the ASCII art banner as prose.
 ---
 name: vale
 'on':
@@ -44,3 +46,4 @@ jobs:
         with:
           reporter: github-check
           fail_on_error: true
+          version: 3.27.0

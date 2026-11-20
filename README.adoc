@@ -115,8 +115,9 @@ media reel using {url-ffmpeg}[`ffmpeg`] and pads it with a blurred copy of
 itself.
 Options: `-c` center-crops to fill the frame instead of padding, `-f` sets the
 input file, `-o` the output file, `-r` burns in subtitles transcribed by
-{url-whisper}[`whisper-cli`], `-s` the start time, `-u` the duration, and `-z`
-the horizontal crop shift in pixels (negative values allowed).
+{url-whisper}[`whisper-cli`] and logs their text at the end, `-s` the start
+time, `-u` the duration, and `-z` the horizontal crop shift in pixels
+(negative values allowed).
 * {url-app}remount[`remount`] remounts filesystems using a temporary `fstab`
 configuration, then restores the permanent one.
 * {url-app}rsynx[`rsynx`] wraps {url-rsync}[`rsync`] and picks safe options
