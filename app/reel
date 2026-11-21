@@ -22,7 +22,8 @@ BASE_APP_USAGE="$(
 		  -r, --transcribe  Burn subtitles transcribed by whisper-cli with the
 		                    model at ~/ggml.bin and log the text at the end.
 		  -s, --start       Start time, e.g. -s 00:00:05.00 (default 00:00:00.00).
-		  -u, --duration    Clip duration, e.g. -u 00:00:15.00 (default 00:00:20.00).
+		  -u, --duration    Clip duration, e.g. -u 00:00:15.00
+		                    (default 00:00:20.00).
 		  -z, --shift       Horizontal crop shift in pixels with --crop, may be
 		                    negative (default 0).
 	EOM
@@ -32,7 +33,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20261120 \
+	BASE_APP_VERSION=0.9.20261121 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
