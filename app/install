@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: 0BSD
 #
 # Installs or updates the Unix shell framework shellbase:
-#  https://github.com/rdavid/shellbase/
+#  https://rdavid.github.io/shellbase/
 #
 # The script uses local variables, which POSIX does not define but most
 # shells support. See:
@@ -14,7 +14,7 @@
 #  shellcheck disable=SC2034,SC2039,SC3043
 set -- "$@" --quiet
 readonly \
-	BASE_APP_VERSION=0.9.20261111 \
+	BASE_APP_VERSION=0.9.20261121 \
 	DST=/usr/local/bin \
 	REL=0.9.20261111 \
 	TGT=/usr/local/bin/base.sh
