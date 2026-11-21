@@ -10,4 +10,5 @@ updates:
     cooldown:
       default-days: 7
     commit-message:
+      include: scope
       prefix: ci

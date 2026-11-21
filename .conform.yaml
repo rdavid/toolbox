@@ -23,6 +23,6 @@ policies:
         case: lower
         imperative: true
         invalidLastCharacters: .
-        length: 89
+        length: 72
       spellcheck:
         locale: US
