@@ -75,7 +75,7 @@ check() {
 		cns=$((cns + 1))
 		[ -f "$DST/$nme" ] && cnd=$((cnd + 1))
 	done <"$fif"
-	rm "$fif"
+	cmd_run rm "$fif"
 	if [ $cns -eq 0 ] || [ $cns -ne $cnd ]; then
 		logw "There are $cns files in $RES, $cnd in $DST, keeping the results."
 		[ "$BASE_KEEP_WIP" = true ] || keep_arc
@@ -93,7 +93,7 @@ convert() {
 			--dir "$VID" \
 			--out "$RES" \
 			--wid "$WID"
-		rm -f ./*.log
+		cmd_run rm -f ./*.log
 		cd - || die Unable to change directory back.
 	fi
 	isempty "$AUD" ||
@@ -132,9 +132,9 @@ keep_arc() {
 	}
 	arc="${BASE_WIP%.*}_arc_$who"
 	if out="$(rm -fr "$arc" 2>&1)"; then
-		mkdir "$arc"
-		mv "$AUD" "$RES" "$VID" "$arc"
-		cp "$BASE_WIP"/log "$arc"
+		cmd_run mkdir "$arc"
+		cmd_run mv "$AUD" "$RES" "$VID" "$arc"
+		cmd_run cp "$BASE_WIP"/log "$arc"
 		log The results are in "$arc".
 	else
 		loge "$out".
@@ -154,7 +154,7 @@ sort() {
 	local fle
 	while read -r fle; do
 		if file_exists "$VID/$fle"*; then
-			mv "$VID/$fle"* "$AUD"
+			cmd_run mv "$VID/$fle"* "$AUD"
 		fi
 	done <"$AUT"
 }
@@ -192,7 +192,7 @@ validate() {
 	iswritable $DST $ARC || die Some directories are not writable.
 	isreadable "$AUT" "$SRC" || die Some directories are not readable.
 	for dir in $RES $AUD $VID; do
-		mkdir -p "$dir" || die Unable to create "$dir".
+		cmd_run mkdir -p "$dir" || die Unable to create "$dir".
 	done
 	if isreadable $CKS; then
 		log Uses cookie $CKS.

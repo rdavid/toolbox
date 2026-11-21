@@ -34,7 +34,7 @@ BASE_APP_USAGE="$(
 	printf >&2 '%s\n' "$BASE_APP_USAGE"
 	exit $err
 }
-readonly BASE_APP_VERSION=0.9.20261118
+readonly BASE_APP_VERSION=0.9.20261121
 . base.sh
 
 # Splits the audio image and tags the tracks from the cue sheet. Offers
@@ -113,13 +113,13 @@ normalize() {
 		out="$(iconv -f "$ENC" -t UTF-8 "$CUE" 2>&1 >"$UTF")" ||
 			die "$CUE": Unable to convert from "$ENC": "$out"
 	else
-		cp -- "$CUE" "$UTF"
+		cmd_run cp -- "$CUE" "$UTF"
 		iconv -f UTF-8 -t UTF-8 "$UTF" >/dev/null 2>&1 ||
 			logw "$CUE": Not UTF-8, titles may be garbled, try -e cp1251.
 	fi
 	bom="$(printf '\357\273\277')"
 	LC_ALL=C sed -e "1s/^$bom//" -e 's/\r$//' "$UTF" >"$UTF.n" &&
-		mv -- "$UTF.n" "$UTF"
+		cmd_run mv -- "$UTF.n" "$UTF"
 }
 
 # Parses command-line arguments into ENC, OUT, PRE, CUE and IMG. Dies on
@@ -157,7 +157,7 @@ parse() {
 # to keep it.
 split() {
 	local out
-	mkdir -- "$TRK"
+	cmd_run mkdir -- "$TRK"
 	log Splitting "$IMG".
 	out="$(
 		shnsplit \
@@ -182,7 +182,7 @@ tag() {
 		file_exists -q "$OUT/${fle##*/}" && die "$OUT/${fle##*/}" exists.
 	done
 	for fle; do
-		mv -- "$fle" "$OUT/" || die
+		cmd_run mv -- "$fle" "$OUT/" || die
 		cnt=$((cnt + 1))
 	done
 	log "$cnt" tracks written to "$OUT".
@@ -200,7 +200,7 @@ validate() {
 		dir="$(dirname -- "$CUE" 2>&1)" || die "$dir"
 		OUT="$dir"
 	fi
-	mkdir -p -- "$OUT" || die
+	cmd_run mkdir -p -- "$OUT" || die
 	iswritable "$OUT" || die "$OUT" is not writable.
 }
 

@@ -45,7 +45,7 @@ comp() {
 
 # Saves the current ESSID list to OLD.
 copy() {
-	cp -f "$CUR" "$OLD"
+	cmd_run cp -f "$CUR" "$OLD"
 }
 
 # Scans available ESSIDs and writes them to CUR.

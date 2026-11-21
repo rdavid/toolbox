@@ -24,7 +24,8 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20261118
+	BASE_APP_VERSION=0.9.20261121 \
+	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
 # Searches for Git-tracked files and fixes their copyright years.
@@ -36,13 +37,13 @@ main() {
 # Rewrites the year in the copyright line of $1, replacing $2 with $3.
 bump_year() {
 	local arg="$1" dst="$3" src="$2"
-	sed -i.bak \
+	cmd_run sed -i.bak \
 		"s/^\(.*\)-$src\(.*\)$OWNER/\1-$dst\2$OWNER/g" \
 		"$arg"
-	sed -i.bak \
+	cmd_run sed -i.bak \
 		"s/^\(.*\)$src\(.*\)$OWNER/\1$src-$dst\2$OWNER/g" \
 		"$arg"
-	rm "$arg".bak
+	cmd_run rm "$arg".bak
 }
 
 # Analyzes the input files and fixes their copyright years when needed.
