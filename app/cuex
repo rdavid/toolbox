@@ -168,7 +168,7 @@ split() {
 			-t '%n - %t' \
 			"$IMG" 2>&1
 	)" || die "$out"
-	[ "$PRE" = true ] || rm -f -- "$TRK"/00*pregap.flac
+	[ "$PRE" = true ] || cmd_run rm -f -- "$TRK"/00*pregap.flac
 }
 
 # Tags the tracks from the cue sheet in track order, then moves them to the
