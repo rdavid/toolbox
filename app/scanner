@@ -13,7 +13,7 @@
 # Shellcheck cannot follow the sourced file, flags its variables as unused,
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261118
+readonly BASE_APP_VERSION=0.9.20261121
 . base.sh
 MAXV=10
 MINV=1
@@ -68,11 +68,11 @@ report() {
 # Word splitting required for SCAN args:
 #  shellcheck disable=SC2086
 scan() {
-	local line
-	line="$($SCAN | grep "$MACA" | head -1)" || :
-	if [ -n "$line" ]; then
-		[ -z "$NAME" ] && NAME="$(printf '%s' "$line" | cut -f1)"
-		[ -z "$ADDR" ] && ADDR="$(printf '%s' "$line" | cut -f3 | xargs)"
+	local lne
+	lne="$($SCAN | grep "$MACA" | head -1)" || :
+	if [ -n "$lne" ]; then
+		[ -z "$NAME" ] && NAME="$(printf '%s' "$lne" | cut -f1)"
+		[ -z "$ADDR" ] && ADDR="$(printf '%s' "$lne" | cut -f3 | xargs)"
 		CNTR=$MAXV
 	else
 		[ $CNTR -gt $MINV ] && CNTR=$((CNTR - 1))

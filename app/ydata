@@ -20,14 +20,14 @@ export \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
 readonly \
-	BASE_APP_VERSION=0.9.20261107 \
+	BASE_APP_VERSION=0.9.20261121 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
-dir="$(realdir "$0")"/../cfg/ || die
-AUT="$dir"ytda.aut
-SRC="$dir"ytda.lst
-unset dir
+CFG="$(realdir "$0")"/../cfg/ || die
+AUT="$CFG"ytda.aut
+SRC="$CFG"ytda.lst
+unset CFG
 readonly \
 	ARC=/mnt/nas-ibx/ytb/app/done.txt \
 	AUD="$BASE_WIP"/aud \
@@ -52,35 +52,35 @@ main() {
 
 # Calculates the output table width for the renamr and transcode utilities.
 calc_wid() {
-	local cols
-	cols="$(tput cols 2>/dev/null || printf %s 79)"
-	case "$cols" in
+	local col
+	col="$(tput cols 2>/dev/null || printf %s 79)"
+	case "$col" in
 	'' | *[!0-9]*)
-		cols=79
+		col=79
 		;;
 	esac
-	WID=$((cols - $(printf '19700101-01:01:01 I ' | wc -m)))
-	[ "$WID" -le 1 ] && die Terminal\'s width "$cols" is too small.
+	WID=$((col - $(printf '19700101-01:01:01 I ' | wc -m)))
+	[ "$WID" -le 1 ] && die Terminal\'s width "$col" is too small.
 	readonly WID
 }
 
 # Verifies that every result file was copied to the destination. Keeps the
 # results when none were copied or the counts differ.
 check() {
-	local ndst=0 nsrc=0 pipe
-	pipe="$BASE_WIP"/pipe
-	mkfifo "$pipe"
-	find "$RES" -type f -exec basename {} \; >"$pipe" &
-	while read -r name; do
-		nsrc=$((nsrc + 1))
-		[ -f "$DST/$name" ] && ndst=$((ndst + 1))
-	done <"$pipe"
-	rm "$pipe"
-	if [ $nsrc -eq 0 ] || [ $nsrc -ne $ndst ]; then
-		logw "There are $nsrc files in $RES, $ndst in $DST, keeping the results."
+	local cnd=0 cns=0 fif nme
+	fif="$BASE_WIP"/pipe
+	mkfifo "$fif"
+	find "$RES" -type f -exec basename {} \; >"$fif" &
+	while read -r nme; do
+		cns=$((cns + 1))
+		[ -f "$DST/$nme" ] && cnd=$((cnd + 1))
+	done <"$fif"
+	rm "$fif"
+	if [ $cns -eq 0 ] || [ $cns -ne $cnd ]; then
+		logw "There are $cns files in $RES, $cnd in $DST, keeping the results."
 		[ "$BASE_KEEP_WIP" = true ] || keep_arc
 	else
-		log "Copied $nsrc files to $DST."
+		log "Copied $cns files to $DST."
 	fi
 }
 
@@ -151,9 +151,10 @@ rename() {
 
 # Moves files of the authors listed in ytda.aut into the audio folder.
 sort() {
-	while read -r a; do
-		if file_exists "$VID/$a"*; then
-			mv "$VID/$a"* "$AUD"
+	local fle
+	while read -r fle; do
+		if file_exists "$VID/$fle"*; then
+			mv "$VID/$fle"* "$AUD"
 		fi
 	done <"$AUT"
 }

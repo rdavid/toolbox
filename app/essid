@@ -12,7 +12,7 @@
 # Shellcheck cannot follow the sourced file, flags its variables as unused,
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261118
+readonly BASE_APP_VERSION=0.9.20261121
 . base.sh
 readonly \
 	CUR="$BASE_WIP"/cur \
@@ -26,10 +26,18 @@ main() {
 
 # Compares current and previous ESSID lists and logs any changes.
 comp() {
-	local changed
-	changed="$(diff --suppress-common-lines -y "$CUR" "$OLD" | wc -l | tr -d ' ')"
-	if [ "$changed" -ne 0 ]; then
-		log "ESSID list changed, $changed lines differ. Alert!"
+	local chg
+	chg="$(
+		diff \
+			--side-by-side \
+			--suppress-common-lines \
+			"$CUR" \
+			"$OLD" |
+			wc -l |
+			tr -d ' '
+	)"
+	if [ "$chg" -ne 0 ]; then
+		log "ESSID list changed, $chg lines differ. Alert!"
 	else
 		log ESSID list is unchanged.
 	fi

@@ -13,7 +13,7 @@
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 set -- "$@" --quiet
-readonly BASE_APP_VERSION=0.9.20261107
+readonly BASE_APP_VERSION=0.9.20261121
 . base.sh
 
 # Reports internet download and upload speeds in a loop.
@@ -51,24 +51,24 @@ test_speed() {
 		loge Check internet connection.
 		return 0
 	}
-	local down host out up
+	local dwn hst out up
 	out="$(speedtest-cli 2>&1)" || {
 		loge "$out"
 		return 0
 	}
-	down="$(field "$out" Download)" || {
-		loge "$out: $down: down."
+	dwn="$(field "$out" Download)" || {
+		loge "$out: $dwn: down."
 		return 0
 	}
 	up="$(field "$out" Upload)" || {
 		loge "$out: $up: up."
 		return 0
 	}
-	host="$(printf %s "$out" | grep -E '^Hosted by ' | cut -c11-)" || {
-		loge "$out: $host: host."
+	hst="$(printf %s "$out" | grep -E '^Hosted by ' | cut -c11-)" || {
+		loge "$out: $hst: host."
 		return 0
 	}
-	tsout "| $(printf %6s "$down") | $(printf %6s "$up") | $host"
+	tsout "| $(printf %6s "$dwn") | $(printf %6s "$up") | $hst"
 }
 
 # Prints the table header.

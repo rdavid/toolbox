@@ -41,8 +41,8 @@ After its header each script declares
 `readonly BASE_APP_VERSION=0.9.YYYYMMDD` and runs `. base.sh`.
 Declare function variables with `local`.
 POSIX does not define it, but `dash`, `mksh`, and Bash support it.
-Keep local variable names to three letters, for example `fle`, `sze`, or
-`dst`.
+Keep local variable names to one to three letters, for example `i`,
+`ip`, or `fle`.
 Capitalize script-level variables, for example `SRC` or `TGT`.
 Run external commands through `cmd_run`, which logs each command and its
 failures.
