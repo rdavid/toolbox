@@ -14,7 +14,7 @@
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20261107 \
+	BASE_APP_VERSION=0.9.20261121 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -25,6 +25,8 @@ main() {
 }
 
 # Removes the existing torrent if present, then re-adds it from the file.
+# The --torrent flag precedes --remove-and-delete because transmission-remote
+# applies each action to the torrent selected before it.
 process() {
 	local tid
 	tid=$(tid) || die

@@ -137,17 +137,18 @@ parse() {
 
 # Converts the input video to a vertical reel. The ffmpeg options are sorted
 # alphabetically, except -ss stays before -i for fast input seeking and the
-# output file stays last. With --transcribe the subtitle text is logged at
-# the end, one cue per line.
+# output file stays last. The -y flag is global, so it sorts with the rest.
+# With --transcribe the subtitle text is logged at the end, one cue per line.
 process() {
 	[ "$TRN" = false ] || transcribe
-	cmd_run ffmpeg -y \
+	cmd_run ffmpeg \
 		-ss "$STA" \
 		-i "$FLE" \
 		-b:a 192k -c:a aac \
 		-c:v libx264 -crf 23 -preset fast \
 		-t "$DUR" \
 		-vf "$(filter)" \
+		-y \
 		"$OUT"
 	[ "$TRN" = false ] ||
 		sed \
@@ -164,12 +165,13 @@ process() {
 # few seconds. A wider beam search than the default of five trades a little
 # speed for accuracy.
 transcribe() {
-	cmd_run ffmpeg -y \
+	cmd_run ffmpeg \
 		-ss "$STA" \
 		-i "$FLE" \
 		-ac 1 -ar 16000 -c:a pcm_s16le \
 		-t "$DUR" \
 		-vn \
+		-y \
 		"$BASE_WIP"/audio.wav
 	cmd_run whisper-cli \
 		--beam-size 8 \
