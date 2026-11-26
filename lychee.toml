@@ -1,9 +1,11 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Configures the lychee link checker. Excludes URLs that shell variables
+# Configures the lychee link checker. Accepts 503, which GitHub returns when
+# it throttles bursts of requests. Excludes URLs that shell variables
 # complete at run time and Stack Exchange sites, which reject automated
 # requests with 403.
+accept = ['100..=103', '200..=299', '503']
 exclude = [
 	'\$',
 	'^https://stackoverflow\.com/',
