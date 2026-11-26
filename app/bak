@@ -9,18 +9,20 @@
 # unused:
 #  shellcheck disable=SC1091,SC2034
 readonly \
-	BASE_APP_VERSION=0.9.20261024 \
+	BASE_APP_VERSION=0.9.20261127 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
-# Runs the incremental backup from SRC to DST.
+# Runs the incremental backup from SRC to DST. Since rdiff-backup 2.2 global
+# flags go before the backup subcommand and backup flags go after it.
 main() {
 	validate "$@"
 	cmd_run rdiff-backup \
 		--force \
+		--terminal-verbosity 4 \
+		backup \
 		--preserve-numerical-ids \
 		--print-statistics \
-		--terminal-verbosity 4 \
 		-- "$SRC" "$DST"
 }
 
