@@ -33,7 +33,7 @@ BASE_APP_USAGE="$(
 	exit $err
 }
 readonly \
-	BASE_APP_VERSION=0.9.20261121 \
+	BASE_APP_VERSION=0.9.20261127 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -138,7 +138,7 @@ parse() {
 # Converts the input video to a vertical reel. The ffmpeg options are sorted
 # alphabetically, except -ss stays before -i for fast input seeking and the
 # output file stays last. The -y flag is global, so it sorts with the rest.
-# With --transcribe the subtitle text is logged at the end, one cue per line.
+# With --transcribe the subtitle text is logged at the end as a single line.
 process() {
 	[ "$TRN" = false ] || transcribe
 	cmd_run ffmpeg \
@@ -156,7 +156,8 @@ process() {
 			-e '/-->/d' \
 			-e 's/^ *//' \
 			"$BASE_WIP"/audio.srt |
-		tolog
+		paste -d ' ' -s - |
+			tolog
 }
 
 # Extracts the clip's audio as 16 kHz mono WAV, which whisper-cli expects,
