@@ -10,9 +10,9 @@
 :url-agent-rules-lint: https://pypi.org/project/agent-rules-lint/
 :url-app: https://github.com/rdavid/toolbox/blob/master/app/
 :url-arp-scan: https://github.com/royhills/arp-scan
+:url-author: https://rdavid.github.io/
 :url-checkbashisms: https://manpages.debian.org/unstable/devscripts/checkbashisms.1.en.html
 :url-conform: https://github.com/siderolabs/conform
-:url-cv: http://cv.rabkin.co.il
 :url-dig: https://linux.die.net/man/1/dig
 :url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
 :url-homebrew: https://brew.sh
@@ -286,7 +286,7 @@ endif::[]
 
 == License
 
-{url-cv}[David Rabkin] holds the copyright to `toolbox` and distributes it
+{url-author}[David Rabkin] holds the copyright to `toolbox` and distributes it
 under the {url-license}[Zero-Clause BSD license].
 
 ifdef::pages-build[]
@@ -294,12 +294,11 @@ ifdef::pages-build[]
 <footer id="site-footer">
   <div class="footer-left">
     <img src="favicon.svg" alt="" width="20" height="20">
-    <span>toolbox by <a href="http://cv.rabkin.co.il" target="_blank" rel="noopener">David Rabkin</a></span>
+    <span>toolbox by <a href="https://rdavid.github.io/" target="_blank" rel="noopener">David Rabkin</a></span>
   </div>
   <div class="footer-links">
-    <a href="https://github.com/rdavid/toolbox" target="_blank" rel="noopener">GitHub</a>
     <a href="https://github.com/rdavid/toolbox/releases" target="_blank" rel="noopener">Releases</a>
-    <a href="https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt" target="_blank" rel="noopener">0BSD License</a>
+    <a href="https://github.com/rdavid/toolbox" target="_blank" rel="noopener">Source</a>
   </div>
 </footer>
 ++++
