@@ -14,22 +14,22 @@
 :url-checkbashisms: https://manpages.debian.org/unstable/devscripts/checkbashisms.1.en.html
 :url-conform: https://github.com/siderolabs/conform
 :url-dig: https://linux.die.net/man/1/dig
-:url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
-:url-homebrew: https://brew.sh
-:url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
-:url-lychee: https://lychee.cli.rs/
 :url-ffmpeg: https://ffmpeg.org
 :url-gitleaks: https://gitleaks.io
 :url-goredo: http://www.goredo.stargrave.org/INSTALL.html
 :url-goredoer: https://rdavid.github.io/goredoer/
+:url-hoc: https://hitsofcode.com/view/github/rdavid/toolbox?branch=master
+:url-homebrew: https://brew.sh
+:url-license: https://github.com/rdavid/toolbox/blob/master/LICENSES/0BSD.txt
+:url-lychee: https://lychee.cli.rs/
 :url-pages: https://rdavid.github.io/toolbox/
 :url-rdiff: https://rdiff-backup.net/
-:url-redo: http://cr.yp.to/redo.html
-:url-rsync: https://rsync.samba.org
+:url-redo: https://cr.yp.to/redo.html
 :url-releases: https://github.com/rdavid/toolbox/releases
 :url-reuse: https://reuse.software
-:url-shellcheck: https://www.shellcheck.net
+:url-rsync: https://rsync.samba.org
 :url-shellbase: https://rdavid.github.io/shellbase/
+:url-shellcheck: https://www.shellcheck.net
 :url-shfmt: https://pkg.go.dev/mvdan.cc/sh/v3
 :url-speed: https://github.com/sivel/speedtest-cli
 :url-tap: https://rdavid.github.io/homebrew-tap/
@@ -189,7 +189,7 @@ $ redo lint
 20260803-14:02:01 » dash -n ./lint.do
 20260803-14:02:01 » mksh -n ./lint.do
 20260803-14:02:02 » shellcheck ./*.do ./app/*
-# actionlint, checkbashisms, conform, gitleaks, reuse - not installed, nothing logged
+# actionlint, checkbashisms, conform, gitleaks, reuse: not installed, skipped
 20260803-14:02:04 shfmt failed, err=1.
 20260803-14:02:05 » yamllint ./.github/*.yml ./.github/workflows/*.yml
 OK
