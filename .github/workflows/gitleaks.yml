@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Scans the full commit history for leaked secrets. actions/checkout defaults
-# to a shallow clone, so fetch-depth is set to 0 here to give gitleaks every
-# commit to scan. Runs on every push and pull request with no path filter on
-# purpose: a leak can land in any file or any commit, so any change anywhere
+# Scans the full commit history for leaked secrets. The actions/checkout step
+# defaults to a shallow clone, so fetch-depth is set to 0 here to give gitleaks
+# every commit to scan. Runs on every push and pull request with no path filter
+# on purpose: a leak can land in any file or any commit, so any change anywhere
 # must be revalidated. The release archive is verified against the upstream
 # checksums file so a tampered or corrupted download fails the job instead of
 # running.

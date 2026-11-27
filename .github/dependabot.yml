@@ -1,5 +1,9 @@
 # SPDX-FileCopyrightText: 2023-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
+#
+# Configures Dependabot to update the GitHub Actions daily, one pull request
+# per action, after a seven-day cooldown. Commit messages use the ci prefix
+# with a scope.
 ---
 version: 2
 updates:

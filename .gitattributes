@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
-
+#
+# Marks redo targets as shell, so GitHub highlights and counts them as such.
 *.do linguist-language=Shell

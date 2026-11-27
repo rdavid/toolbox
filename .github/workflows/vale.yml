@@ -1,12 +1,12 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Lints README.adoc prose with Vale. asciidoctor is installed first because
-# Vale shells out to it to render AsciiDoc before applying its style rules.
-# Without it on PATH the .adoc source cannot be parsed. The checks write
+# Lints README.adoc prose with Vale. The asciidoctor package is installed first
+# because Vale shells out to it to render AsciiDoc before applying its style
+# rules. Without it on PATH the .adoc source cannot be parsed. The checks write
 # permission is granted to the job alone, which posts the Vale annotations.
-# Vale stays at 3.27.0 because 3.28.0 reads AsciiDoc in process and flags
-# the ASCII art banner as prose.
+# Vale is pinned to 3.27.0, since 3.28.0 parses AsciiDoc itself and checks the
+# ASCII art banner as if it were prose.
 ---
 name: vale
 'on':
