@@ -47,11 +47,11 @@ pause() {
 # Prints the current download and upload speeds. Logs any failure and
 # returns 0, so the polling loop keeps going.
 test_speed() {
+	local dwn hst out up
 	url_exists google.com || {
 		loge Check internet connection.
 		return 0
 	}
-	local dwn hst out up
 	out="$(speedtest-cli 2>&1)" || {
 		loge "$out"
 		return 0

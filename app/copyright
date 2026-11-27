@@ -24,7 +24,7 @@ BASE_APP_USAGE="$(
 }
 readonly \
 	BASE_APP_USAGE \
-	BASE_APP_VERSION=0.9.20261121 \
+	BASE_APP_VERSION=0.9.20261127 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -100,8 +100,8 @@ process() {
 
 # Validates the environment.
 validate() {
-	cmd_exists git || die
 	local arg
+	cmd_exists git || die
 	for arg; do
 		shift
 		case "$arg" in

@@ -12,7 +12,7 @@
 # Shellcheck cannot follow the sourced file, flags its variables as unused,
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261107
+readonly BASE_APP_VERSION=0.9.20261127
 . base.sh
 
 # Validates the environment and runs the compile pipeline.
@@ -37,6 +37,7 @@ process() {
 
 # Validates the environment and sets DVI, LOG, NME, PDF, SRC, TEX, and OPENER.
 validate() {
+	local nme
 	[ "$#" -eq 1 ] || die tex: try tex [file name]
 	isreadable "$1" || die Unable to read file "$1".
 	cmd_exists dvipdfm tex || die
@@ -44,7 +45,6 @@ validate() {
 	*.tex) : ;;
 	*) die Source file "$1" must have the .tex extension. ;;
 	esac
-	local nme
 	nme="$(basename -- "$1" .tex)"
 	readonly \
 		DVI="$nme".dvi \

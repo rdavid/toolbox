@@ -160,8 +160,6 @@ sort() {
 }
 
 # Uploads the results to the destination.
-# Word splitting required for DST:
-#  shellcheck disable=SC2086
 upload() {
 	isempty "$RES" && {
 		log "No files to upload from $RES."
@@ -172,7 +170,7 @@ upload() {
 		--human-readable \
 		--progress \
 		--verbose \
-		"$RES"/* $DST
+		"$RES"/* "$DST"
 }
 
 # Verifies that required software packages are installed on the host. Also

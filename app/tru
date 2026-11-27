@@ -63,6 +63,7 @@ tid() {
 # Word splitting required for prm:
 #  shellcheck disable=SC2086
 validate() {
+	local out prm
 	cmd_exists nc transmission-remote transmission-show || die
 	[ "$#" -eq 3 ] || die tru: try tru [host:port user:pass torrent-file]
 	[ "$2" != : ] && AUT="--auth $2" || AUT=''
@@ -70,7 +71,6 @@ validate() {
 		AUT \
 		SER="$1" \
 		TOR="$3"
-	local out prm
 	prm="$(printf %s "$SER" | tr : \ )"
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
 	isreadable "$TOR" || die Unable to read "$TOR".
