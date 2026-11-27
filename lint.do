@@ -1,4 +1,3 @@
-# shellcheck shell=sh
 # vi: lbr noet sw=2 ts=2 tw=79 wrap
 # SPDX-FileCopyrightText: 2024-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
@@ -11,8 +10,9 @@
 # hands any further operands to it as positional parameters, so files after
 # the first would be silently skipped rather than checked.
 #
-# Shellcheck cannot follow the sourced file or see variables it reads:
-#  shellcheck disable=SC1091,SC2034
+# Shellcheck cannot infer the shell without a shebang, follow the sourced
+# file, or see variables it reads:
+#  shellcheck shell=sh disable=SC1091,SC2034
 redo-ifchange \
 	./.conform.yaml \
 	./.github/*.yml \
