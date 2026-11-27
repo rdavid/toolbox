@@ -71,8 +71,8 @@ scan() {
 	local lne
 	lne="$($SCAN | grep "$MACA" | head -n 1)" || :
 	if [ -n "$lne" ]; then
-		[ -z "$NAME" ] && NAME="$(printf '%s' "$lne" | cut -f1)"
-		[ -z "$ADDR" ] && ADDR="$(printf '%s' "$lne" | cut -f3 | xargs)"
+		[ -z "$NAME" ] && NAME="$(printf %s "$lne" | cut -f 1)"
+		[ -z "$ADDR" ] && ADDR="$(printf %s "$lne" | cut -f 3 | xargs)"
 		CNTR=$MAXV
 	else
 		[ $CNTR -gt $MINV ] && CNTR=$((CNTR - 1))
