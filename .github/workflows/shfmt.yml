@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: 2025-2026 David Rabkin
 # SPDX-License-Identifier: 0BSD
 #
-# Checks that the shell sources match the shfmt formatting. The -d flag prints
-# a diff and fails the job when any file would change.
+# Checks that the shell sources match the shfmt formatting in the POSIX
+# dialect. The --diff flag prints a diff and fails the job when any file
+# would change.
 ---
 name: shfmt
 'on':
@@ -32,4 +33,9 @@ jobs:
         with:
           persist-credentials: false
       - uses: mfinelli/setup-shfmt@v4.0.1
-      - run: shfmt -d ./*.do ./app/*
+      - run: |
+          shfmt \
+            --diff \
+            --language-dialect posix \
+            ./*.do \
+            ./app/*
