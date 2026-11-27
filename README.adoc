@@ -227,7 +227,7 @@ ifdef::pages-build[]
       </div>
       <div class="row silence-row">
         <span class="gutter"><span class="badge">3</span></span>
-        <span class="silence">actionlint, checkbashisms, conform, gitleaks, reuse &mdash; not installed, nothing logged</span>
+        <span class="silence">actionlint, checkbashisms, conform, gitleaks, reuse &mdash; not installed, skipped</span>
       </div>
       <div class="row">
         <span class="gutter"><span class="badge">4</span></span>
