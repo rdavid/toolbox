@@ -12,7 +12,7 @@
 # Shellcheck cannot follow the sourced file, flags its variables as unused,
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
-readonly BASE_APP_VERSION=0.9.20261121
+readonly BASE_APP_VERSION=0.9.20261127
 . base.sh
 readonly \
 	CUR="$BASE_WIP"/cur \
@@ -50,7 +50,7 @@ copy() {
 
 # Scans available ESSIDs and writes them to CUR.
 list() {
-	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d':' -f2 >"$CUR"
+	iwlist wlan0 s | grep ESSID | tr -s ' ' | cut -d : -f 2 >"$CUR"
 }
 
 # Scans and compares ESSID lists continuously.

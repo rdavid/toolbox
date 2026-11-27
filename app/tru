@@ -14,7 +14,7 @@
 # and warns about local:
 #  shellcheck disable=SC1091,SC2034,SC2039,SC3043
 readonly \
-	BASE_APP_VERSION=0.9.20261121 \
+	BASE_APP_VERSION=0.9.20261127 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -75,7 +75,7 @@ validate() {
 	nc -z $prm >/dev/null 2>&1 || die "$prm" is not available.
 	isreadable "$TOR" || die Unable to read "$TOR".
 	out="$(transmission-show "$TOR")" || die Unable to read "$TOR": "$out"
-	NME="$(printf %s "$out" | grep Name: | head -1 | cut -c 7-)"
+	NME="$(printf %s "$out" | grep Name: | head -n 1 | cut -c 7-)"
 	readonly NME
 	[ -n "$NME" ] || die Unable to extract name from "$TOR": "$out"
 }
