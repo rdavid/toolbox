@@ -20,7 +20,7 @@ export \
 	LC_ALL=en_US.UTF-8 \
 	PATH="$PATH":/usr/local/bin
 readonly \
-	BASE_APP_VERSION=0.9.20261121 \
+	BASE_APP_VERSION=0.9.20261127 \
 	BASE_MIN_VERSION=0.9.20260707
 . base.sh
 
@@ -112,8 +112,8 @@ download() {
 	cmd_run yt-dlp \
 		$CKS_PARAM \
 		--add-metadata \
-		--batch-file=$SRC \
-		--download-archive $ARC \
+		--batch-file="$SRC" \
+		--download-archive "$ARC" \
 		--format bestvideo+bestaudio \
 		--js-runtimes deno \
 		--merge-output-format mp4 \
@@ -189,13 +189,13 @@ validate() {
 		transcode-video \
 		yt-dlp || die
 	url_exists http://youtube.com || die Check internet connection.
-	iswritable $DST $ARC || die Some directories are not writable.
+	iswritable "$DST" "$ARC" || die Some directories are not writable.
 	isreadable "$AUT" "$SRC" || die Some directories are not readable.
-	for dir in $RES $AUD $VID; do
+	for dir in "$RES" "$AUD" "$VID"; do
 		cmd_run mkdir -p "$dir" || die Unable to create "$dir".
 	done
-	if isreadable $CKS; then
-		log Uses cookie $CKS.
+	if isreadable "$CKS"; then
+		log Uses cookie "$CKS".
 		CKS_PARAM=--cookies\ $CKS
 	else
 		CKS_PARAM=''
