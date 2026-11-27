@@ -55,12 +55,14 @@ cmd_runif shfmt \
 	--language-dialect posix \
 	./*.do \
 	./app/*
-cmd_runif tombi lint --error-on-warnings \
+cmd_runif tombi lint \
+	--error-on-warnings \
 	./*.toml
 cmd_runif typos
 cmd_runif vale sync
 cmd_runif vale ./README.adoc
 cmd_runif yamllint \
+	./.conform.yaml \
 	./.github/*.yml \
 	./.github/workflows/*.yml
 cmd_runif zizmor --offline ./.github/
